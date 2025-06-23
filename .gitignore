@@ -1,0 +1,21 @@
+# Compiled output
+build/
+dist/
+out/
+
+# IDE-specific files
+.idea/
+*.iml
+nbproject/private/
+
+# Backup and log files
+*.bak
+*.log
+
+# Test directory
+# The test directory is ignored. If this directory contains test source code, you should remove the line below.
+test/
+
+# Download and extract girlkun.rar instead
+girlkun/
+girlkun.rar
