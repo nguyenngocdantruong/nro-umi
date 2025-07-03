@@ -12,14 +12,14 @@ import java.util.List;
 public class MapMaBu {
 
     //custom-drsylas
-    public static final byte HOUR_OPEN_MAP_MABU = 17;//giờ mở
+    public static final byte HOUR_OPEN_MAP_MABU = 0;//giờ mở
     public static final byte MIN_OPEN_MAP_MABU = 0;
     public static final byte SECOND_OPEN_MAP_MABU = 0;
 
     //custom-drsylas
     public static final byte HOUR_CLOSE_MAP_MABU = 23;//giờ đóng
-    public static final byte MIN_CLOSE_MAP_MABU = 0;
-    public static final byte SECOND_CLOSE_MAP_MABU = 0;
+    public static final byte MIN_CLOSE_MAP_MABU = 59;
+    public static final byte SECOND_CLOSE_MAP_MABU = 59;
 
     public static final int AVAILABLE = 7;
 
