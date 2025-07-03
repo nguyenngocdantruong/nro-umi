@@ -365,7 +365,7 @@ public class Boss extends Player implements IBossNew, IBossOutfit {
 
     @Override
     public void joinMap() {
-if (zoneFinal != null) {
+        if (zoneFinal != null) {
             joinMapByZone(zoneFinal);
             this.notifyJoinMap();
             return;
@@ -526,7 +526,6 @@ if (zoneFinal != null) {
             this.chat("Chừa nha con!!!");
         }
     }
-
 
     @Override
     public void die(Player plKill) {
@@ -924,5 +923,4 @@ if (zoneFinal != null) {
         this.lastTimeAttack = lastTimeAttack;
     }
 
-    
 }

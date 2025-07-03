@@ -24,17 +24,17 @@ public class MapDauDinh extends Boss {
     }
     public void active() {
         super.active(); //To change body of generated methods, choose Tools | Templates.
-        if (Util.canDoWithTime(st, 900000)) {
-            this.changeStatus(BossStatus.LEAVE_MAP);
-        }
+//        if (Util.canDoWithTime(st, 900000)) {
+//            this.changeStatus(BossStatus.LEAVE_MAP);
+//        }
     }
 
     @Override
     public void joinMap() {
         super.joinMap(); //To change body of generated methods, choose Tools | Templates.
-        st = System.currentTimeMillis();
+//        st = System.currentTimeMillis();
     }
-    private long st;
+//    private long st;
 }
 
 /**
