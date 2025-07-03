@@ -1388,12 +1388,13 @@ public static Npc meothantai1(int mapId, int status, int cx, int cy, int tempId,
                     } else if (player.iDMark.getIndexMenu() == 1) {
                         if (player.zone.map.mapId == 7 && player.idNRNM != -1) {
                             if (player.idNRNM == 353) {
-                                NgocRongNamecService.gI().tOpenNrNamec = System.currentTimeMillis() + 86400000;
+                                long timeRemaining = 30 * 1000;
+                                NgocRongNamecService.gI().tOpenNrNamec = System.currentTimeMillis() + timeRemaining;
                                 NgocRongNamecService.gI().firstNrNamec = true;
                                 NgocRongNamecService.gI().timeNrNamec = 0;
                                 NgocRongNamecService.gI().doneDragonNamec();
                                 NgocRongNamecService.gI().initNgocRongNamec((byte) 1);
-                                NgocRongNamecService.gI().reInitNrNamec((long) 86399000);
+                                NgocRongNamecService.gI().reInitNrNamec((long) timeRemaining - 1000);
                                 SummonDragon.gI().summonNamec(player);
                             } else {
                                 Service.gI().sendThongBao(player, "Anh phải có viên ngọc rồng Namếc 1 sao");
