@@ -78,7 +78,7 @@ public class ChatGlobalService implements Runnable {
             try {
                 if (!listChatting.isEmpty()) {
                     ChatGlobal chat = listChatting.get(0);
-                    if (Util.canDoWithTime(chat.timeSendToPlayer, 1000)) {
+                    if (Util.canDoWithTime(chat.timeSendToPlayer, 20000)) {
                         listChatting.remove(0).dispose();
                     }
                 }
