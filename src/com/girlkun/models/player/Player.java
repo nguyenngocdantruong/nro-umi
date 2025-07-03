@@ -670,6 +670,12 @@ public class Player {
                 pet.enemyMaster = plAtt;
                 pet.chatToNewEnemy();
             }
+            if (plAtt != null && !isMobAttack && this.nPoint.tlPST > 0) {
+                int damageReflect = damage * this.nPoint.tlPST / 100;
+                if (damageReflect > 0) {
+                    plAtt.injured(this, damageReflect, true, false);
+                }
+            }
             if (isDie()) {
                 if (this.zone.map.mapId == 112) {
                     plAtt.pointPvp++;
