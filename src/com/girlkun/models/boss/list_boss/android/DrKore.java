@@ -3,6 +3,7 @@ package com.girlkun.models.boss.list_boss.android;
 import com.girlkun.models.boss.Boss;
 import com.girlkun.models.boss.BossID;
 import com.girlkun.models.boss.BossesData;
+import com.girlkun.models.item.Item;
 import com.girlkun.models.map.ItemMap;
 import com.girlkun.models.player.Player;
 import com.girlkun.models.skill.Skill;
@@ -20,14 +21,22 @@ public class DrKore extends Boss {
 
     @Override
     public void reward(Player plKill) {
-        int[] itemRan = new int[]{381, 382, 383, 384, 385};
-        int itemId = itemRan[2];
-        if (Util.isTrue(15, 100)) {
-            ItemMap it = new ItemMap(this.zone, itemId, 1, this.location.x, this.zone.map.yPhysicInTop(this.location.x,
-                    this.location.y - 24), plKill.id);
-            Service.gI().dropItemMap(this.zone, it);
+        if(Util.isTrue(15, 100)){
+            // Rơi cải trang
+            int caiTrangId = 525;
+            int quantity = 1;
+            ItemMap item = new ItemMap(this.zone, caiTrangId, 
+                    quantity, 
+                    this.location.x + Util.nextInt(-50, 50),
+                    this.location.y
+                    , plKill.id);
+
+            item.options.add(new Item.ItemOption(3, 100)); // Vô hiệu và biến 100% thành KI
+            item.options.add(new Item.ItemOption(4, 2)); // Hồi phục 2% KI khi bị đánh
+            item.options.add(new Item.ItemOption(5, 15)); // +15% sức đánh chí mạng
+            Service.gI().dropItemMap(this.zone, item);
         }
-        TaskService.gI().checkDoneTaskKillBoss(plKill, this);
+        super.reward(plKill);
     }
 
     @Override

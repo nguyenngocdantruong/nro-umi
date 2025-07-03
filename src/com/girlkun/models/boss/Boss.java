@@ -14,6 +14,7 @@ import com.girlkun.models.boss.iboss.IBossNew;
 import com.girlkun.models.boss.iboss.IBossOutfit;
 import com.girlkun.models.boss.list_boss.android.SuperAndroid17;
 import com.girlkun.models.boss.list_boss.New.gogeta;
+import com.girlkun.models.map.ItemMap;
 import com.girlkun.models.map.Zone;
 import com.girlkun.models.player.Player;
 import com.girlkun.models.skill.Skill;
@@ -539,6 +540,17 @@ public class Boss extends Player implements IBossNew, IBossOutfit {
 
     @Override
     public void reward(Player plKill) {
+        int numItems = Util.nextInt(3, 9);
+        for(int i = 0 ; i < numItems; i++){
+            int id = 77; //Ngọc xanh 77
+            int quantity = Util.nextInt(10, 60);
+            ItemMap itemNgoc = new ItemMap(this.zone, id, 
+                    quantity, 
+                    this.location.x + Util.nextInt(-50, 50),
+                    this.location.y
+                    , -1);
+            Service.gI().dropItemMap(this.zone, itemNgoc);
+        }
         TaskService.gI().checkDoneTaskKillBoss(plKill, this);
     }
 

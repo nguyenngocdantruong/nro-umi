@@ -621,8 +621,8 @@ public class BossesData {
                 "|-2|Lão già khôn thật!!",
                 "|-2|Hừ! Lão già khốn kiếp!",}, //text chat 2
             new String[]{}, //text chat 3
-            REST_5_M, //second rest
-            REST_5_M,
+            REST_15_M, //second rest
+            REST_10_S, // second notify
             new int[]{BossID.ANDROID_19}
     );
 
