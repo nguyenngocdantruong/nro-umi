@@ -482,55 +482,57 @@ public class UseItem {
 
    private void openWoodChest(Player pl, Item item) {
         int time = (int) TimeUtil.diffDate(new Date(), new Date(item.createTime), TimeUtil.DAY);
-        if (time != 0) {
+//        Cho phép mở rương ngay lập lức
+//        if (time != 0)
+        if (time != 0 || true) {
             Item itemReward = null;
             int param = item.itemOptions.size();
             int gold = 0;
-        int[] listItem = {441, 442, 443, 444, 445, 446, 447, 220, 221, 222, 223, 224, 225,16,17,18,457};
-        int[] listClothesReward;
-        int[] listItemReward;
-        String text = "Bạn nhận được\n";
-        if (param < 8) {
-            gold = 100000 * param;
-            listClothesReward = new int[]{randClothes(param)};
-            listItemReward = Util.pickNRandInArr(listItem, 3);
-        } else if (param < 10) {
-            gold = 250000 * param;
-            listClothesReward = new int[]{randClothes(param), randClothes(param)};
-            listItemReward = Util.pickNRandInArr(listItem, 4);
-        } else {
-            gold = 500000 * param;
-            listClothesReward = new int[]{randClothes(param), randClothes(param), randClothes(param)};
-            listItemReward = Util.pickNRandInArr(listItem, 6);
-            int ruby = Util.nextInt(1, 5);
-            pl.inventory.ruby += ruby;
-            pl.textRuongGo.add(text + "|1| " + ruby + " Hồng Ngọc");
-        }
-            for (int i : listClothesReward) {
-         itemReward = ItemService.gI().createNewItem((short) i);
-         RewardService.gI().initBaseOptionClothes(itemReward.template.id, itemReward.template.type, itemReward.itemOptions);
-         RewardService.gI().initStarOption(itemReward, new RewardService.RatioStar[]{new RewardService.RatioStar((byte) 1, 1, 2), new RewardService.RatioStar((byte) 2, 1, 3), new RewardService.RatioStar((byte) 3, 1, 4), new RewardService.RatioStar((byte) 4, 1, 5),});
-         InventoryServiceNew.gI().addItemBag(pl, itemReward);
-         pl.textRuongGo.add(text + itemReward.getInfoItem());
-     }
-     for (int i : listItemReward) {
-         itemReward = ItemService.gI().createNewItem((short) i);
-//         RewardService.gI().initBaseOptionSaoPhaLe(itemReward);
-         itemReward.quantity = Util.nextInt(1, 5);
-         InventoryServiceNew.gI().addItemBag(pl, itemReward);
-         pl.textRuongGo.add(text + itemReward.getInfoItem());
-     }
-        if (param == 11) {
-            itemReward = ItemService.gI().createNewItem((short) 457);
-            itemReward.quantity = Util.nextInt(1, 10);
-            InventoryServiceNew.gI().addItemBag(pl, itemReward);
-            pl.textRuongGo.add(text + itemReward.getInfoItem());
-        }
-        NpcService.gI().createMenuConMeo(pl, ConstNpc.RUONG_GO, -1, "Bạn nhận được\n|1|+" + Util.numberToMoney(gold) + " vàng", "OK [" + pl.textRuongGo.size() + "]");
-        InventoryServiceNew.gI().subQuantityItemsBag(pl, item, 1);
-        pl.inventory.addGold(gold);
-        InventoryServiceNew.gI().sendItemBags(pl);
-        PlayerService.gI().sendInfoHpMpMoney(pl);
+            int[] listItem = {441, 442, 443, 444, 445, 446, 447, 220, 221, 222, 223, 224, 225,16,17,18,457};
+            int[] listClothesReward;
+            int[] listItemReward;
+            String text = "Bạn nhận được\n";
+            if (param < 8) {
+                gold = 100000 * param;
+                listClothesReward = new int[]{randClothes(param)};
+                listItemReward = Util.pickNRandInArr(listItem, 3);
+            } else if (param < 10) {
+                gold = 250000 * param;
+                listClothesReward = new int[]{randClothes(param), randClothes(param)};
+                listItemReward = Util.pickNRandInArr(listItem, 4);
+            } else {
+                gold = 500000 * param;
+                listClothesReward = new int[]{randClothes(param), randClothes(param), randClothes(param)};
+                listItemReward = Util.pickNRandInArr(listItem, 6);
+                int ruby = Util.nextInt(1, 5);
+                pl.inventory.ruby += ruby;
+                pl.textRuongGo.add(text + "|1| " + ruby + " Hồng Ngọc");
+            }
+                for (int i : listClothesReward) {
+             itemReward = ItemService.gI().createNewItem((short) i);
+             RewardService.gI().initBaseOptionClothes(itemReward.template.id, itemReward.template.type, itemReward.itemOptions);
+             RewardService.gI().initStarOption(itemReward, new RewardService.RatioStar[]{new RewardService.RatioStar((byte) 1, 1, 2), new RewardService.RatioStar((byte) 2, 1, 3), new RewardService.RatioStar((byte) 3, 1, 4), new RewardService.RatioStar((byte) 4, 1, 5),});
+             InventoryServiceNew.gI().addItemBag(pl, itemReward);
+             pl.textRuongGo.add(text + itemReward.getInfoItem());
+         }
+         for (int i : listItemReward) {
+             itemReward = ItemService.gI().createNewItem((short) i);
+    //         RewardService.gI().initBaseOptionSaoPhaLe(itemReward);
+             itemReward.quantity = Util.nextInt(1, 5);
+             InventoryServiceNew.gI().addItemBag(pl, itemReward);
+             pl.textRuongGo.add(text + itemReward.getInfoItem());
+         }
+            if (param == 11) {
+                itemReward = ItemService.gI().createNewItem((short) 457);
+                itemReward.quantity = Util.nextInt(1, 10);
+                InventoryServiceNew.gI().addItemBag(pl, itemReward);
+                pl.textRuongGo.add(text + itemReward.getInfoItem());
+            }
+            NpcService.gI().createMenuConMeo(pl, ConstNpc.RUONG_GO, -1, "Bạn nhận được\n|1|+" + Util.numberToMoney(gold) + " vàng", "OK [" + pl.textRuongGo.size() + "]");
+            InventoryServiceNew.gI().subQuantityItemsBag(pl, item, 1);
+            pl.inventory.addGold(gold);
+            InventoryServiceNew.gI().sendItemBags(pl);
+            PlayerService.gI().sendInfoHpMpMoney(pl);
         } else {
             Service.getInstance().sendThongBao(pl, "Vui lòng đợi 24h");
         }

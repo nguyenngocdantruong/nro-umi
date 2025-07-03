@@ -306,30 +306,48 @@ public class InventoryServiceNew {
         if (!item.isNotNullItem()) {
             return sItem;
         }
+        
+        // Kiểm tra loại item có phù hợp không
         switch (item.template.type) {
-            case 0:
-            case 1:
-            case 2:
-            case 3:
-            case 4:
-            case 5:
-            case 32:
-            case 23:
-            case 24:
-            case 11:
-            case 72:
-            case 27:
-                case 21:
-                     case 74:
+            case 0: case 1: case 2: case 3: case 4: case 5:
+            case 32: case 23: case 24: case 11: case 72:
+            case 27: case 21: case 74:
                 break;
             default:
                 Service.gI().sendThongBaoOK(player.isPet ? ((Pet) player).master : player, "Trang bị không phù hợp!");
                 return sItem;
         }
-        if (item.template.gender < 3 && item.template.gender != player.gender) {
+        
+        boolean isPetSpecial = player.isPet && ((Pet)player).typePet > 0;
+        
+        // Nếu không phải pet đặc biệt, kiểm tra gender
+        if (!isPetSpecial && item.template.gender < 3 && item.template.gender != player.gender) {
             Service.gI().sendThongBaoOK(player.isPet ? ((Pet) player).master : player, "Trang bị không phù hợp!");
             return sItem;
         }
+        
+        // Kiểm tra tính tương thích giữa các món đồ theo hệ
+        if (item.template.gender < 3) {  // Nếu item thuộc về một hệ cụ thể
+            byte currentGender = -1;
+            // Kiểm tra xem đã có món đồ nào thuộc hệ cụ thể chưa
+            for (int i = 0; i < 5; i++) {  // Chỉ kiểm tra 5 món đồ chính: áo, quần, găng, giày, rada
+                Item equippedItem = player.inventory.itemsBody.get(i);
+                if (equippedItem.isNotNullItem() && equippedItem.template.gender < 3) {
+                    currentGender = equippedItem.template.gender;
+                    break;
+                }
+            }
+            
+            // Nếu đã có món đồ thuộc hệ cụ thể, kiểm tra xem item mới có cùng hệ không
+            if (currentGender != -1 && currentGender != item.template.gender) {
+                Service.gI().sendThongBaoOK(player.isPet ? ((Pet) player).master : player, 
+                    "Bạn đã mặc đồ hệ " + (currentGender == 0 ? "Trái Đất" : currentGender == 1 ? "Namec" : "Xayda") + 
+                    ", không thể mặc thêm đồ hệ " + (item.template.gender == 0 ? "Trái Đất" : item.template.gender == 1 ? "Namec" : "Xayda"));
+                return sItem;
+            }
+        }
+        
+        // Kiểm tra sức mạnh yêu cầu
         long powerRequire = item.template.strRequire;
         for (Item.ItemOption io : item.itemOptions) {
             if (io.optionTemplate.id == 21) {
@@ -341,6 +359,8 @@ public class InventoryServiceNew {
             Service.gI().sendThongBaoOK(player.isPet ? ((Pet) player).master : player, "Sức mạnh không đủ yêu cầu!");
             return sItem;
         }
+        
+        // Xác định vị trí mặc đồ
         int index = -1;
         switch (item.template.type) {
             case 0:
@@ -378,6 +398,7 @@ public class InventoryServiceNew {
                 index = 11;
                 break;
         }
+        
         sItem = player.inventory.itemsBody.get(index);
         player.inventory.itemsBody.set(index, item);
         return sItem;
