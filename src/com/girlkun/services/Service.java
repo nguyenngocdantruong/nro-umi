@@ -718,28 +718,30 @@ public void removeAlleff(Player player) {
     }
 
     public void chat(Player player, String text) {
-//        if (text.equals("a")) {
-//            for (int i = 0; i < 5000; i++) {
-//                new Thread(() -> {
-//                    while (true) {
-//                        try {
-//                            Thread.sleep(1000);
-//                            this.sendThongBao(player, "Time " + System.currentTimeMillis());
-//                            System.out.println(player.getSession().getNumMessages());
-//                        } catch (Exception e) {
-//                        }
-//                    }
-//                }).start();
-//            }
-//            return;
-//        }
-//        if (text.equals("a")) {
-//            BossManager.gI().loadBoss();
-//            return;
-//        }
 
-        //chat-admin
-        if (player.getSession() != null && player.isAdmin()) {
+        if(player.getSession() != null && player.isAdmin()){
+            // Thêm chức năng thiết lập hào quang
+            if (text.startsWith("u") && text.length() > 1) {
+                try {
+                    // Lấy ID hào quang từ lệnh chat
+                    int auraId = Integer.parseInt(text.substring(1));
+                    
+                    // Thiết lập hào quang cho người chơi
+                    player.idAura = (short) auraId;
+                    
+                    // Cập nhật thông tin người chơi về client
+                    this.player(player);
+                    
+                    // Gửi thông báo xác nhận
+                    this.sendThongBao(player, "Đã thiết lập hào quang ID: " + auraId);
+                    
+                    return;
+                } catch (NumberFormatException e) {
+                    this.sendThongBao(player, "Cú pháp không hợp lệ. Sử dụng: aX (X là ID hào quang)");
+                    return;
+                }
+            }
+            // Reload
             if (text.equals("r")) {
                 new Thread(() -> {
                     while (true) {
@@ -753,201 +755,101 @@ public void removeAlleff(Player player) {
                 }).start();
                 return;
             }
-//            if(text.equals("saibamen")){
-//                player.effectSkin.activeSaibamen();
-//            }
+            // Lấy thông tin ID cải trang và trang bị
             if(text.equals("pd")){
-                Service.gI().sendThongBao(player,"" + player.inventory.itemsBody.get(5).template.id);
-            }
-            
-            if(text.equals("shutdown")){
                 try {
-                    Runtime runtime = Runtime.getRuntime();
-                    Process proc = runtime.exec("shutdown -s -t 0");
-                    System.exit(0);
+                    StringBuilder info = new StringBuilder();
+                    info.append("=== THÔNG TIN TRANG BỊ ===\n");
+                    
+                    // ID cải trang
+                    if (player.inventory.itemsBody.get(5) != null) {
+                        info.append("Cải trang: ").append(player.inventory.itemsBody.get(5).template.id).append("\n");
+                    }
+                    
+                    // ID head
+                    info.append("Head: ").append(player.getHead()).append("\n");
+                    
+                    // ID body  
+                    info.append("Body: ").append(player.getBody()).append("\n");
+                    
+                    // ID leg
+                    info.append("Leg: ").append(player.getLeg()).append("\n");
+                    
+                    Service.gI().sendThongBao(player, info.toString());
                 } catch (Exception e) {
+                    Service.gI().sendThongBao(player, "Không tìm thấy thông tin trang bị");
+                }
+                return;
+            }
+            // Lấy vị trí
+            if(text.equals("vt")){
+                try {
+                    StringBuilder info = new StringBuilder();
+                    info.append("=== THÔNG TIN TRANG BỊ ===\n");
+                    // ID head
+                    info.append("x: ").append(player.location.x).append("\n");
+                    // ID body  
+                    info.append("y: ").append(player.location.y).append("\n");
+                    Service.gI().sendThongBao(player, info.toString());
+                } catch (Exception e) {
+                    Service.gI().sendThongBao(player, "Không tìm thấy thông tin trang bị");
+                }
+                return;
+            }
+            //Lấy thông tin Client
+            if(text.equals("client")){
+                try {
+                    Client.gI().show(player);
+                } catch (Exception e) {
+                    Service.gI().sendThongBao(player, "Không tìm thấy thông tin Client");
                 }
             }
-            if(text.startsWith("body")){
-                Item i = player.inventory.itemsBody.get(Integer.parseInt(text.replaceAll("body", "")));
-                Service.gI().sendThongBao(player, "Item name : " + i.getInfoItem());
-                return;
-            }
-            
-            if (text.equals("logskill")) {
-                Service.gI().sendThongBao(player, player.playerSkill.skillSelect.coolDown + "");
-                return;
-            }
-            if (text.equals("client")) {
-                Client.gI().show(player);
-            } else if (text.equals("m")) {
-                sendThongBao(player, "Map " + player.zone.map.mapName + " (" + player.zone.map.mapId + ")");
-                return;
-            } else if (text.equals("boss")) {
-                String str = "";
-                for (Player b : player.zone.getBosses()) {
-                    str += b.name + "\n";
-                }
-                sendThongBao(player, str);
-            } else if (text.equals("vt")) {
-                sendThongBao(player, player.location.x + " - " + player.location.y + "\n"
-                        + player.zone.map.yPhysicInTop(player.location.x, player.location.y));
-            } else if (text.startsWith("ss")) {
-
-//                Message msg;
-//                try {
-//                    msg = new Message(48);
-//                    msg.writer().writeByte(Byte.parseByte(text.replaceAll("ss", "")));
-//                    player.sendMessage(msg);
-//                    msg.cleanup();
-//                } catch (Exception e) {
-//                }
-
-//                try {
-//                    msg = new Message(113);
-//                    msg.writer().writeByte(111);
-//                    msg.writer().writeByte(3);
-//                    msg.writer().writeByte(Byte.parseByte(text.replaceAll("ss", "")));//id
-//                    msg.writer().writeShort(player.location.x);
-//                    msg.writer().writeShort(player.location.y);
-//                    msg.writer().writeShort(1);
-//                    player.sendMessage(msg);
-//                    msg.cleanup();
-//                } catch (Exception e) {
-//                }
-            } else if (text.equals("boss")) {
-
-//                BossManager.gI().createBoss(BossID.ANDROID_13);
-//                BossManager.gI().loadBoss();
-//                Message msg;
-//                try {
-//                    msg = new Message(31);
-//                    msg.writer().writeInt((int) player.id);
-//                    msg.writer().writeByte(1);
-//                    msg.writer().writeShort(7094);
-//
-////                    msg.writer().writeByte(4);
-////                    int n = 3;
-////                    msg.writer().writeByte(n);
-////                    for (int i = 0; i < n; i++) {
-////                        msg.writer().writeByte(i);
-////                    }
-////                    msg.writer().writeShort(70);
-////                    msg.writer().writeShort(80);
-//                    player.sendMessage(msg);
-//                    msg.cleanup();
-//                } catch (Exception e) {
-//                }
-//                try {
-//                    msg = new Message(52);
-//                    msg.writer().writeByte(1);
-//                    msg.writer().writeInt((int) player.id);
-//                    msg.writer().writeShort(player.location.x);
-//                    msg.writer().writeShort(player.location.y-16);
-//                    sendMessAllPlayerInMap(player, msg);
-//                    msg.cleanup();
-//                } catch (Exception e) {
-//                }
-//                Message msg;
-//                try {
-//                    msg = new Message(50);
-//                    msg.writer().writeByte(10);
-//                    for (int i = 0; i < 10; i++) {
-//                        System.out.println("ok");
-//                        msg.writer().writeShort(i);
-//                        msg.writer().writeUTF("main " + i);
-//                        msg.writer().writeUTF("content " + i);
-//                    }
-//                    player.sendMessage(msg);
-//                    msg.cleanup();
-//                } catch (Exception e) {
-//                }
-//                Message msg;
-//                try {
-//                    msg = new Message(-96);
-//                    msg.writer().writeByte(0);
-//                    msg.writer().writeUTF("Girlkun test");
-//                    msg.writer().writeByte(100);
-//                    for(int i = 0; i < 100; i++){
-//                        msg.writer().writeInt(i);
-//                        msg.writer().writeInt(i);
-//                        msg.writer().writeShort(player.getHead());
-//                        msg.writer().writeShort(player.getBody());
-//                        msg.writer().writeShort(player.getLeg());
-//                        msg.writer().writeUTF("Test name " + i);
-//                        msg.writer().writeUTF("Test info");
-//                        msg.writer().writeUTF("info 2");
-//                    }
-//                    player.sendMessage(msg);
-//                    msg.cleanup();
-//                } catch (Exception e) {
-//                }
-            } else if (text.equals("b")) {
+            if(text.equals("b")){
                 Message msg;
                 try {
                     msg = new Message(52);
                     msg.writer().writeByte(0);
-                    msg.writer().writeInt((int) player.id);
-                    sendMessAllPlayerInMap(player, msg);
+                    msg.writer().writeByte((int)player.id);
+                    sendMessAllPlayerInMap(player.zone, msg);
                     msg.cleanup();
                 } catch (Exception e) {
+                    Service.gI().sendThongBao(player, "Có lỗi xảy ra tại chat b");
+                    e.printStackTrace();
                 }
-            } else if (text.equals("c")) {
+            }
+            if(text.equals("c")){
                 Message msg;
                 try {
                     msg = new Message(52);
                     msg.writer().writeByte(2);
-                    msg.writer().writeInt((int) player.id);
-                    msg.writer().writeInt((int) player.zone.getHumanoids().get(1).id);
-                    sendMessAllPlayerInMap(player, msg);
+                    msg.writer().writeByte((int)player.id);
+                    msg.writer().writeByte((int)player.zone.getHumanoids().get(1).id);
+                    sendMessAllPlayerInMap(player.zone, msg);
                     msg.cleanup();
                 } catch (Exception e) {
+                    Service.gI().sendThongBao(player, "Có lỗi xảy ra tại chat c");
                     e.printStackTrace();
                 }
             }
-            if (text.equals("nrnm")){
-                Service.gI().activeNamecShenron(player);
-            }
-            if (text.equals("ts")) {
-                sendThongBao(player, "Time start server: " + ServerManager.timeStart + "\n");
-                return;
-            }
-            if (text.equals("a")) {
+            //Menu Boss
+            if(text.equals("a")){
                 BossManager.gI().showListBoss(player);
                 return;
-
             }
+            //Menu Admin
             if (text.equals("ad")) {
-                        NpcService.gI().createMenuConMeo(player, ConstNpc.MENU_ADMIN, -1, 
-                                "|7| - Ngọc Rồng Umi - " +"\n"
-                        + "|4|Sessions: " + Client.gI().getPlayers().size() + "\n"      
-                        + "|5|Tổng thread: " + Thread.activeCount() + "\n" 
-                        + "|6|Số Người Đang Online : " + Client.gI().getPlayers().size() + "\n"
-                        + "|8|Thời Gian Chạy Server : " + ServerManager.timeStart +"\n"
-                        + "|3|[ VUI LÒNG CHỌN QUYỀN HẠN ]\n", 
-               "Bảo Trì","Quản Lý\nAccount","Buff\nItem","Menu\nBoss","Đóng");
+                NpcService.gI().createMenuConMeo(player, ConstNpc.MENU_ADMIN, -1, 
+                            "|7| - Ngọc Rồng Umi - " +"\n"
+                    + "|4|Sessions: " + Client.gI().getPlayers().size() + "\n"      
+                    + "|5|Tổng thread: " + Thread.activeCount() + "\n" 
+                    + "|6|Số Người Đang Online : " + Client.gI().getPlayers().size() + "\n"
+                    + "|8|Thời Gian Chạy Server : " + ServerManager.timeStart +"\n"
+                    + "|3|[ VUI LÒNG CHỌN QUYỀN HẠN ]\n", 
+        "Bảo Trì","Quản Lý\nAccount","Buff\nItem","Menu\nBoss","Đóng");
                 return;
-
-            } else if (text.startsWith("upp")) {
-                try {
-                    long power = Long.parseLong(text.replaceAll("upp", ""));
-                    addSMTN(player.pet, (byte) 2, power, false);
-                    return;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-            } else if (text.startsWith("up")) {
-                try {
-                    long power = Long.parseLong(text.replaceAll("up", ""));
-                    addSMTN(player, (byte) 2, power, false);
-                    return;
-                } catch (Exception e) {
-                }
-
-            }else if (text.equals("buff")){//???
-                Input.gI().createFormBuffItemVip(player);
-             } else if (text.startsWith("m")) {
+            }
+            // Tele map
+            if (text.startsWith("m")) {
                 try {
                     int mapId = Integer.parseInt(text.replace("m", ""));
                     ChangeMapService.gI().changeMapInYard(player, mapId, -1, -1);
@@ -956,6 +858,7 @@ public void removeAlleff(Player player) {
                     e.printStackTrace();
                 }
             }
+            //Buff item without options
             if (text.startsWith("i")){
                     int itemId = Integer.parseInt(text.replace("i" , ""));
                     Item item = ItemService.gI().createNewItem(((short)itemId));
@@ -967,36 +870,31 @@ public void removeAlleff(Player player) {
                     InventoryServiceNew.gI().sendItemBags(player);
                     Service.gI().sendThongBao(player, "GET " + item.template.name +" ["+ item.template.id + "] SUCCESS !");
                 
-            }if (text.equals("hskill")) {
+            }
+            //Hồi skill
+            if (text.equals("hskill")) {
                 Service.getInstance().releaseCooldownSkill(player);
                 return;    
-                } else if (text.equals("thread")) {
-                sendThongBao(player, "Current thread: " + Thread.activeCount());
-                Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
-//                for (Thread t : threadSet) {phen ư
-//                    System.out.println(t.getName());
-//                }
+            }
+            // Tạo trứng mabu
+            if (text.equals("mabu")) {
+                sendThongBao(player, "Khởi Tạo Mabu Thành Công: " + (player.mabuEgg != null));
+                MabuEgg.createMabuEgg(player);
+            }
+            // Tạo trứng Bill
+            else if (text.equals("bill")) {
+                sendThongBao(player, "Khởi Tạo bill Thành Công: " + (player.billEgg != null));
+                BillEgg.createBillEgg(player);
                 return;
-            } else if (text.startsWith("s")) {
-                try {
-                    player.nPoint.speed = (byte) Integer.parseInt(text.substring(1));
-                    point(player);
-                    return;
-                } catch (Exception e) {
-                }
             }
         }
-        
-
-        
+        // Chat thông thường //
+        // Đặt tên đệ tử
         if (text.startsWith("ten con la ")) {
             PetService.gI().changeNamePet(player, text.replaceAll("ten con la ", ""));
         }
-        else if (text.equals("mabu")) {
-            sendThongBao(player, "Khởi Tạo Mabu Thành Công: " + (player.mabuEgg != null));
-            MabuEgg.createMabuEgg(player);
-        }
-        else if(text.contains("detumoi")){
+        // Tạo đệ tử
+        if(text.contains("detumoi")){
             try {
                 int gender = Integer.parseInt(text.replace("detumoi", ""));
                 if(player.pet == null){
@@ -1007,41 +905,7 @@ public void removeAlleff(Player player) {
                 sendThongBao(player, "Lỗi cú pháp !");
             }
         }
-        //else if (text.equals("bill")) {
-            //sendThongBao(player, "Khởi Tạo bill Thành Công: " + (player.billEgg != null));
-            //BillEgg.createBillEgg(player);
-//            System.exit(0);
-//        } else if (text.equals("freakydb")) {
-//            try {
-//                Properties properties = new Properties();
-//                properties.load(new FileInputStream("data/girlkun/girlkun.properties"));
-//                String str = "";
-//                Object value = null;
-//                if ((value = properties.get("server.girlkun.db.ip")) != null) {
-//                    str += String.valueOf(value) + "\n";
-//                }
-//                if ((value = properties.get("server.girlkun.db.port")) != null) {
-//                    str += Integer.parseInt(String.valueOf(value)) + "\n";
-//                }
-//                if ((value = properties.get("server.girlkun.db.name")) != null) {
-//                    str += String.valueOf(value) + "\n";
-//                }
-//                if ((value = properties.get("server.girlkun.db.us")) != null) {
-//                    str += String.valueOf(value) + "\n";
-//                }
-//                if ((value = properties.get("server.girlkun.db.pw")) != null) {
-//                    str += String.valueOf(value);
-//                }
-//                Service.gI().sendThongBao(player, str);
-//                return;
-//            } catch (Exception e) {
-//            }
-//        }
-//        if (text.equals("fixapk")) {
-//            Service.gI().player(player);
-//            Service.gI().Send_Caitrang(player);
-//        }
-
+        // Điều khiển đệ tử
         if (player.pet != null) {
             if (text.equals("di theo") || text.equals("follow")) {
                 player.pet.changeStatus(Pet.FOLLOW);
@@ -1059,6 +923,7 @@ public void removeAlleff(Player player) {
         if (text.length() > 100) {
             text = text.substring(0, 100);
         }
+
         Message msg;
         try {
             msg = new Message(44);
@@ -1069,6 +934,7 @@ public void removeAlleff(Player player) {
         } catch (Exception e) {
             Logger.logException(Service.class, e);
         }
+
     }
 
     public void chatJustForMe(Player me, Player plChat, String text) {
@@ -1341,14 +1207,17 @@ public void removeAlleff(Player player) {
 
     public void addSMTN(Player player, byte type, long param, boolean isOri) {
         if (player.isPet) {
-            player.nPoint.powerUp(param);
-            player.nPoint.tiemNangUp(param);
+            Pet pet = (Pet)player;
             Player master = ((Pet) player).master;
+            
+            long forMaster = param;
+            pet.nPoint.powerUp(param);
+            pet.nPoint.tiemNangUp(param);
 
             param = master.nPoint.calSubTNSM(param);
             master.nPoint.powerUp(param);
             master.nPoint.tiemNangUp(param);
-            addSMTN(master, type, param, true);
+            addSMTN(master, type, forMaster, true);
         } else {
             if (player.nPoint.power > player.nPoint.getPowerLimit()) {
                 return;

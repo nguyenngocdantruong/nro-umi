@@ -32,12 +32,8 @@ import com.girlkun.models.boss.list_boss.ginyu.TDST;
 import com.girlkun.models.boss.list_boss.cell.SieuBoHung;
 import com.girlkun.models.boss.list_boss.cell.XenBoHung;
 import com.girlkun.models.boss.list_boss.Broly.Broly;
-import com.girlkun.models.boss.list_boss.Doraemon.Nobita;
-import com.girlkun.models.boss.list_boss.Doraemon.Xeko;
-import com.girlkun.models.boss.list_boss.Doraemon.Xuka;
 import com.girlkun.models.boss.list_boss.NgucTu.SongokuTaAc;
 import com.girlkun.models.boss.list_boss.fide.Fide;
-import com.girlkun.models.boss.list_boss.Doraemon.Chaien;
 import com.girlkun.models.boss.list_boss.NRD.Rong1Sao;
 import com.girlkun.models.boss.list_boss.NRD.Rong2Sao;
 import com.girlkun.models.boss.list_boss.NRD.Rong3Sao;
@@ -51,16 +47,13 @@ import com.girlkun.models.boss.list_boss.Mabu12h.BuiBui2;
 import com.girlkun.models.boss.list_boss.Mabu12h.Drabura;
 import com.girlkun.models.boss.list_boss.Mabu12h.Drabura2;
 import com.girlkun.models.boss.list_boss.Mabu12h.Yacon;
-import com.girlkun.models.boss.list_boss.bojack.kogu;
-import com.girlkun.models.boss.list_boss.bojack.bojack;
-import com.girlkun.models.boss.list_boss.bojack.zangya;
-import com.girlkun.models.boss.list_boss.bojack.spbojack;
-import com.girlkun.models.boss.list_boss.bojack.bido;
+import com.girlkun.models.boss.list_boss.bojack.BojackTeam;
 import com.girlkun.models.boss.list_boss.Broly.Broly;
 import com.girlkun.models.boss.list_boss.New.*;
 import com.girlkun.models.boss.list_boss.Broly.SuperBroly;
 import com.girlkun.models.map.Zone;
 import com.girlkun.consts.ConstPlayer;
+import com.girlkun.models.boss.event.trung_thu.ThoDaiCa;
 import com.girlkun.models.player.Player;
 import com.girlkun.models.skill.Skill;
 import com.girlkun.network.io.Message;
@@ -119,71 +112,71 @@ public class BossManager {
                 return;
             }
             int[] bossTypes = {
-            BossType.KUKU,
-            BossType.MAP_DAU_DINH,
-            BossType.RAMBO,
-            BossType.TDST,
-            BossType.FIDE,
-            BossType.DR_KORE,
-            BossType.KING_KONG,
-            BossType.ANDROID_14,
-            BossType.XEN_BO_HUNG,
-            BossType.XEN_CON_1,
-            BossType.XEN_CON_1,
-            BossType.XEN_CON_1,
-            BossType.XEN_CON_1,
-            BossType.SIEU_BO_HUNG,
-            BossType.DORAEMON,
-            BossType.BLACK,
-            BossType.BLACK1,
-            BossType.BLACK2,
-            BossType.ZAMASMAX,
-            BossType.ZAMASZIN,
-            BossType.THIEN_SU_VADOS,
-            BossType.THIEN_SU_WHIS,
-            BossType.SONGOKU_TA_AC,
-            BossType.COOLER,
-            BossType.VEGETA,
-            BossType.D_TANG,
-            BossType.MABU,
-            BossType.FIRE,
-            BossType.WIND,
-            BossType.ICE,
-            BossType.GAS,
-            BossType.GRANOLA,
-            BossType.Brook,
-            BossType.Mihawk,
-            BossType.Kaido,
-            BossType.Along,
-            BossType.Janemba,
-            BossType.pikkon,
-            BossType.tan,
-            BossType.nezu,
-            BossType.zen,
-            BossType.hino,
-            BossType.gojo,
-            BossType.akaza,
-            BossType.linh,
-            BossType.Luffy,         
-            BossType.SUPER_ANDROID_17,
-            BossType.BROLY,
-            BossType.THOR_2,
-            BossType.MIU,
-            BossType.HO,
-            BossType.gogeta,
-            BossType.sieunhann,
-            BossType.sexyyy,
-            BossType.pan,
-            BossType.zeno,
-            BossType.vt6,
-            BossType.bergamo,
-            };
+                BossType.THO_DAI_CA,
+                BossType.KUKU,
+                BossType.MAP_DAU_DINH,
+                BossType.RAMBO,
+                BossType.TDST,
+                BossType.FIDE,
+                BossType.DR_KORE,
+                BossType.KING_KONG,
+                BossType.ANDROID_14,
+                BossType.XEN_BO_HUNG,
+                BossType.XEN_CON_1,
+                BossType.XEN_CON_1,
+                BossType.XEN_CON_1,
+                BossType.XEN_CON_1,
+                BossType.SIEU_BO_HUNG,
+                BossType.DORAEMON,
+                BossType.BLACK,
+                BossType.BLACK1,
+                BossType.BLACK2,
+                BossType.ZAMASMAX,
+                BossType.ZAMASZIN,
+                BossType.THIEN_SU_VADOS,
+                BossType.THIEN_SU_WHIS,
+                BossType.SONGOKU_TA_AC,
+                BossType.COOLER,
+                BossType.VEGETA,
+                BossType.D_TANG,
+                BossType.MABU,
+                BossType.FIRE,
+                BossType.WIND,
+                BossType.ICE,
+                BossType.GAS,
+                BossType.GRANOLA,
+                BossType.Brook,
+                BossType.Mihawk,
+                BossType.Kaido,
+                BossType.Along,
+                BossType.Janemba,
+                BossType.pikkon,
+                BossType.tan,
+                BossType.nezu,
+                BossType.zen,
+                BossType.hino,
+                BossType.gojo,
+                BossType.akaza,
+                BossType.linh,
+                BossType.Luffy,
+                BossType.SUPER_ANDROID_17,
+                BossType.BROLY,
+                BossType.THOR_2,
+                BossType.MIU,
+                BossType.HO,
+                BossType.gogeta,
+                BossType.sieunhann,
+                BossType.sexyyy,
+                BossType.pan,
+                BossType.zeno,
+                BossType.vt6,
+                BossType.bergamo,};
             for (int i = 0; i < bossTypes.length; i++) {
                 switch (bossTypes[i]) {
                     case BossType.KUKU:
                     case BossType.MAP_DAU_DINH:
                     case BossType.RAMBO:
-                    case BossType.TDST: 
+                    case BossType.TDST:
                         for (int j = 0; j < 2; j++) {
                             createBoss(bossTypes[i]);
                             Thread.sleep(1000);
@@ -192,6 +185,12 @@ public class BossManager {
                     case BossType.BROLY:
                         for (int q = 0; q < 10; q++) {
                             createBoss(BossType.BROLY);
+                            Thread.sleep(1000);
+                        }
+                        break;
+                    case BossType.THO_DAI_CA:
+                        for (int q = 0; q < 10; q++) {
+                            createBoss(BossType.THO_DAI_CA);
                             Thread.sleep(1000);
                         }
                         break;
@@ -206,14 +205,15 @@ public class BossManager {
         }
     }
 
-    
     public Boss createBoss(int bossID) {
         try {
-             switch (bossID) {
+            switch (bossID) {
+                case BossType.THO_DAI_CA:
+                    return new ThoDaiCa();
                 case BossType.S_BROLY:
                     return new SuperBroly();
                 case BossType.zeno:
-                    return new zeno();    
+                    return new zeno();
                 case BossType.THOR_1:
                     return new thotrang();
                 case BossType.THOR_2:
@@ -235,7 +235,7 @@ public class BossManager {
                 case BossType.sieunhann:
                     return new sieunhann();
                 case BossType.pan:
-                    return new pan();    
+                    return new pan();
                 case BossType.HO:
                     return new ho();
                 case BossType.akaza:
@@ -297,9 +297,9 @@ public class BossManager {
                 case BossType.SUPER_ANDROID_17:
                     return new SuperAndroid17();
                 case BossType.gogeta:
-                    return new gogeta();    
+                    return new gogeta();
                 case BossType.goku:
-                    return new goku();    
+                    return new goku();
                 case BossType.ANDROID_13:
                     return new Android13();
                 case BossType.ANDROID_14:
@@ -316,26 +316,10 @@ public class BossManager {
                     return new XenBoHung();
                 case BossType.SIEU_BO_HUNG:
                     return new SieuBoHung();
-                case BossType.XUKA:
-                    return new Xuka();
-                case BossType.NOBITA:
-                    return new Nobita();
-                case BossType.XEKO:
-                    return new Xeko();
-                case BossType.CHAIEN:
-                    return new Chaien();
                 case BossType.DORAEMON:
                     return new Doraemon();
-                case BossType.HHAINHI:
-                    return new zangya();
-                case BossType.NKHONG:
-                    return new spbojack();
-                case BossType.STANG:
-                    return new bido();
-                case BossType.TBACGIOI:
-                    return new kogu();
                 case BossType.D_TANG:
-                    return new bojack();
+                    return new BojackTeam();
                 case BossType.COOLER:
                     return new Cooler();
                 case BossType.FIRE:
@@ -349,7 +333,7 @@ public class BossManager {
                 case BossType.lavender:
                     return new lavender();
                 case BossType.bergamo:
-                    return new bergamo();    
+                    return new bergamo();
                 case BossType.OLL:
                     return new Oll();
                 case BossType.ELEC:
@@ -407,7 +391,7 @@ public class BossManager {
                 case BossType.TDST:
                     return new TDST();
                 case BossType.vt6:
-                    return new vt6();    
+                    return new vt6();
                 case BossType.THAN_HUY_DIET_CHAMPA:
                     return new Champa();
                 case BossType.THIEN_SU_VADOS:
@@ -523,9 +507,11 @@ public class BossManager {
     public Boss getBossByType(int type) {
         return (Boss) BossManager.gI().bosses.stream().filter(boss -> boss.getTypeBoss() == type).findFirst().orElse(null);
     }
+
     public Boss getBossById(int bossId) {
         return BossManager.gI().bosses.stream().filter(boss -> boss.id == bossId && !boss.isDie()).findFirst().orElse(null);
     }
+
     public void bossNotify(Boss boss) {
         if (boss.getSecondsNotify() == 0) {
             return;
@@ -576,7 +562,6 @@ public class BossManager {
                 boss.updateBoss();
             }
         }
-        
 
     }
 }

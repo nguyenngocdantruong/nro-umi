@@ -170,6 +170,8 @@ public class NPoint {
     
     public short tlHpGiamODo;
     public short test;
+    // Chỉ số từ cải trang x3 x4
+    public short tlTNSMCongThemChoPet;
 
     /*-------------------------------------------------------------------------*/
     /**
@@ -441,6 +443,9 @@ public class NPoint {
                             break;
                         case 147: //+#% sức đánh
                             this.tlDame.add(io.param);
+                            break;
+                        case 160: // +#% TN, SM cho đệ tử khi sư phụ mặc cải trang này
+                            this.tlTNSMCongThemChoPet = (short)io.param;
                             break;
                         case 75: //Giảm 50% sức đánh, HP, KI và +#% SM, TN, vàng từ quái
                             this.tlSubSD += 50;
@@ -1540,8 +1545,14 @@ public class NPoint {
                 tiemNang -= ((long) tiemNang * 30 / 100);
             }
             if (this.player.isPet) {
-                if (((Pet) this.player).master.charms.tdDeTu > System.currentTimeMillis()) {
+                Player master = ((Pet) this.player).master;
+                // Bùa đệ tử
+                if (master.charms.tdDeTu > System.currentTimeMillis()) {
                     tiemNang += tn * 2;
+                }
+                // Kiểm tra xem sư phụ có mặc cải trang x3 x4 (quy lão, jacky chun) không
+                if(master.nPoint.tlTNSMCongThemChoPet > 0){
+                    tiemNang += (tiemNang * master.nPoint.tlTNSMCongThemChoPet) / 100;
                 }
             }
             tiemNang *= Manager.RATE_EXP_SERVER;

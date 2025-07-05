@@ -659,14 +659,20 @@ public class InventoryServiceNew {
             int min = 0;
             try {
                 String tagShopBua = player.iDMark.getShopOpen().tagName;
+                
                 if (tagShopBua.equals("BUA_1H")) {
                     min = 60;
+                    System.out.println("Loại bùa: 1 giờ - " + min + " phút");
                 } else if (tagShopBua.equals("BUA_8H")) {
                     min = 60 * 8;
+                    System.out.println("Loại bùa: 8 giờ - " + min + " phút");
                 } else if (tagShopBua.equals("BUA_1M")) {
                     min = 60 * 24 * 30;
+                    System.out.println("Loại bùa: 1 tháng - " + min + " phút");
                 }
+                
             } catch (Exception e) {
+                System.out.println("Lỗi khi thêm bùa: " + e.getMessage());
             }
             player.charms.addTimeCharms(item.template.id, min);
             return true;

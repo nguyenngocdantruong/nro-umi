@@ -127,6 +127,8 @@ public class NgocRongNamecService implements Runnable{
             Player p = Client.gI().getPlayer(idpNrNamec[i]);
             if(p != null) {
                 p.idNRNM = -1;
+                // Reset lastTimePickNRNM khi hoàn tất ước ngọc rồng namec
+                p.lastTimePickNRNM = 0;
                 pNrNamec[i] = "";
                 idpNrNamec[i] = -1;
                 Service.gI().sendFlagBag(p);

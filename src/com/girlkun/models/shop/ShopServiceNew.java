@@ -306,38 +306,51 @@ public class ShopServiceNew {
         int gem = 0;
         int ruby = 0;
         int coupon = 0;
+        
+        
+        
         switch (is.typeSell) {
             case COST_GOLD:
+                System.out.println("Loại thanh toán: GOLD - Vàng hiện có: " + player.inventory.gold);
                 gold = is.cost;
+                if (player.inventory.gold < gold) {
+                    Service.gI().sendThongBao(player, "Không đủ vàng");
+                    return false;
+                }
+                player.inventory.gold -= gold;
                 break;
             case COST_GEM:
+                System.out.println("Loại thanh toán: GEM - Ngọc hiện có: " + player.inventory.gem);
                 gem = is.cost;
+                if (player.inventory.gem < gem) {
+                    Service.gI().sendThongBao(player, "Không đủ ngọc");
+                    return false;
+                }
+                player.inventory.gem -= gem;
                 break;
             case COST_RUBY:
+                System.out.println("Loại thanh toán: RUBY - Ruby hiện có: " + player.inventory.ruby);
                 ruby = is.cost;
+                if (player.inventory.ruby < ruby) {
+                    Service.gI().sendThongBao(player, "Không đủ hồng ngọc");
+                    return false;
+                }
+                player.inventory.ruby -= ruby;
                 break;
             case COST_COUPON:
+                System.out.println("Loại thanh toán: COUPON - Coupon hiện có: " + player.inventory.coupon);
                 coupon = is.cost;
+                if (player.inventory.coupon < coupon) {
+                    Service.gI().sendThongBao(player, "Không đủ điểm");
+                    return false;
+                }
+                player.inventory.coupon -= coupon;
                 break;
-
         }
-        if (player.inventory.gold < gold) {
-            Service.gI().sendThongBao(player, "Bạn không có đủ vàng");
-            return false;
-        } else if (player.inventory.gem < gem) {
-            Service.gI().sendThongBao(player, "Bạn không có đủ ngọc");
-            return false;
-        } else if (player.inventory.ruby < ruby) {
-            Service.gI().sendThongBao(player, "Bạn không có đủ hồng ngọc");
-            return false;
-        } else if (player.inventory.coupon < coupon) {
-            Service.gI().sendThongBao(player, "Bạn không có đủ điểm");
-            return false;
-        }
-        player.inventory.gold -= is.temp.gold;
-        player.inventory.gem -= is.temp.gem;
-        player.inventory.ruby -= ruby;
-        player.inventory.coupon -= coupon;
+        
+        
+        
+        Service.gI().sendMoney(player);
         return true;
     }
 
@@ -354,6 +367,9 @@ public class ShopServiceNew {
             Service.gI().sendThongBao(player, "Không thể thực hiện");
             return;
         }
+        
+        
+        
         if (!subMoneyByItemShop(player, is)) {
             return;
         }

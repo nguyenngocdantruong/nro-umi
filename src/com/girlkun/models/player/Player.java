@@ -321,44 +321,45 @@ public class Player {
     };
     // Sua id vat pham muon co aura lai
     public byte getAura() {
-        if (this.inventory.itemsBody.isEmpty() || this.inventory.itemsBody.size() < 10) {
-            return -1;
-        }
-        Item item = this.inventory.itemsBody.get(5);
-        if (!item.isNotNullItem()) {
-            return -1;
-        }
-        if (item.template.id == 1284) {
-            return 55;
-        } if (item.template.id == 1285) {
-            return 6;
-        } if (item.template.id == 1286) {
-            return 22;
-        }if (item.template.id == 1259) {
-            return 18;
-        }if (item.template.id == 1260) {
-            return 1;
-        }if (item.template.id == 1261) {
-            return 5;
-        }if (item.template.id == 1288) {
-            return 17;
-        }if (item.template.id == 2011) {
-            return 23;
-        }if (item.template.id == 2012) {
-            return 23;
-        }if (item.template.id == 1018) {
-            return 21;
-        }if (item.template.id == 1264) {
-            return 20;
-        }if (item.template.id == 1265) {
-            return 54;
-        }if (item.template.id == 1266) {
-            return 4;
-        }if (item.template.id == 1262) {
-            return 18;
-        }else {
-            return -1;
-        }
+        return (byte)this.idAura;
+//        if (this.inventory.itemsBody.isEmpty() || this.inventory.itemsBody.size() < 10) {
+//            return -1;
+//        }
+//        Item item = this.inventory.itemsBody.get(5);
+//        if (!item.isNotNullItem()) {
+//            return -1;
+//        }
+//        if (item.template.id == 1284) {
+//            return 55;
+//        } if (item.template.id == 1285) {
+//            return 6;
+//        } if (item.template.id == 1286) {
+//            return 22;
+//        }if (item.template.id == 1259) {
+//            return 18;
+//        }if (item.template.id == 1260) {
+//            return 1;
+//        }if (item.template.id == 1261) {
+//            return 5;
+//        }if (item.template.id == 1288) {
+//            return 17;
+//        }if (item.template.id == 2011) {
+//            return 23;
+//        }if (item.template.id == 2012) {
+//            return 23;
+//        }if (item.template.id == 1018) {
+//            return 21;
+//        }if (item.template.id == 1264) {
+//            return 20;
+//        }if (item.template.id == 1265) {
+//            return 54;
+//        }if (item.template.id == 1266) {
+//            return 4;
+//        }if (item.template.id == 1262) {
+//            return 18;
+//        }else {
+//            return -1;
+//        }
 
     }
     // hieu ung theo set

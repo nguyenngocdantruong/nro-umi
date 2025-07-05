@@ -2040,19 +2040,19 @@ private int getDaNangcapChanmenh(int star) {
             case 0:
                 return 1000000;
             case 1:
-                return 2500000;
+                return 2000000;
             case 2:
-                return 4000000;
+                return 3000000;
             case 3:
-                return 50000000;
+                return 4000000;
             case 4:
-                return 60000000;
+                return 5000000;
             case 5:
-                return 90000000;
+                return 6000000;
             case 6:
-                return 150000000;
+                return 7000000;
             case 7:
-                return 190000000;
+                return 8000000;
         }
         return 0;
     }
@@ -2082,45 +2082,45 @@ private int getDaNangcapChanmenh(int star) {
     private int getGemPhaLeHoa(int star) {
         switch (star) {
             case 0:
-                return 30;
+                return 3;
             case 1:
-                return 40;
+                return 4;
             case 2:
-                return 50;
+                return 5;
             case 3:
-                return 60;
+                return 6;
             case 4:
-                return 70;
+                return 7;
             case 5:
-                return 80;
+                return 8;
             case 6:
-                return 90;
+                return 9;
             case 7:
-                return 120;    
+                return 12;    
         }
         return 0;
     }
 
     private int getGemEpSao(int star) {
-        switch (star) {
-            case 0:
-                return 20;
-            case 1:
-                return 50;
-            case 2:
-                return 70;
-            case 3:
-                return 100;
-            case 4:
-                return 130;
-            case 5:
-                return 160;
-            case 6:
-                return 180;
-            case 7:
-                return 220;
-        }
-        return 220;
+//        switch (star) {
+//            case 0:
+//                return 20;
+//            case 1:
+//                return 50;
+//            case 2:
+//                return 70;
+//            case 3:
+//                return 100;
+//            case 4:
+//                return 130;
+//            case 5:
+//                return 160;
+//            case 6:
+//                return 180;
+//            case 7:
+//                return 220;
+//        }
+        return 10;
     }
 
     private double getTileNangCapDo(int level) {

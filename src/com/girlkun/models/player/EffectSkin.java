@@ -38,6 +38,7 @@ public class EffectSkin {
     public static final int DRABULA = 577;
     public static final int MABU = 578;
     public static final int THO_BULMA = 584;
+    public static final int THO_BULMA_HSD = 464;
     
     public static final int SAIBAMEN = 647;
     
@@ -571,10 +572,10 @@ public class EffectSkin {
     }
     
     //custom-drsylas
-    //Cải trang THỏ bulma
+    //Cải trang Thỏ bulma hoặc cải trang có chỉ số 117
     public boolean hasBulma(){
         try {
-            return this.player.inventory.itemsBody.get(5).template.id == THO_BULMA || mabuIDCaiTrang == THO_BULMA;
+            return !this.player.nPoint.tlSDDep.isEmpty();
         } catch (Exception e) {
             return false;
         }

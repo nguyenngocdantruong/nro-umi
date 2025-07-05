@@ -116,7 +116,8 @@ public class ConstNpc {
     public static final byte NPC_64 = 64;
     public static final byte POPO = 67;
     public static final byte TAN = 100;
-    public static final byte THO_DAI_CA = 69;
+    // public static final byte THO_DAI_CA = 69;
+    public static final byte THO_DAI_CA = 109;
     public static final byte VIP = 92;
     public static final byte KHI_DAU_MOI = 95;
     public static final byte CHAN_MENH = 103;

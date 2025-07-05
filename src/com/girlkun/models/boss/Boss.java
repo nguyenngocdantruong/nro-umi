@@ -547,7 +547,7 @@ public class Boss extends Player implements IBossNew, IBossOutfit {
             ItemMap itemNgoc = new ItemMap(this.zone, id, 
                     quantity, 
                     this.location.x + Util.nextInt(-50, 50),
-                    this.location.y
+                    this.zone.map.yPhysicInTop(this.location.x, this.location.y - 24)
                     , -1);
             Service.gI().dropItemMap(this.zone, itemNgoc);
         }
@@ -716,7 +716,7 @@ public class Boss extends Player implements IBossNew, IBossOutfit {
 
     @Override
     public void SpawnCombat() {
-        System.out.println("ahihi");
+        this.chat("Ahihi");
     }
 
     public int getTypeBoss() {

@@ -1482,7 +1482,7 @@ public class BossesData {
                 {Skill.DE_TRUNG, 7, 1000},},//skill
             new String[]{}, //text chat 1
             new String[]{"|-1|Oải rồi hả?", "|-1|Ê cố lên nhóc",
-                "|-1|Chán", "|-1|Đại ca Khoa có nhầm không nhỉ",
+                "|-1|Chán", "|-1|Đại ca Chaien có nhầm không nhỉ",
                 "|-1|Các ngươi không nhúc nhích được sao?",
                 "|-1|HAHAHAHA", "|-1|Chỉ là bọn con nít"
             }, //text chat 2
@@ -1498,16 +1498,14 @@ public class BossesData {
             new int[]{40000000}, //hp
             new int[]{19}, //map join
             new int[][]{
-                //   {Skill.DICH_CHUYEN_TUC_THOI, 7, 1000000},
                 {Skill.KAMEJOKO, 7, 1000},},//skill
-            new String[]{}, //text chat 1
+            new String[]{"|-1|Ta sẽ đánh bại các ngươi!"}, //text chat 1
             new String[]{"|-1|Oải rồi hả?", "|-1|Ê cố lên nhóc",
                 "|-1|Chán", "|-1|Đại ca có nhầm không nhỉ",
-                "|-1|Một mình tao chấp hết tụi bây",
-                "|-1|HAHAHAHA", "|-1|Chỉ là bọn con nít"
+                "|-1|Một mình tao chấp hết tụi bây"
             }, //text chat 2
-            new String[]{}, //text chat 3
-            TypeAppear.APPEAR_WITH_ANOTHER //type appear
+            new String[]{"|-1|Nobita, đến lượt ngươi!"}, //text chat 3
+            TypeAppear.APPEAR_WITH_ANOTHER //type appear - không quan trọng vì sẽ được xử lý bởi boss chính
     );
 
     public static final BossData CHAIEN = new BossData(
@@ -1521,14 +1519,13 @@ public class BossesData {
                 {Skill.GALICK, 7, 10000},
                 {Skill.KAMEJOKO, 7, 10000},
                 {Skill.BIEN_KHI, 1, 600000},},//skill//skill
-            new String[]{}, //text chat 1
+            new String[]{"|-1|Ngươi thích chết à!"}, //text chat 1
             new String[]{"|-1|Oải rồi hả?", "|-1|Ê cố lên nhóc",
-                "|-1|Chán", "|-1|Đại ca có nhầm không nhỉ",
-                "|-1|Một mình tao chấp hết tụi bây",
+                "|-1|Chán", "|-1|Một mình tao chấp hết tụi bây",
                 "|-1|HAHAHAHA", "|-1|Chỉ là bọn con nít"
             }, //text chat 2
-            new String[]{}, //text chat 3
-            TypeAppear.APPEAR_WITH_ANOTHER //type appear
+            new String[]{"|-1|Xeko ơi cứu thầy!"}, //text chat 3
+            TypeAppear.APPEAR_WITH_ANOTHER //type appear - không quan trọng vì sẽ được xử lý bởi boss chính
     );
 
     public static final BossData NOBITA = new BossData(
@@ -1541,14 +1538,13 @@ public class BossesData {
             new int[][]{
                 {Skill.MASENKO, 7, 1000},
                 {Skill.ANTOMIC, 7, 10000},},//skill//skill
-            new String[]{}, //text chat 1
+            new String[]{"|-1|Ôi anh Doraemon!"}, //text chat 1
             new String[]{"|-1|Oải rồi hả?", "|-1|Ê cố lên nhóc",
-                "|-1|Chán", "|-1|Đại ca Doraemon có nhầm không nhỉ",
-                "|-1|Một mình tao chấp hết tụi bây",
-                "|-1|HAHAHAHA", "|-1|Chỉ là bọn con nít"
+                "|-1|Chán", "|-1|Đại ca Xeko có nhầm không nhỉ",
+                "|-1|Một mình tao chấp hết tụi bây"
             }, //text chat 2
-            new String[]{}, //text chat 3
-            TypeAppear.APPEAR_WITH_ANOTHER //type appear
+            new String[]{"|-1|Xuka ơi cứu tớ với !"}, //text chat 3
+            TypeAppear.APPEAR_WITH_ANOTHER //type appear - không quan trọng vì sẽ được xử lý bởi boss chính
     );
 
     public static final BossData DORAEMON = new BossData(
@@ -1561,12 +1557,13 @@ public class BossesData {
             new int[][]{
                 {Skill.MASENKO, 7, 1000},
                 {Skill.ANTOMIC, 7, 10000},},//skill//skill
-            new String[]{"|-2|Vãi lồn luôn đầu cắt moi!!!!!"}, //text chat 1
-            new String[]{}, //text chat 2
-            new String[]{}, //text chat 3
+            new String[]{"|-1|Ngươi từ thế kỉ 36 đến à?"}, //text chat 1
+            new String[]{"|-1|Người làm sao đòi solo mèo máy!",
+                    "|-1|Ta sẽ không tha thứ cho các ngươi!",
+                    "|-1|Chuẩn bị đón nhận cái chết!"}, //text chat 2
+            new String[]{"|-1|Ta sẽ trở lại..."}, //text chat 3
             REST_5_M, //second rest
-            REST_5_M,
-            new int[]{BossID.CHAIEN, BossID.XEKO, BossID.NOBITA, BossID.XUKA} //boss join map together
+            REST_5_M
     );
 
     //**************************************************************************
@@ -1587,7 +1584,8 @@ public class BossesData {
                 "|-1|HAHAHAHA", "|-1|Chỉ là bọn con nít"
             }, //text chat 2
             new String[]{}, //text chat 3
-            TypeAppear.APPEAR_WITH_ANOTHER //type appear
+            REST_10_M, // seconds rest
+            REST_5_M // seconds notify
     );
 
     public static final BossData STANG = new BossData(
@@ -1662,7 +1660,7 @@ public class BossesData {
             new String[]{}, //text chat 3
             REST_5_M, //second rest
             REST_5_M,
-            new int[]{BossID.TBACGIOI, BossID.STANG, BossID.NKHONG, BossID.HHAINHI} //boss join map together
+            TypeAppear.APPEAR_WITH_ANOTHER //type appear
     );
 
     //**************************************************************************
@@ -2980,5 +2978,30 @@ public class BossesData {
             new String[]{}, //text chat 3
             REST_5_M
     );
-
+    //************************************************************************** Boss tự chế
+    public static final BossData THO_DAI_CA = new BossData(
+            "Thỏ đại ca", //name
+            ConstPlayer.TRAI_DAT, //gender
+            new short[]{403, 404, 405, -1, -1, -1}, //outfit
+            1000, //dame
+            new int[]{10}, //hp
+            new int[]{0, 7, 14}, //map join : Làng Aru, Làng Mori, Làng kkr
+            new int[][]{ //skill
+                {Skill.DRAGON, 1, 100}, {Skill.DRAGON, 2, 200}, {Skill.DRAGON, 3, 300}, {Skill.DRAGON, 7, 700},
+                {Skill.KAMEJOKO, 1, 1000}, {Skill.KAMEJOKO, 2, 1200}, {Skill.KAMEJOKO, 5, 1500}, {Skill.KAMEJOKO, 7, 1700},
+                {Skill.THAI_DUONG_HA_SAN, 3, 15000}, {Skill.THAI_DUONG_HA_SAN, 7, 30000}
+            },
+            new String[]{"|-1|Ai vậy trời?",
+                "|-2|Tên kia là ai vậy",
+                "|-1|Ta chịu thua đấy!"
+            }, //text chat 1
+            new String[]{"|-1|Ta muốn tìm một đối thủ xứng tầm",
+                "|-1|Ối dồi ôi!",
+                "|-1|Các ngươi không phải đối thủ của ta đâu!",
+                "|-1|Nhìn ta ngầu không?"
+            }, //text chat 2
+            new String[]{"|-2|Hãy chờ đó!"}, //text chat 3
+            REST_5_M,
+            REST_2_M
+    );
 }

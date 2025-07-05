@@ -485,54 +485,170 @@ public class UseItem {
 //        Cho phép mở rương ngay lập lức
 //        if (time != 0)
         if (time != 0 || true) {
-            Item itemReward = null;
-            int param = item.itemOptions.size();
-            int gold = 0;
-            int[] listItem = {441, 442, 443, 444, 445, 446, 447, 220, 221, 222, 223, 224, 225,16,17,18,457};
-            int[] listClothesReward;
-            int[] listItemReward;
-            String text = "Bạn nhận được\n";
-            if (param < 8) {
-                gold = 100000 * param;
-                listClothesReward = new int[]{randClothes(param)};
-                listItemReward = Util.pickNRandInArr(listItem, 3);
-            } else if (param < 10) {
-                gold = 250000 * param;
-                listClothesReward = new int[]{randClothes(param), randClothes(param)};
-                listItemReward = Util.pickNRandInArr(listItem, 4);
-            } else {
-                gold = 500000 * param;
-                listClothesReward = new int[]{randClothes(param), randClothes(param), randClothes(param)};
-                listItemReward = Util.pickNRandInArr(listItem, 6);
-                int ruby = Util.nextInt(1, 5);
-                pl.inventory.ruby += ruby;
-                pl.textRuongGo.add(text + "|1| " + ruby + " Hồng Ngọc");
+            try {
+                
+                // Xác định cấp độ rương dựa trên ItemOption 72
+                int param = 1; // Mặc định là cấp 1 nếu không tìm thấy
+                for (Item.ItemOption option : item.itemOptions) {
+                    if (option.optionTemplate.id == 72) { // Option 72 là cấp độ rương
+                        param = option.param;
+                        break;
+                    }
+                }
+                
+                // Xử lý đặc biệt cho rương gỗ cấp 11 để tránh bảo trì
+                if (param == 11) {
+                    
+                    // Thêm vàng vào tài khoản người chơi
+                    int gold = 500000 * param;
+                    pl.inventory.addGold(gold);
+                    
+                    // Thêm ruby
+                    int ruby = Util.nextInt(1, 5);
+                    pl.inventory.ruby += ruby;
+                    
+                    // Thêm các vật phẩm trực tiếp vào túi đồ
+                    // 1. Trang bị (3 món)
+                    for (int i = 0; i < 3; i++) {
+                        Item itemReward = ItemService.gI().createNewItem((short) randClothes(param));
+                        RewardService.gI().initBaseOptionClothes(itemReward.template.id, itemReward.template.type, itemReward.itemOptions);
+                        RewardService.gI().initStarOption(itemReward, new RewardService.RatioStar[]{
+                            new RewardService.RatioStar((byte) 1, 1, 2), 
+                            new RewardService.RatioStar((byte) 2, 1, 3), 
+                            new RewardService.RatioStar((byte) 3, 1, 4), 
+                            new RewardService.RatioStar((byte) 4, 1, 5)
+                        });
+                        InventoryServiceNew.gI().addItemBag(pl, itemReward);
+                    }
+                    
+                    // 2. Các vật phẩm ngẫu nhiên (6 món)
+                    int[] listItem = {441, 442, 443, 444, 445, 446, 447, 220, 221, 222, 223, 224, 225, 16, 17, 18};
+                    int[] randomItems = Util.pickNRandInArr(listItem, 6);
+                    for (int itemId : randomItems) {
+                        Item itemReward = ItemService.gI().createNewItem((short) itemId);
+                        itemReward.quantity = Util.nextInt(1, 5);
+                        if (itemReward.quantity <= 0) {
+                            itemReward.quantity = 1;
+                        }
+                        InventoryServiceNew.gI().addItemBag(pl, itemReward);
+                    }
+                    
+                    // 3. Thỏi vàng đặc biệt
+                    Item goldBar = ItemService.gI().createNewItem((short) 457);
+                    goldBar.quantity = Util.nextInt(1, 10);
+                    if (goldBar.quantity <= 0) {
+                        goldBar.quantity = 1;
+                    }
+                    InventoryServiceNew.gI().addItemBag(pl, goldBar);
+                    
+                    // Gửi thông báo đơn giản
+                    Service.getInstance().sendThongBao(pl, "Bạn nhận được nhiều phần thưởng giá trị từ rương gỗ cấp 11!\n+" 
+                            + Util.numberToMoney(gold) + " vàng\n+" 
+                            + ruby + " hồng ngọc\n+" 
+                            + "3 trang bị ngẫu nhiên\n+" 
+                            + "6 vật phẩm ngẫu nhiên\n+" 
+                            + goldBar.quantity + " thỏi vàng");
+                    
+                    // Cập nhật túi đồ và tiền
+                    InventoryServiceNew.gI().sendItemBags(pl);
+                    PlayerService.gI().sendInfoHpMpMoney(pl);
+                    
+                    // Xóa rương gỗ
+                    InventoryServiceNew.gI().subQuantityItemsBag(pl, item, 1);
+                    
+                    return;
+                }
+                
+                // Reset danh sách thông báo trước khi mở rương
+                pl.textRuongGo.clear();
+                
+                Item itemReward = null;
+                int gold = 0;
+                int[] listItem = {441, 442, 443, 444, 445, 446, 447, 220, 221, 222, 223, 224, 225,16,17,18,457};
+                int[] listClothesReward;
+                int[] listItemReward;
+                String text = "Bạn nhận được\n";
+                
+                // Xử lý rương gỗ cấp thường (không phải cấp 11)
+                if (param < 8) {
+                    gold = 100000 * param;
+                    listClothesReward = new int[]{randClothes(param)};
+                    listItemReward = Util.pickNRandInArr(listItem, 3);
+                } else if (param < 10) {
+                    gold = 250000 * param;
+                    listClothesReward = new int[]{randClothes(param), randClothes(param)};
+                    listItemReward = Util.pickNRandInArr(listItem, 4);
+                } else {
+                    gold = 500000 * param;
+                    listClothesReward = new int[]{randClothes(param), randClothes(param), randClothes(param)};
+                    listItemReward = Util.pickNRandInArr(listItem, 6);
+                    int ruby = Util.nextInt(1, 5);
+                    pl.inventory.ruby += ruby;
+                    pl.textRuongGo.add(text + "|1| " + ruby + " Hồng Ngọc");
+                }
+                
+                try {
+                    for (int i : listClothesReward) {
+                        itemReward = ItemService.gI().createNewItem((short) i);
+                        RewardService.gI().initBaseOptionClothes(itemReward.template.id, itemReward.template.type, itemReward.itemOptions);
+                        RewardService.gI().initStarOption(itemReward, new RewardService.RatioStar[]{new RewardService.RatioStar((byte) 1, 1, 2), new RewardService.RatioStar((byte) 2, 1, 3), new RewardService.RatioStar((byte) 3, 1, 4), new RewardService.RatioStar((byte) 4, 1, 5),});
+                        InventoryServiceNew.gI().addItemBag(pl, itemReward);
+                        pl.textRuongGo.add(text + itemReward.getInfoItem());
+                    }
+                } catch (Exception e) {
+                    System.err.println("[ERROR] Lỗi khi xử lý trang bị: " + e.getMessage());
+                    e.printStackTrace();
+                }
+                
+                try {
+                    for (int i : listItemReward) {
+                        itemReward = ItemService.gI().createNewItem((short) i);
+                        //         RewardService.gI().initBaseOptionSaoPhaLe(itemReward);
+                        int randomQuantity = Util.nextInt(1, 5);
+                        itemReward.quantity = randomQuantity;
+                        // Đảm bảo số lượng ít nhất là 1
+                        if (itemReward.quantity <= 0) {
+                            itemReward.quantity = 1;
+                        }
+                        // Lưu số lượng để hiển thị sau khi thêm vào túi
+                        int originalQuantity = itemReward.quantity;
+                        InventoryServiceNew.gI().addItemBag(pl, itemReward);
+                        pl.textRuongGo.add(text + "Vật phẩm " + itemReward.template.name + " số lượng " + originalQuantity);
+                    }
+                } catch (Exception e) {
+                    System.err.println("[ERROR] Lỗi khi xử lý vật phẩm: " + e.getMessage());
+                    e.printStackTrace();
+                }
+                
+                // Kiểm tra và giới hạn số lượng thông báo để tránh lỗi
+                if (pl.textRuongGo.size() > 20) {
+                    while (pl.textRuongGo.size() > 20) {
+                        pl.textRuongGo.remove(pl.textRuongGo.size() - 1);
+                    }
+                }
+                
+                try {
+                    // Tạo menu với thông báo đơn giản hơn nếu có quá nhiều phần thưởng
+                    String menuText = "Bạn nhận được\n|1|+" + Util.numberToMoney(gold) + " vàng";
+                    // Sử dụng sendThongBao thay vì createMenuConMeo để tránh lỗi
+                    Service.getInstance().sendThongBao(pl, menuText);
+                } catch (Exception e) {
+                    System.err.println("[ERROR] Lỗi khi tạo menu: " + e.getMessage());
+                    e.printStackTrace();
+                }
+                
+                InventoryServiceNew.gI().subQuantityItemsBag(pl, item, 1);
+                pl.inventory.addGold(gold);
+                InventoryServiceNew.gI().sendItemBags(pl);
+                PlayerService.gI().sendInfoHpMpMoney(pl);
+            } catch (Exception e) {
+                System.err.println("[ERROR] Lỗi khi mở rương gỗ: " + e.getMessage());
+                e.printStackTrace();
+                // Ghi log lỗi chi tiết
+                Logger.logException(UseItem.class, e, "Lỗi mở rương gỗ param=" + item.itemOptions.size());
+                // Thông báo cho người chơi
+                Service.getInstance().sendThongBao(pl, "Có lỗi xảy ra khi mở rương, vui lòng báo admin!");
             }
-                for (int i : listClothesReward) {
-             itemReward = ItemService.gI().createNewItem((short) i);
-             RewardService.gI().initBaseOptionClothes(itemReward.template.id, itemReward.template.type, itemReward.itemOptions);
-             RewardService.gI().initStarOption(itemReward, new RewardService.RatioStar[]{new RewardService.RatioStar((byte) 1, 1, 2), new RewardService.RatioStar((byte) 2, 1, 3), new RewardService.RatioStar((byte) 3, 1, 4), new RewardService.RatioStar((byte) 4, 1, 5),});
-             InventoryServiceNew.gI().addItemBag(pl, itemReward);
-             pl.textRuongGo.add(text + itemReward.getInfoItem());
-         }
-         for (int i : listItemReward) {
-             itemReward = ItemService.gI().createNewItem((short) i);
-    //         RewardService.gI().initBaseOptionSaoPhaLe(itemReward);
-             itemReward.quantity = Util.nextInt(1, 5);
-             InventoryServiceNew.gI().addItemBag(pl, itemReward);
-             pl.textRuongGo.add(text + itemReward.getInfoItem());
-         }
-            if (param == 11) {
-                itemReward = ItemService.gI().createNewItem((short) 457);
-                itemReward.quantity = Util.nextInt(1, 10);
-                InventoryServiceNew.gI().addItemBag(pl, itemReward);
-                pl.textRuongGo.add(text + itemReward.getInfoItem());
-            }
-            NpcService.gI().createMenuConMeo(pl, ConstNpc.RUONG_GO, -1, "Bạn nhận được\n|1|+" + Util.numberToMoney(gold) + " vàng", "OK [" + pl.textRuongGo.size() + "]");
-            InventoryServiceNew.gI().subQuantityItemsBag(pl, item, 1);
-            pl.inventory.addGold(gold);
-            InventoryServiceNew.gI().sendItemBags(pl);
-            PlayerService.gI().sendInfoHpMpMoney(pl);
         } else {
             Service.getInstance().sendThongBao(pl, "Vui lòng đợi 24h");
         }
