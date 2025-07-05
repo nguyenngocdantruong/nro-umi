@@ -88,7 +88,7 @@ public class ThanHuyDiet extends Boss {
         PlayerService.gI().hoiPhuc(this, pl.nPoint.hp, 0);
         pl.injured(null, pl.nPoint.hpMax, true, false);
         Service.gI().sendThongBao(pl, "Bạn vừa bị " + this.name + " cho bay màu");
-        this.chat(2, "Hắn ta mạnh quá,coi chừng " + pl.name + ",tên " + this.name + " hắn không giống như những kẻ thù trước đây");
+        this.chat("Hắn ta mạnh quá,coi chừng " + pl.name + ",tên " + this.name + " hắn không giống như những kẻ thù trước đây");
         this.chat("Thật là yếu ớt " + pl.name);
         this.lasttimehakai = System.currentTimeMillis();
         this.timehakai = Util.nextInt(20000, 30000);

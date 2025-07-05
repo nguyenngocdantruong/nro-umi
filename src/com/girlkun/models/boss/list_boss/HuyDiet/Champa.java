@@ -83,17 +83,31 @@ public class Champa extends Boss {
         if (!Util.canDoWithTime(this.lasttimehakai, this.timehakai) || !Util.isTrue(1, 100)) {
             return;
         }
+        
         Player pl = this.zone.getRandomPlayerInMap();
         if (pl == null || pl.isDie()) {
             return;
         }
-        PlayerService.gI().hoiPhuc(this, pl.nPoint.hp, 0);
-        pl.injured(null, pl.nPoint.hpMax, true, false);
-        Service.gI().sendThongBao(pl, "Bạn vừa bị " + this.name + " cho bay màu");
-        this.chat(2, "Hắn ta mạnh quá,coi chừng " + pl.name + ",tên " + this.name + " hắn không giống như những kẻ thù trước đây");
-        this.chat("Thật là yếu ớt " + pl.name);
-        this.lasttimehakai = System.currentTimeMillis();
-        this.timehakai = Util.nextInt(20000, 30000);
+        
+        try {
+            // Hồi phục boss
+            PlayerService.gI().hoiPhuc(this, pl.nPoint.hp, 0);
+            
+            // Gây sát thương cho người chơi
+            pl.injured(this, pl.nPoint.hpMax, true, false);
+            
+            // Gửi thông báo
+            Service.gI().sendThongBao(pl, "Bạn vừa bị " + this.name + " cho bay màu");
+            
+            this.chat("Hắn ta mạnh quá, coi chừng " + pl.name);
+            this.chat("Thật là yếu ớt " + pl.name);
+            
+            // Cập nhật thời gian cooldown
+            this.lasttimehakai = System.currentTimeMillis();
+            this.timehakai = Util.nextInt(20000, 30000);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 

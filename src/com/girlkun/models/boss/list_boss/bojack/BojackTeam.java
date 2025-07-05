@@ -1,22 +1,31 @@
-package com.girlkun.models.boss.list_boss.Doraemon;
+package com.girlkun.models.boss.list_boss.bojack;
 
+import com.girlkun.models.item.Item;
 import com.girlkun.models.boss.Boss;
 import com.girlkun.models.boss.BossID;
 import com.girlkun.models.boss.BossStatus;
 import com.girlkun.models.boss.BossesData;
-import com.girlkun.models.item.Item;
 import com.girlkun.models.map.ItemMap;
 import com.girlkun.models.player.Player;
+import com.girlkun.models.skill.Skill;
+import com.girlkun.services.EffectSkillService;
 import com.girlkun.services.ItemService;
 import com.girlkun.services.Service;
+import com.girlkun.services.TaskService;
 import com.girlkun.utils.Util;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
-public class Doraemon extends Boss {
+public class BojackTeam extends Boss {
 
-    public Doraemon() throws Exception {
-        super(BossID.DORAEMON,BossesData.DORAEMON,BossesData.NOBITA,  BossesData.XUKA,  BossesData.CHAIEN, BossesData.XEKO);
+    public BojackTeam() throws Exception {
+        // HHAINHI = Bido
+        // STANG = Zangya
+        // TBACGIOI = Kogu
+        // NKHONG = Bojack
+        // D_TANG = Super Bojack
+        super(BossID.HHAINHI, BossesData.HHAINHI, BossesData.STANG, BossesData.TBACGIOI, BossesData.NKHONG, BossesData.D_TANG);
     }
 
     @Override
@@ -29,49 +38,41 @@ public class Doraemon extends Boss {
 
     @Override
     public void reward(Player plKill) {
-        // 80% rơi cải trang
-        if(Util.isTrue(80, 100)){
+        // 60% roi cai trang
+        if(Util.isTrue(60, 100)){
             ItemMap caitrang = new ItemMap(this.zone, 806, 1, plKill.location.x, plKill.location.y, plKill.id);
             List<Item.ItemOption> list_io = new ArrayList<>();
             short tempId;
-            list_io.add(new Item.ItemOption(77, Util.nextInt(10, 30))); // HP +%
-            list_io.add(new Item.ItemOption(103, Util.nextInt(10, 30))); // KI +%
-            switch(this.currentLevel){
-                case 0:{ // Doraemon
-                    tempId = 806;
-                    list_io.add(new Item.ItemOption(94, Util.nextInt(10, 20))); // Giáp +#%
-                    list_io.add(new Item.ItemOption(108, Util.nextInt(10, 25))); // Giáp +#%
+            list_io.add(new Item.ItemOption(50, Util.nextInt(11, 20))); // Sức đánh +#%
+            switch (this.currentLevel) {
+                case 0: { // Bido
+                    tempId = 426;
                     break;
                 }
-                case 1:{ // Nobita
-                    tempId = 862;
-                    list_io.add(new Item.ItemOption(14, Util.nextInt(5, 10))); // Chí mạng +#%
-                    list_io.add(new Item.ItemOption(98, Util.nextInt(10, 25))); // Xuyên giáp #% chưởng
+                case 1: { // Zangya
+                    tempId = 425;
                     break;
                 }
-                case 2:{ // Xuka
-                    tempId = 819;
-                    list_io.add(new Item.ItemOption(117, Util.nextInt(10, 15))); // Đẹp +#% sức đánh cho mọi người xung quanh
+                case 2: { // Kogu
+                    tempId = 424;
                     break;
                 }
-                case 3:{ // Chaien
-                    tempId = 864;
-                    list_io.add(new Item.ItemOption(50, Util.nextInt(10, 30))); // Sức đánh +#%
+                case 3: { // Bojack
+                    tempId = 427;
                     break;
                 }
-                case 4:{ // Xeko
-                    tempId = 863;
+                case 4: { // Super Bojack
+                    tempId = 428;
                     list_io.add(new Item.ItemOption(19, Util.nextInt(5, 17))); // Tấn công +#% khi đánh quái
                     break;
                 }
-                default:{
+                default: {
                     tempId = -1;
                 }
             }
             caitrang.itemTemplate = ItemService.gI().getTemplate((short) tempId);
-            list_io.add(new Item.ItemOption(176, 0)); // Ở gần đủ 5 loại +20% sđ, 50% tđ chạy
             // 95 % cải trang là HSD
-            if(Util.isTrue(95, 100)){
+            if (Util.isTrue(95, 100)) {
                 list_io.add(new Item.ItemOption(93, Util.nextInt(2, 7))); // HSD # ngày
             }
             caitrang.options.addAll(list_io);
@@ -100,9 +101,9 @@ public class Doraemon extends Boss {
     }
 
     private long st;
+
 }
 /**
  * Vui lòng không sao chép mã nguồn này dưới mọi hình thức. Hãy tôn trọng tác
  * giả của mã nguồn này. Xin cảm ơn! - GirlBeo
  */
-    
