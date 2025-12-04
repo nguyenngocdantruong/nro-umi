@@ -69,6 +69,12 @@ public class EffectSkill {
     public long lastTimeCaiBinhChua;
     public int timeCaiBinhChua;
 
+    // Halloween effect
+    public boolean isHalloween;
+    public int halloweenLevel; // Level của effect (1-5)
+    public long lastTimeHalloween;
+    public int timeHalloween;
+
     public EffectSkill(Player player) {
         this.player = player;
     }
@@ -128,6 +134,9 @@ public class EffectSkill {
           if (isCaiBinhChua && (Util.canDoWithTime(this.lastTimeCaiBinhChua, this.timeCaiBinhChua) || this.player.isDie())) {
             isCaiBinhChua = false;
             Service.getInstance().Send_Caitrang(this.player);
+        }
+        if (isHalloween && (Util.canDoWithTime(lastTimeHalloween, timeHalloween))) {
+            EffectSkillService.gI().removeHalloween(this.player);
         }
     }
 

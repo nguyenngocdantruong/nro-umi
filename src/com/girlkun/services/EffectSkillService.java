@@ -22,7 +22,8 @@ public class EffectSkillService {
     public static final byte BLIND_EFFECT = 40;
     public static final byte SLEEP_EFFECT = 41;
     public static final byte STONE_EFFECT = 42;
-    
+    public static final byte HALLOWEEN_EFFECT = 43;
+
     public static final int ICE_EFFECT = 202;
 
     private static EffectSkillService i;
@@ -421,4 +422,44 @@ public class EffectSkillService {
             Service.getInstance().Send_Caitrang(player);
         }
     }
+
+    //Halloween Effect *********************************************************
+    /**
+     * Áp dụng hiệu ứng Halloween lên player
+     * @param player Player nhận hiệu ứng
+     * @param level Cấp độ hiệu ứng (1-5), càng cao càng mạnh
+     * @param timeHalloween Thời gian hiệu ứng (ms)
+     */
+    public void setIsHalloween(Player player, int level, int timeHalloween) {
+        if (player == null || player.effectSkill == null) {
+            return;
+        }
+
+        player.effectSkill.isHalloween = true;
+        player.effectSkill.halloweenLevel = level;
+        player.effectSkill.lastTimeHalloween = System.currentTimeMillis();
+        player.effectSkill.timeHalloween = timeHalloween;
+
+        // Gửi thông báo hiệu ứng đến player
+        // Note: Halloween effect không có visual effect trong client
+        // nên không cần gọi sendEffectPlayer()
+    }
+
+    /**
+     * Loại bỏ hiệu ứng Halloween khỏi player
+     * @param player Player cần xóa hiệu ứng
+     */
+    public void removeHalloween(Player player) {
+        if (player == null || player.effectSkill == null) {
+            return;
+        }
+
+        player.effectSkill.isHalloween = false;
+        player.effectSkill.halloweenLevel = 0;
+
+        // Note: Halloween effect không có visual effect nên không gửi TURN_OFF_EFFECT
+        // Nếu sau này thêm visual effect, uncomment dòng dưới:
+        // sendEffectPlayer(player, player, TURN_OFF_EFFECT, HALLOWEEN_EFFECT);
+    }
+    //**************************************************************************
 }

@@ -3004,4 +3004,80 @@ public class BossesData {
             REST_5_M,
             REST_2_M
     );
+
+    //************************************************************************** Halloween Event Bosses
+    public static final BossData BI_MA = new BossData(
+            "Bí ma %d", //name (random number will be added)
+            ConstPlayer.TRAI_DAT, //gender
+            new short[]{754, 755, 756, -1, -1, -1}, //outfit - TEMPORARY, cần thay bằng Halloween sprite
+            1, //dame - 2M
+            new int[]{50}, //hp - 500M
+            new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30}, //map join - all major maps
+            new int[][]{
+                {Skill.DRAGON, 7, 1000},
+                {Skill.DEMON, 7, 1500}
+            }, //skill
+            new String[]{"|-1|Trick or Treat!",
+                "|-1|Bí ma đến rồi, các ngươi hãy cẩn thận!",
+                "|-1|Halloween vui vẻ các chiến binh!"
+            }, //text chat start
+            new String[]{"|-1|Ta là bí ma mạnh nhất!",
+                "|-1|Các ngươi không thể đánh bại ta!",
+                "|-1|Kẹo hay khăn giấy?"
+            }, //text chat mid
+            new String[]{"|-1|Ta sẽ trở lại...",
+                "|-1|Halloween chưa kết thúc đâu!"
+            }, //text chat end
+            REST_15_M //rest 15 minutes
+    );
+
+    public static final BossData MA_TROI = new BossData(
+            "Ma trơi %d", //name
+            ConstPlayer.NAMEC, //gender
+            new short[]{651, 652, 653, -1, -1, -1}, //outfit
+            18000, //dame - 18k
+            new int[]{450000000}, //hp - 450M
+            new int[]{0, 1, 2, 3, 4, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17, 18, 19, 21, 22, 23, 24, 25, 26}, //maps
+            new int[][]{
+                {Skill.KAMEJOKO, 7, 1000},
+                {Skill.MASENKO, 7, 1500}
+            }, //skill
+            new String[]{"|-1|Ma trơi xuất hiện!",
+                "|-1|Bóng đêm bao trùm!",
+                "|-1|Ta là ác mộng của các ngươi!"
+            }, //text chat start
+            new String[]{"|-1|Hahaha! Sức mạnh tối thượng!",
+                "|-1|Các ngươi quá yếu ớt!",
+                "|-1|Halloween là của ta!"
+            }, //text chat mid
+            new String[]{"|-1|Không thể nào...",
+                "|-1|Ta sẽ trở lại mạnh mẽ hơn!"
+            }, //text chat end
+            REST_15_M
+    );
+
+    public static final BossData DOI = new BossData(
+            "Dơi %d", //name
+            ConstPlayer.XAYDA, //gender
+            new short[]{654, 655, 656, -1, -1, -1}, //outfit 
+            16000, //dame - 1.6M
+            new int[]{400000000}, //hp - 400M
+            new int[]{45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62}, //maps - higher level maps
+            new int[][]{
+                {Skill.GALICK, 7, 1000},
+                {Skill.ANTOMIC, 7, 1500}
+            }, //skill
+            new String[]{"|-1|Iiiiiii! Dơi bay đến!",
+                "|-1|Bầu trời thuộc về ta!",
+                "|-1|Halloween đã bắt đầu!"
+            }, //text chat start
+            new String[]{"|-1|Các ngươi không thể chạm tới ta!",
+                "|-1|Tốc độ của ta vô song!",
+                "|-1|Iiiiii!"
+            }, //text chat mid
+            new String[]{"|-1|Tạm biệt... các chiến binh...",
+                "|-1|Đêm nay... là của các ngươi..."
+            }, //text chat end
+            REST_15_M
+    );
 }

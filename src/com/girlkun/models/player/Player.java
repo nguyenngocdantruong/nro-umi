@@ -114,6 +114,7 @@ public class Player {
     public List<Friend> friends;
     public List<Enemy> enemies;
     public BoMong achievement;
+    public PlayerEventData playerEventData;
     public long id;
     public String name;
     public byte gender;
@@ -175,7 +176,8 @@ public class Player {
         effectSkin = new EffectSkin(this);
         skillSpecial = new SkillSpecial(this);
         achievement = new BoMong(this);
-        
+        playerEventData = new PlayerEventData(this);
+
         nPoint.calPoint();
     }
 

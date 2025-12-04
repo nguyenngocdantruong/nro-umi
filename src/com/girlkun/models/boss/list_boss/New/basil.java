@@ -30,7 +30,7 @@ public class basil extends Boss {
         int[] HoaBiNgan = new int[]{861};
         int randomNR = new Random().nextInt(HoaBiNgan.length);
         if (Util.isTrue(1, 5)) {
-        Service.getInstance().dropItemMap(this.zone, new ItemMap(zone, HoaBiNgan[randomNR], 1, this.location.x, this.location.y, plKill.id));
+            Service.getInstance().dropItemMap(this.zone, new ItemMap(zone, HoaBiNgan[randomNR], 1, this.location.x, this.location.y, plKill.id));
         } else {    
         
         Service.gI().dropItemMap(this.zone, itemMap);

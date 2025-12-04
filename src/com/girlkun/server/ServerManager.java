@@ -2,6 +2,7 @@ package com.girlkun.server;
 
 import com.arriety.MaQuaTang.MaQuaTangManager;
 import com.girlkun.database.GirlkunDB;
+import com.girlkun.models.event.EventManager;
 
 import java.net.ServerSocket;
 
@@ -50,8 +51,13 @@ public class ServerManager {
 
     public void init() {
         Manager.gI();
+
+        // Event System sẽ được init async sau khi server start
+        // (xem method run())
+
         try {
-            if (Manager.LOCAL) return;
+            if (Manager.LOCAL)
+                return;
             GirlkunDB.executeUpdate("update account set last_time_login = '2000-01-01', "
                     + "last_time_logout = '2001-01-01'");
         } catch (Exception e) {
@@ -79,7 +85,7 @@ public class ServerManager {
         frame.add(panel);
         frame.pack();
         frame.setVisible(true);
-        
+
         long delay = 500;
         isRunning = true;
         isRunning = true;
@@ -87,15 +93,15 @@ public class ServerManager {
         activeGame();
         activeServerSocket();
         TaiXiu.gI().lastTimeEnd = System.currentTimeMillis() + 50000;
-        new Thread(TaiXiu.gI() , "Thread TaiXiu").start();
+        new Thread(TaiXiu.gI(), "Thread TaiXiu").start();
         new Thread(pariryManager.gI(), "Thread Pariry").start();
-        Logger.log(Logger.PURPLE_BOLD_BRIGHT,"Update at 6:19PM 17-02 by dr.sylas");
-        
-        NgocRongNamecService.gI().initNgocRongNamec((byte)0);
-        
-        new Thread(NgocRongNamecService.gI() , "Thread NRNM").start();
-        
-        new Thread(TopService.gI() , "Thread TOP").start();
+        Logger.log(Logger.PURPLE_BOLD_BRIGHT, "Update at 6:19PM 17-02 by dr.sylas");
+
+        NgocRongNamecService.gI().initNgocRongNamec((byte) 0);
+
+        new Thread(NgocRongNamecService.gI(), "Thread NRNM").start();
+
+        new Thread(TopService.gI(), "Thread TOP").start();
 
         new Thread(() -> {
             while (isRunning) {
@@ -115,6 +121,10 @@ public class ServerManager {
             Thread.sleep(3000);
             BossManager.gI().loadBoss();
             Manager.MAPS.forEach(com.girlkun.models.map.Map::initBoss);
+
+            // Init Event System async (sau khi boss thường đã load)
+            Thread.sleep(2000);
+            EventManager.gI().init();
         } catch (InterruptedException ex) {
             java.util.logging.Logger.getLogger(BossManager.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -125,7 +135,7 @@ public class ServerManager {
         GirlkunServer.gI().init().setAcceptHandler(new ISessionAcceptHandler() {
             @Override
             public void sessionInit(ISession is) {
-//                antiddos girlkun
+                // antiddos girlkun
                 if (!canConnectWithIp(is.getIP())) {
                     is.disconnect();
                     return;
@@ -161,28 +171,30 @@ public class ServerManager {
             }
             return;
         }
-//        try {
-//            Logger.log(Logger.PURPLE, "Start server......... Current thread: " + Thread.activeCount() + "\n");
-//            listenSocket = new ServerSocket(PORT);
-//            while (isRunning) {
-//                try {
-//                    Socket sc = listenSocket.accept();
-//                    String ip = (((InetSocketAddress) sc.getRemoteSocketAddress()).getAddress()).toString().replace("/", "");
-//                    if (canConnectWithIp(ip)) {
-//                        Session session = new Session(sc, ip);
-//                        session.ipAddress = ip;
-//                    } else {
-//                        sc.close();
-//                    }
-//                } catch (Exception e) {
-////                        Logger.logException(ServerManager.class, e);
-//                }
-//            }
-//            listenSocket.close();
-//        } catch (Exception e) {
-//            Logger.logException(ServerManager.class, e, "Lỗi mở port");
-//            System.exit(0);
-//        }
+        // try {
+        // Logger.log(Logger.PURPLE, "Start server......... Current thread: " +
+        // Thread.activeCount() + "\n");
+        // listenSocket = new ServerSocket(PORT);
+        // while (isRunning) {
+        // try {
+        // Socket sc = listenSocket.accept();
+        // String ip = (((InetSocketAddress)
+        // sc.getRemoteSocketAddress()).getAddress()).toString().replace("/", "");
+        // if (canConnectWithIp(ip)) {
+        // Session session = new Session(sc, ip);
+        // session.ipAddress = ip;
+        // } else {
+        // sc.close();
+        // }
+        // } catch (Exception e) {
+        //// Logger.logException(ServerManager.class, e);
+        // }
+        // }
+        // listenSocket.close();
+        // } catch (Exception e) {
+        // Logger.logException(ServerManager.class, e, "Lỗi mở port");
+        // System.exit(0);
+        // }
     }
 
     private boolean canConnectWithIp(String ipAddress) {
@@ -242,8 +254,8 @@ public class ServerManager {
                     String a = line.replace("a ", "");
                     Service.gI().sendThongBaoAllPlayer(a);
                 } else if (line.startsWith("qua")) {
-//                    =1-1-1-1=1-1-1-1=
-//                     =playerId-quantily-itemId-sql=optioneId-pagram=
+                    // =1-1-1-1=1-1-1-1=
+                    // =playerId-quantily-itemId-sql=optioneId-pagram=
 
                     try {
                         List<Item.ItemOption> ios = new ArrayList<>();
@@ -253,7 +265,8 @@ public class ServerManager {
                             Player p = Client.gI().getPlayer(Integer.parseInt(pagram1[0]));
                             if (p != null) {
                                 for (int i = 0; i < pagram2.length; i += 2) {
-                                    ios.add(new Item.ItemOption(Integer.parseInt(pagram2[i]), Integer.parseInt(pagram2[i + 1])));
+                                    ios.add(new Item.ItemOption(Integer.parseInt(pagram2[i]),
+                                            Integer.parseInt(pagram2[i + 1])));
                                 }
                                 Item i = Util.sendDo(Integer.parseInt(pagram1[2]), Integer.parseInt(pagram1[3]), ios);
                                 i.quantity = Integer.parseInt(pagram1[1]);

@@ -716,7 +716,7 @@ public void removeAlleff(Player player) {
         } catch (Exception e) {
         }
     }
-
+    // ------------------ Chat------------------
     public void chat(Player player, String text) {
 
         if(player.getSession() != null && player.isAdmin()){
@@ -751,8 +751,8 @@ public void removeAlleff(Player player) {
                             Thread.sleep(5);
                         } catch (Exception e) {
                         }
-                    }
-                }).start();
+                    } 
+               }).start();
                 return;
             }
             // Lấy thông tin ID cải trang và trang bị
