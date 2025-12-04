@@ -13,4 +13,9 @@ public class Default extends Event {
     public void init() {
         // Không làm gì - chế độ bình thường
     }
+
+    @Override
+    public String getThongBaoLogin() {
+        return "Chào ae tới server NroSkibidi. Nạp X2 liên hệ admin.";
+    }
 }

@@ -23,61 +23,61 @@ public class Charms {
                 if (tdTriTue < curr) {
                     tdTriTue = curr;
                 }
-                tdTriTue += min * 60 * 1000;
+                tdTriTue += (long) min * 60 * 1000;
                 break;
             case 214:
                 if (tdManhMe < curr) {
                     tdManhMe = curr;
                 }
-                tdManhMe += min * 60 * 1000;
+                tdManhMe += (long) min * 60 * 1000;
                 break;
             case 215:
                 if (tdDaTrau < curr) {
                     tdDaTrau = curr;
                 }
-                tdDaTrau += min * 60 * 1000;
+                tdDaTrau += (long) min * 60 * 1000;
                 break;
             case 216:
                 if (tdOaiHung < curr) {
                     tdOaiHung = curr;
                 }
-                tdOaiHung += min * 60 * 1000;
+                tdOaiHung += (long) min * 60 * 1000;
                 break;
             case 217:
                 if (tdBatTu < curr) {
                     tdBatTu = curr;
                 }
-                tdBatTu += min * 60 * 1000;
+                tdBatTu += (long) min * 60 * 1000;
                 break;
             case 218:
                 if (tdDeoDai < curr) {
                     tdDeoDai = curr;
                 }
-                tdDeoDai += min * 60 * 1000;
+                tdDeoDai += (long) min * 60 * 1000;
                 break;
             case 219:
                 if (tdThuHut < curr) {
                     tdThuHut = curr;
                 }
-                tdThuHut += min * 60 * 1000;
+                tdThuHut += (long) min * 60 * 1000;
                 break;
             case 522:
                 if (tdDeTu < curr) {
                     tdDeTu = curr;
                 }
-                tdDeTu += min * 60 * 1000;
+                tdDeTu += (long) min * 60 * 1000;
                 break;
             case 671:
                 if (tdTriTue3 < curr) {
                     tdTriTue3 = curr;
                 }
-                tdTriTue3 += min * 60 * 1000;
+                tdTriTue3 += (long) min * 60 * 1000;
                 break;
             case 672:
                 if (tdTriTue4 < curr) {
                     tdTriTue4 = curr;
                 }
-                tdTriTue4 += min * 60 * 1000;
+                tdTriTue4 += (long) min * 60 * 1000;
                 break;
         }
     }

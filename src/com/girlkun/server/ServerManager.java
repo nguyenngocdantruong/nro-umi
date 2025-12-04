@@ -92,10 +92,20 @@ public class ServerManager {
         activeCommandLine();
         activeGame();
         activeServerSocket();
+        
+        new Thread(() -> {
+            try {
+                // Init Event System async (sau khi boss thường đã load)
+                Thread.sleep(2000);
+                EventManager.gI().init();
+            } catch (Exception e) {
+                java.util.logging.Logger.getLogger(EventManager.class.getName()).log(Level.SEVERE, null, e);
+            }
+        }).start();
+        
         TaiXiu.gI().lastTimeEnd = System.currentTimeMillis() + 50000;
         new Thread(TaiXiu.gI(), "Thread TaiXiu").start();
         new Thread(pariryManager.gI(), "Thread Pariry").start();
-        Logger.log(Logger.PURPLE_BOLD_BRIGHT, "Update at 6:19PM 17-02 by dr.sylas");
 
         NgocRongNamecService.gI().initNgocRongNamec((byte) 0);
 
@@ -118,13 +128,11 @@ public class ServerManager {
             }
         }, "Update dai hoi vo thuat").start();
         try {
+            
+            
             Thread.sleep(3000);
             BossManager.gI().loadBoss();
             Manager.MAPS.forEach(com.girlkun.models.map.Map::initBoss);
-
-            // Init Event System async (sau khi boss thường đã load)
-            Thread.sleep(2000);
-            EventManager.gI().init();
         } catch (InterruptedException ex) {
             java.util.logging.Logger.getLogger(BossManager.class.getName()).log(Level.SEVERE, null, ex);
         }

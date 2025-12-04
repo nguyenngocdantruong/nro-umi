@@ -98,6 +98,9 @@ public class EventManager {
      * Lấy event hiện tại đang active
      */
     public Event getCurrentEvent() {
+        if(currentEvent == null){
+            currentEvent = new Default();
+        }
         return currentEvent;
     }
 

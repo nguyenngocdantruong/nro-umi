@@ -19,4 +19,9 @@ public class Christmas extends Event {
     public void npc() {
         // TODO: Thêm NPC Christmas
     }
+
+    @Override
+    public String getThongBaoLogin() {
+        return "Chào mừng ae đến mùa Noel";
+    }
 }

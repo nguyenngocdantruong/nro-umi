@@ -12,6 +12,7 @@ import com.girlkun.server.ServerNotify;
 import com.girlkun.services.EffectSkillService;
 import com.girlkun.services.InventoryServiceNew;
 import com.girlkun.services.ItemService;
+import com.girlkun.services.ItemTimeService;
 import com.girlkun.services.MapService;
 import com.girlkun.services.PlayerService;
 import com.girlkun.services.Service;
@@ -167,6 +168,8 @@ public class NPoint {
     public boolean isKhongLanh;
     public boolean isKhongNong;
     public boolean hasBuiBui;
+    public boolean isBillBiNgo;
+    public boolean hasHalloweenCt; // Có cải trang nào thuộc halloween không
     
     public short tlHpGiamODo;
     public short test;
@@ -208,6 +211,16 @@ public class NPoint {
         for (Item item : this.player.inventory.itemsBody) {
             if (item.isNotNullItem()) {
                 switch (item.template.id) {
+                    case 642:
+                    case 643:
+                    case 644:
+                    case 645:
+                    case 646:
+                    case 739:
+                    {
+                        player.nPoint.hasHalloweenCt = true;
+                        break;
+                    }
                     case 966:
                     case 982:
                     case 983:
@@ -425,6 +438,10 @@ public class NPoint {
                             break;
                         case 106: //Không ảnh hưởng bởi cái lạnh
                             this.isKhongLanh = true;
+                            break;
+                        case 163: // Biến người xung quanh thành Bí Ngô
+                            this.isBillBiNgo = true;
+                            this.hasHalloweenCt = true;
                             break;
                         case 210: //Không ảnh hưởng bởi cái lạnh
                             this.isKhongNong = true;
@@ -1302,6 +1319,7 @@ public class NPoint {
         this.isKhongLanh = false;
         this.isKhongNong = false;
         this.khangTDHS = false;
+        this.hasHalloweenCt = false;
         
         //custom-drsylas
         this.tlSDDep.clear();

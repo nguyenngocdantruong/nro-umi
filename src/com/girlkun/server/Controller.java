@@ -53,6 +53,7 @@ import com.girlkun.services.func.SummonDragon;
 import com.girlkun.services.func.TransactionService;
 import com.girlkun.utils.Logger;
 import com.arriety.kygui.ShopKyGuiService;
+import com.girlkun.models.event.EventManager;
 
 public class Controller implements IMessageHandler {
 
@@ -808,7 +809,7 @@ public class Controller implements IMessageHandler {
     }
 
     private void sendThongBaoServer(Player player) {
-        Service.gI().sendThongBaoFromAdmin(player, "Chào ae tới server đá !");
+        Service.gI().sendThongBaoFromAdmin(player, EventManager.gI().getCurrentEvent().getThongBaoLogin());
     }
 
     private void clearVTSK(Player player) {

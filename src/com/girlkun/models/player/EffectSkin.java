@@ -70,7 +70,7 @@ public class EffectSkin {
     };
     
     private Player player;
-    protected boolean isBiHoaXuong;
+    public boolean isBiHoaXuong;
 
     public EffectSkin(Player player) {
         this.player = player;
@@ -104,14 +104,26 @@ public class EffectSkin {
     private long lastTimeXinbato;
     private long lastTimeBulma;
     
-    //Effect ma troi
-    public long lastTimeHoaXuong;
-    public int timeHoaXuong = 1800;
+    //Effect halloween
+    public long lastTimeBiHoaXuong;
+    public int timeHoaXuong = 300;
+    public short[] bodyHalloween = new short[]{545, 548, 549}; 
+        
+    // --------------------------------------------  Hiệu ứng bị áp đặt từ boss/player khác qua attack
+    
+    // Hiệu ứng biến thành cà rốt
+    public boolean isCarrot;
+    public long lastTimeBiBienThanhCarrot;
+    public final int TIME_BIEN_CARROT =  300000;
+    public short[] bodyCarrot = new short[]{406, 407, 408}; 
+    
+    // --------------------------------------------  
 
     public void update() {
         if(this.player != null){
             updateVoHinh();
             updateHoaDa();
+            updateCarrot();
             updateHoaXuong();
             updateMabu();
             updateThoBulma();
@@ -162,6 +174,18 @@ public class EffectSkin {
                 Service.gI().Send_Caitrang(this.player);
                 ItemTimeService.gI().removeItemTime(this.player, 4392);
                 Service.gI().chat(this.player, "Phẹt Phẹt Phẹt...");
+            }
+        } catch (Exception e) {
+            Logger.error("");
+        }
+    }
+    
+    public void updateCarrot() {
+        try {
+            if (this.player.effectSkin.isCarrot && ((System.currentTimeMillis() - lastTimeBiBienThanhCarrot > TIME_BIEN_CARROT) || this.player.nPoint.khangTDHS)) {
+                this.player.effectSkin.isCarrot = false;
+                Service.gI().Send_Caitrang(this.player);
+                ItemTimeService.gI().removeItemTime(this.player, 933);
             }
         } catch (Exception e) {
             Logger.error("");
@@ -413,13 +437,16 @@ public class EffectSkin {
     }
 
     private void updateHoaXuong() {
-        if (this.isBiHoaXuong) {
-            ItemTimeService.gI().sendItemTime(this.player, 2753, timeHoaXuong - (int) (System.currentTimeMillis() - lastTimeHoaXuong) / 1000);
-        }
-        if (this.isBiHoaXuong && Util.canDoWithTime(lastTimeHoaXuong, timeHoaXuong * 1000)) {
-            this.isBiHoaXuong = false;
-            Service.gI().Send_Caitrang(this.player);
-            ItemTimeService.gI().removeItemTime(this.player, 2753);
+        try {
+            // Xoá hiệu ứng
+            if (this.player.effectSkin.isBiHoaXuong && ((System.currentTimeMillis() - lastTimeBiHoaXuong > timeHoaXuong * 1000) || this.player.nPoint.hasHalloweenCt)) {
+                this.player.effectSkin.isBiHoaXuong = false;
+                Service.gI().Send_Caitrang(this.player);
+                ItemTimeService.gI().removeItemTime(this.player, 5101);
+            }
+            
+        } catch (Exception e) {
+            Logger.error("");
         }
     }
     

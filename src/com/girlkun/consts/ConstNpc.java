@@ -126,6 +126,7 @@ public class ConstNpc {
     public static final byte FA = 96;
     public static final byte MEO_THAN_TAI = 77;
     public static final byte MEO_THAN_TAI1 = 99;
+    public static final byte BILL_BI_NGO = 110;
     //----------------------index menu------------------------------------------
     //menu o len tang map mabu
     public static final int GO_UPSTAIRS_MENU = 10000;

@@ -10,6 +10,7 @@ import com.girlkun.models.boss.BossID;
 import com.girlkun.models.boss.BossesData;
 import com.girlkun.models.map.ItemMap;
 import com.girlkun.models.player.Player;
+import com.girlkun.services.ItemTimeService;
 import com.girlkun.services.Service;
 import com.girlkun.services.TaskService;
 import com.girlkun.utils.Util;
@@ -42,6 +43,19 @@ public class ThoDaiCa extends Boss {
         damage = 1;
         return super.injured(plAtt, damage, piercing, isMobAttack); 
     }
+
+    @Override
+    public void affectPlayer(Player player) {
+        if(!player.effectSkin.isCarrot && !player.nPoint.khangTDHS){
+            player.effectSkin.isCarrot = true;
+            Service.gI().Send_Caitrang_Carot(player);
+            ItemTimeService.gI().sendItemTime(player, 933, (int) player.effectSkin.TIME_BIEN_CARROT / 1000);
+            player.effectSkin.lastTimeBiBienThanhCarrot = System.currentTimeMillis();
+            this.chat("Bắt tay cái nào!");
+        }
+    }
+
+    
 
     @Override
     public void active() {

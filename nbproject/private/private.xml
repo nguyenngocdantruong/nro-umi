@@ -3,11 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Codes/Java/NroCompare/Umi/src/com/girlkun/models/boss/list_boss/halloween/BiMa.java</file>
-            <file>file:/D:/Codes/Java/NroCompare/Umi/src/com/girlkun/utils/Util.java</file>
-            <file>file:/D:/Codes/Java/NroCompare/Umi/src/com/girlkun/models/event/events/Halloween.java</file>
-            <file>file:/D:/Codes/Java/NroCompare/Umi/src/com/girlkun/models/boss/BossManager.java</file>
-            <file>file:/D:/Codes/Java/NroCompare/Umi/src/com/girlkun/models/boss/BossesData.java</file>
+            <file>file:/C:/Games/Nro/nro-umi/src/com/girlkun/models/event/EventManager.java</file>
+            <file>file:/C:/Games/Nro/nro-umi/src/com/girlkun/data/DataGame.java</file>
+            <file>file:/C:/Games/Nro/nro-umi/src/com/girlkun/server/Manager.java</file>
+            <file>file:/C:/Games/Nro/nro-umi/src/com/girlkun/models/event/events/Halloween.java</file>
+            <file>file:/C:/Games/Nro/nro-umi/src/com/girlkun/models/npc/NpcFactory.java</file>
         </group>
     </open-files>
 </project-private>

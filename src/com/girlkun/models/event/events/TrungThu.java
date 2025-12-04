@@ -12,6 +12,11 @@ import com.girlkun.models.event.Event;
 public class TrungThu extends Event {
 
     @Override
+    public String getThongBaoLogin() {
+        return "Chào ae tới server NroSkibidi. Nạp X2 liên hệ admin.";
+    }
+    
+    @Override
     public void boss() {
         // Spawn 10 boss Thỏ Đại Ca
         createBoss(BossID.THO_DAI_CA, 10);

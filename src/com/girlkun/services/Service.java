@@ -1462,7 +1462,7 @@ public void removeAlleff(Player player) {
             }
         }
     }
-public void SendMsgUpdateHoaDa(Player player, byte typead, byte typeTar, byte type) {
+    public void SendMsgUpdateHoaDa(Player player, byte typead, byte typeTar, byte type) {
         try {
             Message message = new Message(-124);
             message.writer().writeByte(typead);
@@ -1511,6 +1511,52 @@ public void SendMsgUpdateHoaDa(Player player, byte typead, byte typeTar, byte ty
                 short head = 454;
                 short body = 455;
                 short leg = 456;
+
+                msg.writer().writeShort(head);//set head
+                msg.writer().writeShort(body);//setbody
+                msg.writer().writeShort(leg);//set leg
+                msg.writer().writeByte(player.effectSkill.isMonkey ? 1 : 0);//set khỉ
+                sendMessAllPlayerInMap(player, msg);
+                msg.cleanup();
+            } catch (Exception e) {
+                Logger.logException(Service.class, e);
+            }
+        }
+    }
+    
+    public void Send_CaiTrang_Halloween(Player player, short head, short body, short leg) {
+        if (player != null) {
+            if(player.effectSkin != null){
+                player.effectSkin.bodyHalloween = new short[]{head, body, leg};
+            }
+            Message msg;
+            try {
+                msg = new Message(-90);
+                msg.writer().writeByte(1);// check type
+                msg.writer().writeInt((int) player.id); //id player
+
+                msg.writer().writeShort(head);//set head
+                msg.writer().writeShort(body);//setbody
+                msg.writer().writeShort(leg);//set leg
+                msg.writer().writeByte(player.effectSkill.isMonkey ? 1 : 0);//set khỉ
+                sendMessAllPlayerInMap(player, msg);
+                msg.cleanup();
+            } catch (Exception e) {
+                Logger.logException(Service.class, e);
+            }
+        }
+    }
+    
+    public void Send_Caitrang_Carot(Player player) {
+        if (player != null) {
+            Message msg;
+            try {
+                msg = new Message(-90);
+                msg.writer().writeByte(1);// check type
+                msg.writer().writeInt((int) player.id); //id player
+                short head = 406;
+                short body = 407;
+                short leg = 408;
 
                 msg.writer().writeShort(head);//set head
                 msg.writer().writeShort(body);//setbody

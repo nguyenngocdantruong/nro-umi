@@ -36,4 +36,9 @@ public interface IEvent {
      * Dọn dẹp tài nguyên khi event kết thúc
      */
     void cleanup();
+    
+    /**
+     * Hiển thị message khi user login
+     */
+    String getThongBaoLogin();
 }

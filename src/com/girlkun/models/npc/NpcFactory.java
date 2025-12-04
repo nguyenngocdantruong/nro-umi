@@ -1564,39 +1564,42 @@ public class NpcFactory {
                             NpcService.gI().createTutorial(pl, this.avartar, "Hãy lên đường cứu đứa bé nhà tôi\n"
                                     + "Chắc bây giờ nó đang sợ hãi lắm rồi");
                         } else {
-                            if (this.mapId == 19) {
-                                int taskId = TaskService.gI().getIdTask(pl);
-                                switch (taskId) {
-                                    case ConstTask.TASK_19_0:
-                                        this.createOtherMenu(pl, ConstNpc.MENU_FIND_KUKU,
-                                                "Đội quân của Fide đang ở Thung lũng Nappa, ta sẽ đưa ngươi đến đó",
-                                                "Đến chỗ\nKuku\n(" + Util.numberToMoney(COST_FIND_BOSS) + " vàng)", "Đến Cold", "Đến\nNappa", "Từ chối");
-                                        break;
-                                    case ConstTask.TASK_19_1:
-                                        this.createOtherMenu(pl, ConstNpc.MENU_FIND_MAP_DAU_DINH,
-                                                "Đội quân của Fide đang ở Thung lũng Nappa, ta sẽ đưa ngươi đến đó",
-                                                "Đến chỗ\nMập đầu đinh\n(" + Util.numberToMoney(COST_FIND_BOSS) + " vàng)", "Đến Cold", "Đến\nNappa", "Từ chối");
-                                        break;
-                                    case ConstTask.TASK_19_2:
-                                        this.createOtherMenu(pl, ConstNpc.MENU_FIND_RAMBO,
-                                                "Đội quân của Fide đang ở Thung lũng Nappa, ta sẽ đưa ngươi đến đó",
-                                                "Đến chỗ\nRambo\n(" + Util.numberToMoney(COST_FIND_BOSS) + " vàng)", "Đến Cold", "Đến\nNappa", "Từ chối");
-                                        break;
-                                    default:
-                                        this.createOtherMenu(pl, ConstNpc.BASE_MENU,
-                                                "Đội quân của Fide đang ở Thung lũng Nappa, ta sẽ đưa ngươi đến đó",
-                                                "Đến Cold", "Đến\nNappa", "Từ chối");
-
-                                        break;
-                                }
-                            } else if (this.mapId == 68) {
-                                this.createOtherMenu(pl, ConstNpc.BASE_MENU,
-                                        "Ngươi muốn về Thành Phố bababa", "Ok em zai", "Có cc");
-                            } else {
-                                this.createOtherMenu(pl, ConstNpc.BASE_MENU,
-                                        "Tàu vũ trụ Xayda của bố sử dụng công nghệ mới nhất, "
-                                        + "có thể đưa các con đi đi bất kỳ đâu, chỉ cần trả tiền là được.",
-                                        "Đến\nTrái Đất", "Đến\nNamếc", "Siêu thị");
+                            switch (this.mapId) {
+                                case 19:
+                                    int taskId = TaskService.gI().getIdTask(pl);
+                                    switch (taskId) {
+                                        case ConstTask.TASK_19_0:
+                                            this.createOtherMenu(pl, ConstNpc.MENU_FIND_KUKU,
+                                                    "Đội quân của Fide đang ở Thung lũng Nappa, ta sẽ đưa ngươi đến đó",
+                                                    "Đến chỗ\nKuku\n(" + Util.numberToMoney(COST_FIND_BOSS) + " vàng)", "Đến Cold", "Đến\nNappa", "Từ chối");
+                                            break;
+                                        case ConstTask.TASK_19_1:
+                                            this.createOtherMenu(pl, ConstNpc.MENU_FIND_MAP_DAU_DINH,
+                                                    "Đội quân của Fide đang ở Thung lũng Nappa, ta sẽ đưa ngươi đến đó",
+                                                    "Đến chỗ\nMập đầu đinh\n(" + Util.numberToMoney(COST_FIND_BOSS) + " vàng)", "Đến Cold", "Đến\nNappa", "Từ chối");
+                                            break;
+                                        case ConstTask.TASK_19_2:
+                                            this.createOtherMenu(pl, ConstNpc.MENU_FIND_RAMBO,
+                                                    "Đội quân của Fide đang ở Thung lũng Nappa, ta sẽ đưa ngươi đến đó",
+                                                    "Đến chỗ\nRambo\n(" + Util.numberToMoney(COST_FIND_BOSS) + " vàng)", "Đến Cold", "Đến\nNappa", "Từ chối");
+                                            break;
+                                        default:
+                                            this.createOtherMenu(pl, ConstNpc.BASE_MENU,
+                                                    "Đội quân của Fide đang ở Thung lũng Nappa, ta sẽ đưa ngươi đến đó",
+                                                    "Đến Cold", "Đến\nNappa", "Từ chối");
+                                            
+                                            break;
+                                    }   break;
+                                case 68:
+                                    this.createOtherMenu(pl, ConstNpc.BASE_MENU,
+                                            "Ngươi muốn về Thành Phố bababa", "Ok em zai", "Có cc");
+                                    break;
+                                default:
+                                    this.createOtherMenu(pl, ConstNpc.BASE_MENU,
+                                            "Tàu vũ trụ Xayda của bố sử dụng công nghệ mới nhất, "
+                                                    + "có thể đưa các con đi đi bất kỳ đâu, chỉ cần trả tiền là được.",
+                                            "Đến\nTrái Đất", "Đến\nNamếc", "Siêu thị");
+                                    break;
                             }
                         }
                     }
@@ -1625,7 +1628,7 @@ public class NpcFactory {
                         if (player.iDMark.isBaseMenu()) {
                             switch (select) {
                                 case 0:
-                                    if (TaskService.gI().getIdTask(player) < ConstTask.TASK_29_0) {
+                                    if (TaskService.gI().getIdTask(player) < ConstTask.TASK_21_0) {
                                         Service.gI().sendThongBao(player, "Hãy làm nhiệm vụ trước");
                                         return;
                                     } else {
@@ -1883,6 +1886,36 @@ public class NpcFactory {
                             switch (select) {
                                 case 0: //shop
                                     ShopServiceNew.gI().opendShop(player, "FA", false);
+                                    break;
+                            }
+                        }
+                    }
+                }
+            }
+        };
+    }
+
+    public static Npc billBiNgo(int mapId, int status, int cx, int cy, int tempId, int avartar) {
+        return new Npc(mapId, status, cx, cy, tempId, avartar) {
+            @Override
+            public void openBaseMenu(Player player) {
+                if (canOpenNpc(player)) {
+                    createOtherMenu(player, ConstNpc.BASE_MENU,
+                            "Chào mừng đến với cửa hàng Halloween! Hãy thu thập vật phẩm đặc biệt để đổi lấy cải trang độc đáo nhé!",
+                            "Đổi quà", "Hủy");
+                }
+            }
+
+            @Override
+            public void confirmMenu(Player player, int select) {
+                if (canOpenNpc(player)) {
+                    if (this.mapId == 5) {
+                        if (player.iDMark.isBaseMenu()) {
+                            switch (select) {
+                                case 0: // Đổi quà
+                                    ShopServiceNew.gI().opendShop(player, "BILL_BI_NGO", false);
+                                    break;
+                                case 1: // Hủy
                                     break;
                             }
                         }
@@ -2989,7 +3022,10 @@ public class NpcFactory {
 //                                "Bang hội phải có ít nhất 5 thành viên mới có thể mở", "Đóng");
 //                        return;
 //                    }
-                    if (player.clan.doanhTrai != null && player.clanMember.getNumDateFromJoinTimeToToday() >= 2 && !player.clan.doanhTrai_haveGone) {
+
+
+//                    if (player.clan.doanhTrai != null && player.clanMember.getNumDateFromJoinTimeToToday() >= 2 && !player.clan.doanhTrai_haveGone) {
+                    if (player.clan.doanhTrai != null) {
                         createOtherMenu(player, ConstNpc.MENU_JOIN_DOANH_TRAI,
                                 "Bang hội của ngươi đang đánh trại độc nhãn\n"
                                 + "Thời gian còn lại là "
@@ -3021,18 +3057,18 @@ public class NpcFactory {
 //                    }
 
                     if (!player.clan.doanhTrai_haveGone) {
-                        player.clan.doanhTrai_haveGone = (new java.sql.Date(player.clan.doanhTrai_lastTimeOpen)).getDay() == (new java.sql.Date(System.currentTimeMillis())).getDay();
+                        createOtherMenu(player, ConstNpc.MENU_JOIN_DOANH_TRAI,
+                            "Hôm nay bang hội của ngươi chưa vào trại lần nào. Ngươi có muốn vào\n"
+                            + "không?\nĐể vào, ta khuyên ngươi nên có 3-4 người cùng bang đi cùng",
+                            "Vào\n(miễn phí)", "Không", "Hướng\ndẫn\nthêm");
+                        return;
                     }
-                    if (player.clan.doanhTrai_haveGone) {
+                    else if (player.clan.doanhTrai_haveGone) {
                         createOtherMenu(player, ConstNpc.IGNORE_MENU,
                                 "Bang hội của ngươi đã đi trại lúc " + TimeUtil.formatTime(player.clan.doanhTrai_lastTimeOpen, "HH:mm:ss") + " hôm nay. Người mở\n"
                                 + "(" + player.clan.doanhTrai_playerOpen + "). Hẹn ngươi quay lại vào ngày mai", "OK", "Hướng\ndẫn\nthêm");
                         return;
                     }
-                    createOtherMenu(player, ConstNpc.MENU_JOIN_DOANH_TRAI,
-                            "Hôm nay bang hội của ngươi chưa vào trại lần nào. Ngươi có muốn vào\n"
-                            + "không?\nĐể vào, ta khuyên ngươi nên có 3-4 người cùng bang đi cùng",
-                            "Vào\n(miễn phí)", "Không", "Hướng\ndẫn\nthêm");
                 }
             }
 
@@ -3043,6 +3079,7 @@ public class NpcFactory {
                         case ConstNpc.MENU_JOIN_DOANH_TRAI:
                             if (select == 0) {
                                 try {
+                                    player.clan.doanhTrai_haveGone = (new java.sql.Date(player.clan.doanhTrai_lastTimeOpen)).getDay() == (new java.sql.Date(System.currentTimeMillis())).getDay();
                                     DoanhTraiService.gI().joinDoanhTrai(player);
                                 } catch (Exception ex) {
                                     java.util.logging.Logger.getLogger(NpcFactory.class.getName()).log(Level.SEVERE, null, ex);
@@ -3950,6 +3987,8 @@ public class NpcFactory {
                     return ngokhong(mapId, status, cx, cy, tempId, avatar);
                 case ConstNpc.FA:
                     return fa(mapId, status, cx, cy, tempId, avatar);
+                case ConstNpc.BILL_BI_NGO:
+                    return billBiNgo(mapId, status, cx, cy, tempId, avatar);
                 case ConstNpc.VIP:
                     return vip(mapId, status, cx, cy, tempId, avatar);
                 case ConstNpc.GENSHIN:

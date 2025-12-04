@@ -119,13 +119,24 @@ public class DataGame {
             for (MapTemplate temp : Manager.MAP_TEMPLATES) {
                 msg.writer().writeUTF(temp.name);
             }
-            msg.writer().writeByte(Manager.NPC_TEMPLATES.size());
+            // Đếm số NPC templates không null
+            int npcCount = 0;
             for (NpcTemplate temp : Manager.NPC_TEMPLATES) {
-                msg.writer().writeUTF(temp.name);
-                msg.writer().writeShort(temp.head);
-                msg.writer().writeShort(temp.body);
-                msg.writer().writeShort(temp.leg);
-                msg.writer().writeByte(0);
+                if (temp != null) {
+                    npcCount++;
+                }
+            }
+            msg.writer().writeByte(npcCount);
+
+            // Chỉ gửi các NPC templates không null
+            for (NpcTemplate temp : Manager.NPC_TEMPLATES) {
+                if (temp != null) {
+                    msg.writer().writeUTF(temp.name);
+                    msg.writer().writeShort(temp.head);
+                    msg.writer().writeShort(temp.body);
+                    msg.writer().writeShort(temp.leg);
+                    msg.writer().writeByte(0);
+                }
             }
             msg.writer().writeByte(Manager.MOB_TEMPLATES.size());
             for (MobTemplate temp : Manager.MOB_TEMPLATES) {

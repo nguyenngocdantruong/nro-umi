@@ -6,65 +6,65 @@ import com.girlkun.services.ItemTimeService;
 import com.girlkun.utils.Util;
 import com.girlkun.services.Service;
 
-
 public class EffectSkill {
 
     private Player player;
 
-    //thái dương hạ san
+    // thái dương hạ san
     public boolean isStun;
     public long lastTimeStartStun;
     public int timeStun;
 
-    //khiên năng lượng
+    // khiên năng lượng
     public boolean isShielding;
     public long lastTimeShieldUp;
     public int timeShield;
 
-    //biến khỉ
+    // biến khỉ
     public boolean isMonkey;
     public byte levelMonkey;
     public long lastTimeUpMonkey;
     public int timeMonkey;
 
-    //tái tạo năng lượng
+    // tái tạo năng lượng
     public boolean isCharging;
     public int countCharging;
 
-    //huýt sáo
+    // huýt sáo
     public int tiLeHPHuytSao;
     public long lastTimeHuytSao;
 
-    //thôi miên
+    // thôi miên
     public boolean isThoiMien;
     public long lastTimeThoiMien;
     public int timeThoiMien;
 
-    //trói
+    // trói
     public boolean useTroi;
     public boolean anTroi;
     public long lastTimeTroi;
-//    public long lastTimeAnTroi;
+    // public long lastTimeAnTroi;
     public int timeTroi;
-//    public int timeAnTroi;
+    // public int timeAnTroi;
     public Player plTroi;
     public Player plAnTroi;
     public Mob mobAnTroi;
 
-    //dịch chuyển tức thời
+    // dịch chuyển tức thời
     public boolean isBlindDCTT;
     public long lastTimeBlindDCTT;
     public int timeBlindDCTT;
     public boolean isbroly;
     public long lastTimeUpBroly;
     public int timeBroly;
-    //socola
+
+    // socola
     public boolean isSocola;
     public long lastTimeSocola;
     public int timeSocola;
     public int countPem1hp;
-    
-        // biến thành cái bình
+
+    // biến thành cái bình
     public boolean isCaiBinhChua;
     public long lastTimeCaiBinhChua;
     public int timeCaiBinhChua;
@@ -113,9 +113,10 @@ public class EffectSkill {
                 || useTroi && isHaveEffectSkill()) {
             EffectSkillService.gI().removeUseTroi(this.player);
         }
-//        if (anTroi && (Util.canDoWithTime(lastTimeAnTroi, timeAnTroi) || player.isDie())) {
-//            EffectSkillService.gI().removeAnTroi(this.player);
-//        }
+        // if (anTroi && (Util.canDoWithTime(lastTimeAnTroi, timeAnTroi) ||
+        // player.isDie())) {
+        // EffectSkillService.gI().removeAnTroi(this.player);
+        // }
         if (isStun && Util.canDoWithTime(lastTimeStartStun, timeStun)) {
             EffectSkillService.gI().removeStun(this.player);
         }
@@ -131,7 +132,8 @@ public class EffectSkill {
         if (tiLeHPHuytSao != 0 && Util.canDoWithTime(lastTimeHuytSao, 30000)) {
             EffectSkillService.gI().removeHuytSao(this.player);
         }
-          if (isCaiBinhChua && (Util.canDoWithTime(this.lastTimeCaiBinhChua, this.timeCaiBinhChua) || this.player.isDie())) {
+        if (isCaiBinhChua
+                && (Util.canDoWithTime(this.lastTimeCaiBinhChua, this.timeCaiBinhChua) || this.player.isDie())) {
             isCaiBinhChua = false;
             Service.getInstance().Send_Caitrang(this.player);
         }
@@ -143,8 +145,8 @@ public class EffectSkill {
     public boolean isHaveEffectSkill() {
         return isStun || isBlindDCTT || anTroi || isThoiMien;
     }
-    
-    public void dispose(){
+
+    public void dispose() {
         this.player = null;
     }
 }

@@ -31,6 +31,8 @@ public interface IBossNew {
     void reward(Player plKill);
     
     void attack();
+    
+    void affectPlayer(Player player);
 
     //loop
     void rest();

@@ -1859,7 +1859,7 @@ public class BossesData {
             ConstPlayer.XAYDA, //gender
             new short[]{291, 292, 293, -1, -1, -1}, //outfit {head, body, leg, bag, aura, eff}
             1, //dame
-            new int[]{10000}, //hp
+            new int[]{20000}, //hp
             new int[]{5, 6, 29, 30, 28, 27, 18, 19, 20, 37, 38, 36, 13, 33, 34, 32}, //map join
             new int[][]{
                 {Skill.TAI_TAO_NANG_LUONG, 7, 10000},
@@ -2983,8 +2983,8 @@ public class BossesData {
             "Thỏ đại ca", //name
             ConstPlayer.TRAI_DAT, //gender
             new short[]{403, 404, 405, -1, -1, -1}, //outfit
-            1000, //dame
-            new int[]{10}, //hp
+            2500, //dame
+            new int[]{250}, //hp
             new int[]{0, 7, 14}, //map join : Làng Aru, Làng Mori, Làng kkr
             new int[][]{ //skill
                 {Skill.DRAGON, 1, 100}, {Skill.DRAGON, 2, 200}, {Skill.DRAGON, 3, 300}, {Skill.DRAGON, 7, 700},
@@ -3007,12 +3007,13 @@ public class BossesData {
 
     //************************************************************************** Halloween Event Bosses
     public static final BossData BI_MA = new BossData(
-            "Bí ma %d", //name (random number will be added)
+            "Bí ma", //name (random number will be added)
             ConstPlayer.TRAI_DAT, //gender
             new short[]{754, 755, 756, -1, -1, -1}, //outfit - TEMPORARY, cần thay bằng Halloween sprite
-            1, //dame - 2M
-            new int[]{50}, //hp - 500M
-            new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30}, //map join - all major maps
+            2000, //dame - 2M
+            new int[]{500}, //hp - 500M
+            // Map join: Nam guru, Nam Kame, Đảo bulong, Dong Nam Guru, Thung lung den, Bo  vuc den
+            new int[]{33, 29, 30, 34, 37, 38}, //map join
             new int[][]{
                 {Skill.DRAGON, 7, 1000},
                 {Skill.DEMON, 7, 1500}
@@ -3032,12 +3033,13 @@ public class BossesData {
     );
 
     public static final BossData MA_TROI = new BossData(
-            "Ma trơi %d", //name
+            "Ma trơi", //name
             ConstPlayer.NAMEC, //gender
             new short[]{651, 652, 653, -1, -1, -1}, //outfit
-            18000, //dame - 18k
-            new int[]{450000000}, //hp - 450M
-            new int[]{0, 1, 2, 3, 4, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17, 18, 19, 21, 22, 23, 24, 25, 26}, //maps
+            1800, //dame - 18k
+            new int[]{200}, //hp - 450M
+            // Siêu thị, Thung lũng phía bắc, Thị trấn ginder
+            new int[]{84, 99, 100}, //maps
             new int[][]{
                 {Skill.KAMEJOKO, 7, 1000},
                 {Skill.MASENKO, 7, 1500}
@@ -3057,12 +3059,12 @@ public class BossesData {
     );
 
     public static final BossData DOI = new BossData(
-            "Dơi %d", //name
+            "Dơi", //name
             ConstPlayer.XAYDA, //gender
             new short[]{654, 655, 656, -1, -1, -1}, //outfit 
-            16000, //dame - 1.6M
-            new int[]{400000000}, //hp - 400M
-            new int[]{45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62}, //maps - higher level maps
+            1600, //dame - 1.6M
+            new int[]{200}, //hp - 400M
+            new int[]{33, 29, 30, 34, 37, 38, 0, 7, 14}, 
             new int[][]{
                 {Skill.GALICK, 7, 1000},
                 {Skill.ANTOMIC, 7, 1500}

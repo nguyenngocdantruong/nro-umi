@@ -86,6 +86,7 @@ public class BossManager {
         }
         return BossManager.I;
     }
+
     public int idBase = 1;
 
     public int idGroup = 1;
@@ -95,6 +96,7 @@ public class BossManager {
         this.bosses = new CopyOnWriteArrayList<>();
         this.setTimeSpawnBoss = new ConcurrentHashMap<>();
     }
+
     private boolean loadedBoss;
     protected CopyOnWriteArrayList<Boss> bosses;
 
@@ -105,6 +107,7 @@ public class BossManager {
     public void removeBoss(Boss boss) {
         bosses.remove(boss);
     }
+
     // ------------------ LoadBoss ------------------
     public void loadBoss() {
         action(150);
@@ -113,66 +116,66 @@ public class BossManager {
                 return;
             }
             int[] bossTypes = {
-                BossType.THO_DAI_CA,
-                BossType.KUKU,
-                BossType.MAP_DAU_DINH,
-                BossType.RAMBO,
-                BossType.TDST,
-                BossType.FIDE,
-                BossType.DR_KORE,
-                BossType.KING_KONG,
-                BossType.ANDROID_14,
-                BossType.XEN_BO_HUNG,
-                BossType.XEN_CON_1,
-                BossType.XEN_CON_1,
-                BossType.XEN_CON_1,
-                BossType.XEN_CON_1,
-                BossType.SIEU_BO_HUNG,
-                BossType.DORAEMON,
-                BossType.BLACK,
-                BossType.BLACK1,
-                BossType.BLACK2,
-                BossType.ZAMASMAX,
-                BossType.ZAMASZIN,
-                BossType.THIEN_SU_VADOS,
-                BossType.THIEN_SU_WHIS,
-                BossType.SONGOKU_TA_AC,
-                BossType.COOLER,
-                BossType.VEGETA,
-                BossType.D_TANG,
-                BossType.MABU,
-                BossType.FIRE,
-                BossType.WIND,
-                BossType.ICE,
-                BossType.GAS,
-                BossType.GRANOLA,
-                BossType.Brook,
-                BossType.Mihawk,
-                BossType.Kaido,
-                BossType.Along,
-                BossType.Janemba,
-                BossType.pikkon,
-                BossType.tan,
-                BossType.nezu,
-                BossType.zen,
-                BossType.hino,
-                BossType.gojo,
-                BossType.akaza,
-                BossType.linh,
-                BossType.Luffy,
-                BossType.SUPER_ANDROID_17,
-                BossType.BROLY,
-                BossType.THOR_2,
-                BossType.MIU,
-                BossType.HO,
-                BossType.gogeta,
-                BossType.sieunhann,
-                BossType.sexyyy,
-                BossType.pan,
-                BossType.zeno,
-                BossType.vt6,
-                BossType.bergamo,};
-            bossTypes = new int[] {};
+                    BossType.THO_DAI_CA,
+                    BossType.KUKU,
+                    BossType.MAP_DAU_DINH,
+                    BossType.RAMBO,
+                    BossType.TDST,
+                    BossType.FIDE,
+                    BossType.DR_KORE,
+                    BossType.KING_KONG,
+                    BossType.ANDROID_14,
+                    BossType.XEN_BO_HUNG,
+                    BossType.XEN_CON_1,
+                    BossType.XEN_CON_1,
+                    BossType.XEN_CON_1,
+                    BossType.XEN_CON_1,
+                    BossType.SIEU_BO_HUNG,
+                    BossType.DORAEMON,
+                    BossType.BLACK,
+                    BossType.BLACK1,
+                    BossType.BLACK2,
+                    BossType.ZAMASMAX,
+                    BossType.ZAMASZIN,
+                    BossType.THIEN_SU_VADOS,
+                    BossType.THIEN_SU_WHIS,
+                    BossType.SONGOKU_TA_AC,
+                    BossType.COOLER,
+                    BossType.VEGETA,
+                    BossType.D_TANG,
+                    BossType.MABU,
+                    BossType.FIRE,
+                    BossType.WIND,
+                    BossType.ICE,
+                    BossType.GAS,
+                    BossType.GRANOLA,
+                    BossType.Brook,
+                    BossType.Mihawk,
+                    BossType.Kaido,
+                    BossType.Along,
+                    BossType.Janemba,
+                    BossType.pikkon,
+                    BossType.tan,
+                    BossType.nezu,
+                    BossType.zen,
+                    BossType.hino,
+                    BossType.gojo,
+                    BossType.akaza,
+                    BossType.linh,
+                    BossType.Luffy,
+                    BossType.SUPER_ANDROID_17,
+                    BossType.BROLY,
+                    BossType.THOR_2,
+                    BossType.MIU,
+                    BossType.HO,
+                    BossType.gogeta,
+                    BossType.sieunhann,
+                    BossType.sexyyy,
+                    BossType.pan,
+                    BossType.zeno,
+                    BossType.vt6,
+                    BossType.bergamo, };
+            bossTypes = new int[] { BossType.THO_DAI_CA} ;
             for (int i = 0; i < bossTypes.length; i++) {
                 switch (bossTypes[i]) {
                     case BossType.KUKU:
@@ -457,7 +460,7 @@ public class BossManager {
                     .writeByte(
                             (int) bosses.stream()
                                     .filter(boss -> !MapService.gI().isMapMaBu(boss.data[0].getMapJoin()[0])
-                                    && !MapService.gI().isMapBlackBallWar(boss.data[0].getMapJoin()[0]))
+                                            && !MapService.gI().isMapBlackBallWar(boss.data[0].getMapJoin()[0]))
                                     .count());
             for (int i = 0; i < bosses.size(); i++) {
                 Boss boss = this.bosses.get(i);
@@ -497,7 +500,8 @@ public class BossManager {
     public synchronized void callBoss(Player player, int mapId) {
         try {
             if (BossManager.gI().existBossOnPlayer(player)
-                    || player.zone.items.stream().anyMatch(itemMap -> ItemMapService.gI().isBlackBall(itemMap.itemTemplate.id))
+                    || player.zone.items.stream()
+                            .anyMatch(itemMap -> ItemMapService.gI().isBlackBall(itemMap.itemTemplate.id))
                     || player.zone.getPlayers().stream().anyMatch(p -> p.iDMark.isHoldBlackBall())) {
                 return;
             }
@@ -513,11 +517,13 @@ public class BossManager {
     }
 
     public Boss getBossByType(int type) {
-        return (Boss) BossManager.gI().bosses.stream().filter(boss -> boss.getTypeBoss() == type).findFirst().orElse(null);
+        return (Boss) BossManager.gI().bosses.stream().filter(boss -> boss.getTypeBoss() == type).findFirst()
+                .orElse(null);
     }
 
     public Boss getBossById(int bossId) {
-        return BossManager.gI().bosses.stream().filter(boss -> boss.id == bossId && !boss.isDie()).findFirst().orElse(null);
+        return BossManager.gI().bosses.stream().filter(boss -> boss.id == bossId && !boss.isDie()).findFirst()
+                .orElse(null);
     }
 
     public void bossNotify(Boss boss) {
@@ -567,7 +573,11 @@ public class BossManager {
         for (int i = 0; i < bosses.size(); i++) {
             Boss boss = bosses.get(i);
             if (boss != null && boss.bossInstance != null) {
-                boss.updateBoss();
+                try {
+                    boss.updateBoss();
+                } catch (Exception e) {
+                    Logger.logException(BossManager.class, e, "Error updating boss: " + boss.name);
+                }
             }
         }
 
