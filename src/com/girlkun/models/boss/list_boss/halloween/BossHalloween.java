@@ -35,6 +35,17 @@ public class BossHalloween extends Boss {
                     , -1);
             Service.gI().dropItemMap(this.zone, itemNgoc);
         }
+        // Bí ngô nhí nhảnh
+        if(Util.isTrue(80, 100)){
+            int idBiNgoNhiNhanh = 910; //Ngọc xanh 77
+            int quantity = Util.nextInt(1, 6);
+            ItemMap itemBiNgo = new ItemMap(this.zone, idBiNgoNhiNhanh, 
+                    quantity, 
+                    this.location.x + Util.nextInt(-50, 50),
+                    this.zone.map.yPhysicInTop(this.location.x, this.location.y - 24)
+                    , -1);
+            Service.gI().dropItemMap(this.zone, itemBiNgo);
+        }
     }
 
     @Override
@@ -52,7 +63,7 @@ public class BossHalloween extends Boss {
                 this.chat("Xí hụt");
                 return 0;
             }
-            damage = 1;
+            damage = 1000;
             this.nPoint.subHP(damage);
             if (isDie()) {
                 this.setDie(plAtt);

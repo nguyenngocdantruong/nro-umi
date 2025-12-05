@@ -108,6 +108,7 @@ public class UseItem {
                 player.pet.setClothes.setup();
             }
             player.setClanMember();
+            Service.gI().sendFlagBag(player);
             Service.gI().point(player);
         } catch (Exception e) {
             Logger.logException(UseItem.class, e);
@@ -138,7 +139,6 @@ public class UseItem {
             type = _msg.reader().readByte();
             int where = _msg.reader().readByte();
             int index = _msg.reader().readByte();
-//            System.out.println(type + " " + where + " " + index);
             switch (type) {
                 case DO_USE_ITEM:
                     if (player != null && player.inventory != null) {
@@ -189,11 +189,12 @@ public class UseItem {
                     break;
             }
         } catch (Exception e) {
-//            Logger.logException(UseItem.class, e);
+            Logger.logException(UseItem.class, e);
         }
     }
 
     private void useItem(Player pl, Item item, int indexBag) {
+        Logger.error(item.getInfo());
         if (item.template.strRequire <= pl.nPoint.power) {
             switch (item.template.type) {
                 case 7: //sách học, nâng skill
@@ -229,6 +230,7 @@ public class UseItem {
                     InventoryServiceNew.gI().itemBagToBody(pl, indexBag);
                     break;
                 case 11: //item bag
+                    Logger.error("use type 11\n");
                     InventoryServiceNew.gI().itemBagToBody(pl, indexBag);
                     Service.gI().sendFlagBag(pl);
                     break;

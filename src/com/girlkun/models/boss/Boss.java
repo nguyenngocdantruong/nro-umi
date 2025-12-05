@@ -26,6 +26,7 @@ import com.girlkun.services.Service;
 import com.girlkun.services.SkillService;
 import com.girlkun.services.TaskService;
 import com.girlkun.services.func.ChangeMapService;
+import com.girlkun.utils.Logger;
 import com.girlkun.utils.SkillUtil;
 import com.girlkun.utils.Util;
 import java.util.Objects;
@@ -317,8 +318,9 @@ public class Boss extends Player implements IBossNew, IBossOutfit {
                 this.joinMap();
                 if (this.zone != null) {
                     this.changeStatus(BossStatus.CHAT_S);
-                    System.out.println(
-                            "Map: " + this.zone.map.mapName + ", Zone: " + this.zone.zoneId + ", Boss: " + this.name);
+                    // ------------------ ShowInfoBossMap------------------
+                    Logger.warning(
+                            "Map: " + this.zone.map.mapName + ", Zone: " + this.zone.zoneId + ", Boss: " + this.name + "\n");
                 }
                 break;
             case CHAT_S:

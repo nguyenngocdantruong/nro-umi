@@ -30,13 +30,13 @@ import java.util.List;
 
 public class DataGame {
 
-    public static byte vsData = 80;
-    public static byte vsMap = 80;
-    public static byte vsSkill = 6;
-    public static byte vsItem = 80;
-    public static int vsRes = 752011;
+    public static byte vsData = 83;
+    public static byte vsMap = 83;
+    public static byte vsSkill = 7;
+    public static byte vsItem = 81;
+    public static int vsRes = 752012;
 
-    public static String LINK_IP_PORT = "Umi:221.132.33.158:14445:0,0,0";
+    public static String LINK_IP_PORT = "NroSkibidi:nro.trum.vcl:14445:0,0,0";
     private static final String MOUNT_NUM = "733:1,734:2,735:3,743:4,744:5,746:6,795:7,849:8,897:9,920:10,1143:11,1141:15";
     public static final Map MAP_MOUNT_NUM = new HashMap();
 

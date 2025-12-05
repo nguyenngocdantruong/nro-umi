@@ -165,5 +165,6 @@ public class BossID {
     public static final int BI_MA = -351;
     public static final int MA_TROI = -349;
     public static final int DOI = -350;
+    public static final int DRACULA_HALLOWEEN = -352;
 
 }

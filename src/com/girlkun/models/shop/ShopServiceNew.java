@@ -193,6 +193,7 @@ public class ShopServiceNew {
     private void openShopType3(Player player, Shop shop) {
         player.iDMark.setShopOpen(shop);
         player.iDMark.setTagNameShop(shop.tagName);
+        Logger.log("Shop type 3: " + shop.tagName + ", Tabs: " + shop.tabShops.size());
         if (shop != null) {
             Message msg;
             try {

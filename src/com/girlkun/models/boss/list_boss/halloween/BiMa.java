@@ -19,7 +19,7 @@ public class BiMa extends BossHalloween {
     
      @Override
     public void reward(Player plKill) {
-        // bí từ 1s - 7s
+        // Kẹo bàn tay
         int itemIdBiDrop = 901;
         int soluong = Util.nextInt(1, 5);
         for(int i = 0; i < soluong ; i++){

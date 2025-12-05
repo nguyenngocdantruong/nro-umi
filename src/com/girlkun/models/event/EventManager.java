@@ -1,7 +1,17 @@
 package com.girlkun.models.event;
 
+import com.girlkun.models.boss.Boss;
+import com.girlkun.models.boss.BossManager;
+import com.girlkun.models.boss.BossStatus;
+import static com.girlkun.models.event.ConstEvent.GIANG_SINH;
+import static com.girlkun.models.event.ConstEvent.HALLOWEEN;
+import static com.girlkun.models.event.ConstEvent.MAC_DINH;
+import static com.girlkun.models.event.ConstEvent.TRUNG_THU;
 import com.girlkun.models.event.events.*;
+import com.girlkun.models.player.Player;
+import com.girlkun.services.Service;
 import com.girlkun.utils.Logger;
+import java.util.*;
 
 /**
  * Singleton quản lý toàn bộ Event System
@@ -13,13 +23,61 @@ public class EventManager {
 
     private static EventManager instance;
 
-    // Event flags - bật/tắt các sự kiện
-    public static boolean HALLOWEEN = true;
-    public static boolean CHRISTMAS = false;
-    public static boolean TRUNG_THU = false;
-    public static boolean LUNAR_NEW_YEAR = false;
-    public static boolean HUNG_VUONG = false;
-    public static boolean INTERNATIONAL_WOMENS_DAY = false;
+    private List<Boss> bossesEvent = new ArrayList<Boss>();
+
+    public void clearBossesEvent() {
+        for (Boss boss : bossesEvent) {
+            boss.leaveMap();
+            BossManager.gI().removeBoss(boss);
+        }
+        bossesEvent.clear();
+    }
+
+    public void addBossesEvent(Boss b) {
+        bossesEvent.add(b);
+    }
+
+    // Event flags kiểm tra các npc đã init chưa
+    public boolean HALLOWEEN = false;
+    public boolean CHRISTMAS = false;
+    public boolean TRUNG_THU = false;
+    public boolean LUNAR_NEW_YEAR = false;
+    public boolean HUNG_VUONG = false;
+    public boolean INTERNATIONAL_WOMENS_DAY = false;
+    
+    public long lastTimeChangeEvent; 
+
+    public void setEventFlag(ConstEvent ev) {
+        switch (ev) {
+            case GIANG_SINH: {
+                CHRISTMAS = true;
+                break;
+            }
+            case HALLOWEEN: {
+                HALLOWEEN = true;
+                break;
+            }
+            case TRUNG_THU: {
+                TRUNG_THU = true;
+                break;
+            }
+        }
+    }
+
+    public boolean getEventFlag(ConstEvent ev) {
+        switch (ev) {
+            case GIANG_SINH: {
+                return CHRISTMAS;
+            }
+            case HALLOWEEN: {
+                return HALLOWEEN;
+            }
+            case TRUNG_THU: {
+                return TRUNG_THU;
+            }
+        }
+        return true;
+    }
 
     private Event currentEvent;
 
@@ -44,7 +102,7 @@ public class EventManager {
      * Khởi tạo event system - kiểm tra flags và active event tương ứng
      * Chỉ một event có thể active tại một thời điểm (priority order)
      */
-    
+
     // ------------------ InitEvent ------------------
     public void init() {
         Logger.log(Logger.CYAN, "Đang khởi tạo hệ thống sự kiện...\n");
@@ -58,50 +116,39 @@ public class EventManager {
             }
         }
 
-        // Khởi tạo event dựa trên flags (priority: Halloween > Christmas > Trung Thu > ...)
-        if (HALLOWEEN) {
-            currentEvent = new Halloween();
-            currentEvent.init();
-            Logger.success("✓ Sự kiện Halloween đã được kích hoạt\n");
-        } else if (CHRISTMAS) {
-            currentEvent = new Christmas();
-            currentEvent.init();
-            Logger.success("✓ Sự kiện Christmas đã được kích hoạt\n");
-        } else if (TRUNG_THU) {
-            currentEvent = new TrungThu();
-            currentEvent.init();
-            Logger.success("✓ Sự kiện Trung Thu đã được kích hoạt\n");
-        } else if (LUNAR_NEW_YEAR) {
-            // Future implementation
-            Logger.log(Logger.YELLOW, "⚠ Sự kiện Tết chưa được triển khai\n");
-            currentEvent = new Default();
-            currentEvent.init();
-        } else if (HUNG_VUONG) {
-            // Future implementation
-            Logger.log(Logger.YELLOW, "⚠ Sự kiện Hùng Vương chưa được triển khai\n");
-            currentEvent = new Default();
-            currentEvent.init();
-        } else if (INTERNATIONAL_WOMENS_DAY) {
-            // Future implementation
-            Logger.log(Logger.YELLOW, "⚠ Sự kiện 20/10 chưa được triển khai\n");
-            currentEvent = new Default();
-            currentEvent.init();
-        } else {
-            // Không có event nào active
-            currentEvent = new Default();
-            currentEvent.init();
-            Logger.log(Logger.WHITE, "✓ Chế độ bình thường (không có sự kiện đặc biệt)\n");
-        }
+        // Không có event nào active
+        currentEvent = new Default();
+        currentEvent.init();
+        Logger.success("Chế độ bình thường (không có sự kiện đặc biệt)\n");
     }
 
     /**
      * Lấy event hiện tại đang active
      */
     public Event getCurrentEvent() {
-        if(currentEvent == null){
+        if (currentEvent == null) {
             currentEvent = new Default();
         }
         return currentEvent;
+    }
+
+    public boolean isCurrentEvent(ConstEvent typeEvent) {
+        switch (typeEvent) {
+            case GIANG_SINH: {
+                return getCurrentEvent() instanceof Christmas;
+            }
+            case HALLOWEEN: {
+                return getCurrentEvent() instanceof Halloween;
+            }
+            case MAC_DINH: {
+                return getCurrentEvent() instanceof Default;
+            }
+            case TRUNG_THU: {
+                return getCurrentEvent() instanceof TrungThu;
+            }
+            default:
+                return false;
+        }
     }
 
     /**
@@ -109,7 +156,7 @@ public class EventManager {
      */
     public boolean isEventActive() {
         return HALLOWEEN || CHRISTMAS || TRUNG_THU || LUNAR_NEW_YEAR
-               || HUNG_VUONG || INTERNATIONAL_WOMENS_DAY;
+                || HUNG_VUONG || INTERNATIONAL_WOMENS_DAY;
     }
 
     /**
@@ -118,5 +165,52 @@ public class EventManager {
     public void reload() {
         Logger.log(Logger.CYAN, "Đang reload hệ thống sự kiện...\n");
         init();
+    }
+
+    /**
+     * Thay đổi event - chạy async để không block player
+     */
+    public void changeEvent(Player pl, ConstEvent typeEvent) {
+        int s = (int)(System.currentTimeMillis() - lastTimeChangeEvent)/1000;
+        if(s < 300){ // 5 phút
+            String tb = String.format("Bạn thay đổi event quá nhanh, vui lòng đợi %d giây nữa!", 300 - s);
+            Service.gI().sendThongBao(pl, tb);
+            return;
+        }
+        
+        // Cleanup event cũ (đồng bộ, nhanh)
+        if (currentEvent != null) {
+            currentEvent.cleanup();
+        }
+        Service.gI().sendThongBao(pl, "Bắt đầu khởi động event mới!");
+        // Tạo event mới
+        switch (typeEvent) {
+            case GIANG_SINH: {
+                currentEvent = new Christmas();
+                break;
+            }
+            case HALLOWEEN: {
+                currentEvent = new Halloween();
+                break;
+            }
+            case MAC_DINH: {
+                currentEvent = new Default();
+                break;
+            }
+            case TRUNG_THU: {
+                currentEvent = new TrungThu();
+                break;
+            }
+        }
+        // Init async trong thread riêng để không block player
+        new Thread(() -> {
+            try {
+                currentEvent.init();
+                Logger.success("Event " + typeEvent.name() + " đã khởi tạo xong!\n");
+                lastTimeChangeEvent = System.currentTimeMillis();
+            } catch (Exception e) {
+                Logger.logException(EventManager.class, e, "Lỗi init event async");
+            }
+        }, "EventInitThread-" + typeEvent.name()).start();
     }
 }

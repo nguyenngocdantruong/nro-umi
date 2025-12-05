@@ -116,7 +116,7 @@ public class BossManager {
                 return;
             }
             int[] bossTypes = {
-                    BossType.THO_DAI_CA,
+//                    BossType.THO_DAI_CA,
                     BossType.KUKU,
                     BossType.MAP_DAU_DINH,
                     BossType.RAMBO,
@@ -175,7 +175,6 @@ public class BossManager {
                     BossType.zeno,
                     BossType.vt6,
                     BossType.bergamo, };
-            bossTypes = new int[] { BossType.THO_DAI_CA} ;
             for (int i = 0; i < bossTypes.length; i++) {
                 switch (bossTypes[i]) {
                     case BossType.KUKU:
@@ -215,6 +214,8 @@ public class BossManager {
             switch (bossID) {
                 case BossType.THO_DAI_CA:
                     return new ThoDaiCa();
+                case BossType.DRACULA_HALLOWEEN:
+                    return new Dracula();
                 case BossType.BI_MA:
                     return new BiMa();
                 case BossType.MA_TROI:
@@ -561,7 +562,6 @@ public class BossManager {
     private void loopCreateBoss() {
         for (Map.Entry<Integer, Long> entry : setTimeSpawnBoss.entrySet()) {
             if (System.currentTimeMillis() >= entry.getValue()) {
-                System.out.println("Value: " + entry.getKey());
                 createBoss(entry.getKey());
                 setTimeSpawnBoss.remove(entry.getKey());
             }

@@ -23,6 +23,7 @@ import com.girlkun.models.player.Inventory;
 import com.girlkun.models.skill.Skill;
 import com.girlkun.services.ItemService;
 import com.girlkun.services.MapService;
+import com.girlkun.services.SQLExportService;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -80,7 +81,8 @@ public class Client implements Runnable {
         if (session.joinedGame) {
             session.joinedGame = false;
             try {
-                GirlkunDB.executeUpdate("update account set last_time_logout = ? where id = ?", new Timestamp(System.currentTimeMillis()), session.userId);
+                GirlkunDB.executeUpdate("update account set last_time_logout = ? where id = ?",
+                        new Timestamp(System.currentTimeMillis()), session.userId);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -133,6 +135,7 @@ public class Client implements Runnable {
             }
         }
         PlayerDAO.updatePlayer(player);
+        SQLExportService.gI().exportOnLogout((MySession) player.getSession(), player);
     }
 
     public void kickSession(MySession session) {

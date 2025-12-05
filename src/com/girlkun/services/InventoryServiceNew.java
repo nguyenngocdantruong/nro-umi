@@ -11,6 +11,7 @@ import com.girlkun.models.player.Pet;
 import com.girlkun.models.player.Player;
 import com.girlkun.network.io.Message;
 import com.girlkun.services.func.ChangeMapService;
+import com.girlkun.utils.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -150,6 +151,7 @@ public class InventoryServiceNew {
     }
 
     public void throwItem(Player player, int where, int index) {
+        Logger.warning(player.name + " " + where);
         Item itemThrow = null;
         if (where == 0) {
             itemThrow = player.inventory.itemsBody.get(index);
@@ -416,6 +418,11 @@ public class InventoryServiceNew {
             sendItemBody(player);
             Service.getInstance().Send_Caitrang(player);
             Service.getInstance().point(player);
+
+            // Broadcast visual update cho các player khác trong zone
+            if (player.zone != null) {
+                player.zone.load_Me_To_Another(player);
+            }
         }
     }
 
@@ -441,6 +448,11 @@ public class InventoryServiceNew {
             sendItemBody(player);
             Service.getInstance().Send_Caitrang(player);
             Service.getInstance().point(player);
+
+            // Broadcast visual update cho các player khác trong zone
+            if (player.zone != null) {
+                player.zone.load_Me_To_Another(player);
+            }
         }
     }
 

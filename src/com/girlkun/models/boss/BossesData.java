@@ -3006,12 +3006,40 @@ public class BossesData {
     );
 
     //************************************************************************** Halloween Event Bosses
+     public static final BossData DRACULA_HALLOWEEN = new BossData(
+            "Dracula %d", 
+            ConstPlayer.TRAI_DAT, //gender
+            new short[]{353, 354, 355, -1, -1, -1}, //outfit 
+            2000, //dame - 2M
+            new int[]{200}, //hp - 500M
+            // Map join: Nam guru, Nam Kame, Đảo bulong, Dong Nam Guru, Thung lung den, Bo  vuc den
+            new int[]{33, 29, 30, 34, 37, 38,  0, 7, 14}, //map join
+            new int[][]{
+                {Skill.DRAGON, 7, 1000},
+                {Skill.KAMEJOKO, 7, 1000},
+                {Skill.DEMON, 7, 1500},
+                {Skill.MASENKO, 7, 1000}
+            }, //skill
+            new String[]{"|-1|Trick or Treat!",
+                "|-1|Cho xin tí tiết!",
+                "|-1|Halloween vui vẻ các chiến binh!"
+            }, //text chat start
+            new String[]{"|-1|Ta là trùm halloween mạnh nhất!",
+                "|-1|Các ngươi không thể đánh bại ta!",
+                "|-1|Kẹo hay bị ghẹo?"
+            }, //text chat mid
+            new String[]{"|-1|Ta sẽ trở lại...",
+                "|-1|Halloween chưa kết thúc đâu!"
+            }, //text chat end
+            REST_15_M //rest 15 minutes
+    );
+     
     public static final BossData BI_MA = new BossData(
             "Bí ma", //name (random number will be added)
             ConstPlayer.TRAI_DAT, //gender
             new short[]{754, 755, 756, -1, -1, -1}, //outfit - TEMPORARY, cần thay bằng Halloween sprite
             2000, //dame - 2M
-            new int[]{500}, //hp - 500M
+            new int[]{200}, //hp - 500M
             // Map join: Nam guru, Nam Kame, Đảo bulong, Dong Nam Guru, Thung lung den, Bo  vuc den
             new int[]{33, 29, 30, 34, 37, 38}, //map join
             new int[][]{
@@ -3037,7 +3065,7 @@ public class BossesData {
             ConstPlayer.NAMEC, //gender
             new short[]{651, 652, 653, -1, -1, -1}, //outfit
             1800, //dame - 18k
-            new int[]{200}, //hp - 450M
+            new int[]{100}, //hp - 450M
             // Siêu thị, Thung lũng phía bắc, Thị trấn ginder
             new int[]{84, 99, 100}, //maps
             new int[][]{
@@ -3063,7 +3091,7 @@ public class BossesData {
             ConstPlayer.XAYDA, //gender
             new short[]{654, 655, 656, -1, -1, -1}, //outfit 
             1600, //dame - 1.6M
-            new int[]{200}, //hp - 400M
+            new int[]{100}, //hp - 400M
             new int[]{33, 29, 30, 34, 37, 38, 0, 7, 14}, 
             new int[][]{
                 {Skill.GALICK, 7, 1000},
