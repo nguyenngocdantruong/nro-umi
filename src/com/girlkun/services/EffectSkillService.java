@@ -369,10 +369,15 @@ public class EffectSkillService {
     public void sendEffectEndCharge(Player player) {
         Message msg;
         try {
+            // Check null để tránh lỗi khi boss không có skillSelect
+            short skillId = -1;
+            if (player.playerSkill != null && player.playerSkill.skillSelect != null) {
+                skillId = player.playerSkill.skillSelect.skillId;
+            }
             msg = new Message(-45);
             msg.writer().writeByte(5);
             msg.writer().writeInt((int) player.id);
-            msg.writer().writeShort(player.playerSkill.skillSelect.skillId);
+            msg.writer().writeShort(skillId);
             Service.gI().sendMessAllPlayerInMap(player, msg);
             msg.cleanup();
         } catch (Exception e) {
@@ -385,10 +390,15 @@ public class EffectSkillService {
         Skill skill = SkillUtil.getSkillbyId(player, Skill.BIEN_KHI);
         Message msg;
         try {
+            // Check null để tránh lỗi khi boss không có skill BIEN_KHI
+            short skillId = -1;
+            if (skill != null) {
+                skillId = skill.skillId;
+            }
             msg = new Message(-45);
             msg.writer().writeByte(5);
             msg.writer().writeInt((int) player.id);
-            msg.writer().writeShort(skill.skillId);
+            msg.writer().writeShort(skillId);
             Service.gI().sendMessAllPlayerInMap(player, msg);
             msg.cleanup();
         } catch (Exception e) {

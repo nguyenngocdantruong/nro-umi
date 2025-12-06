@@ -3,10 +3,13 @@ package com.girlkun.models.event;
 import com.girlkun.models.boss.Boss;
 import com.girlkun.models.boss.BossManager;
 import com.girlkun.models.event.events.Default;
+import com.girlkun.models.item.Item;
 import com.girlkun.models.npc.NpcFactory;
 import com.girlkun.services.MapService;
 import com.girlkun.services.Service;
 import com.girlkun.utils.Logger;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Abstract base class cho tất cả các Event
@@ -26,14 +29,19 @@ public abstract class Event implements IEvent {
             npc();
             setEventFlagInited();
         }
+        if (this instanceof Default){
+            Service.gI().sendThongBaoAllPlayer(String.format("Hiện tại chưa diễn ra event gì cả!\nHệ số TNSM: %d!",
+                getHeSoTnSm()));
+        }
+        else{
+            Service.gI().sendThongBaoAllPlayer(String.format("Event %s đã bắt đầu mời bạn trải nghiệm!\nHệ số TNSM: %d!",
+                getNameEvent(), getHeSoTnSm()));
+        }
         boss();
         itemMap();
         itemBoss();
         EventManager.gI().lastTimeChangeEvent = System.currentTimeMillis();
-        if (this instanceof Default)
-            return;
-        Service.gI().sendThongBaoAllPlayer(String.format("Event %s đã bắt đầu mời bạn trải nghiệm!\nHệ số TNSM: %d!",
-                getNameEvent(), getHeSoTnSm()));
+        
     }
 
     protected boolean getEventFlag() {
@@ -91,8 +99,8 @@ public abstract class Event implements IEvent {
     }
 
     @Override
-    public void itemMap() {
-        // Default: không config item map
+    public List<Item> itemMap() {
+        return new ArrayList<>();
     }
 
     @Override

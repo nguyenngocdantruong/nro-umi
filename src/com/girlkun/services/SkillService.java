@@ -3,6 +3,7 @@ package com.girlkun.services;
 import com.girlkun.consts.ConstPlayer;
 import com.girlkun.models.boss.Boss;
 import com.girlkun.models.boss.BossID;
+import com.girlkun.models.boss.event.trung_thu.KhiXayda;
 import com.girlkun.models.boss.event.trung_thu.ThoDaiCa;
 import com.girlkun.models.intrinsic.Intrinsic;
 import com.girlkun.models.mob.Mob;
@@ -706,6 +707,11 @@ public class SkillService {
                 EffectSkillService.gI().sendEffectUseSkill(player, Skill.SOCOLA);
                 int timeSocola = SkillUtil.getTimeSocola();
                 if (plTarget != null) {
+                    if(plTarget instanceof KhiXayda){
+                        plTarget.chat("Khà khà!");
+                        affterUseSkill(player, player.playerSkill.skillSelect.template.id);
+                        break;
+                    }
                     EffectSkillService.gI().setSocola(plTarget, System.currentTimeMillis(), timeSocola);
                     Service.getInstance().Send_Caitrang(plTarget);
                     ItemTimeService.gI().sendItemTime(plTarget, 3780, timeSocola / 1000);
@@ -718,12 +724,21 @@ public class SkillService {
             case Skill.DICH_CHUYEN_TUC_THOI:
                 int timeChoangDCTT = SkillUtil.getTimeDCTT(player.playerSkill.skillSelect.point);
                 if (plTarget != null) {
+                    if(plTarget instanceof KhiXayda){
+                        miss = true;
+                    }
                     Service.getInstance().setPos(player, plTarget.location.x, plTarget.location.y);
                     playerAttackPlayer(player, plTarget, miss);
-                    EffectSkillService.gI().setBlindDCTT(plTarget, System.currentTimeMillis(), timeChoangDCTT);
-                    EffectSkillService.gI().sendEffectPlayer(player, plTarget, EffectSkillService.TURN_ON_EFFECT, EffectSkillService.BLIND_EFFECT);
-                    PlayerService.gI().sendInfoHpMpMoney(plTarget);
-                    ItemTimeService.gI().sendItemTime(plTarget, 3779, timeChoangDCTT / 1000);
+                    if(plTarget instanceof KhiXayda){
+                        plTarget.chat("Vô ích thôi!");
+                        PlayerService.gI().sendInfoHpMpMoney(plTarget);
+                    }
+                    else{
+                        EffectSkillService.gI().setBlindDCTT(plTarget, System.currentTimeMillis(), timeChoangDCTT);
+                        EffectSkillService.gI().sendEffectPlayer(player, plTarget, EffectSkillService.TURN_ON_EFFECT, EffectSkillService.BLIND_EFFECT);
+                        PlayerService.gI().sendInfoHpMpMoney(plTarget);
+                        ItemTimeService.gI().sendItemTime(plTarget, 3779, timeChoangDCTT / 1000);
+                    }
                 }
                 if (mobTarget != null) {
                     Service.getInstance().setPos(player, mobTarget.location.x, mobTarget.location.y);
@@ -739,9 +754,14 @@ public class SkillService {
                 EffectSkillService.gI().sendEffectUseSkill(player, Skill.THOI_MIEN);
                 int timeSleep = SkillUtil.getTimeThoiMien(player.playerSkill.skillSelect.point);
                 if (plTarget != null) {
-                    EffectSkillService.gI().setThoiMien(plTarget, System.currentTimeMillis(), timeSleep);
-                    EffectSkillService.gI().sendEffectPlayer(player, plTarget, EffectSkillService.TURN_ON_EFFECT, EffectSkillService.SLEEP_EFFECT);
-                    ItemTimeService.gI().sendItemTime(plTarget, 3782, timeSleep / 1000);
+                    if(plTarget instanceof KhiXayda){
+                        plTarget.chat("Ối dồi ôi");
+                    }
+                    else{
+                        EffectSkillService.gI().setThoiMien(plTarget, System.currentTimeMillis(), timeSleep);
+                        EffectSkillService.gI().sendEffectPlayer(player, plTarget, EffectSkillService.TURN_ON_EFFECT, EffectSkillService.SLEEP_EFFECT);
+                        ItemTimeService.gI().sendItemTime(plTarget, 3782, timeSleep / 1000);
+                    }
                 }
                 if (mobTarget != null) {
                     mobTarget.effectSkill.setThoiMien(System.currentTimeMillis(), timeSleep);
@@ -766,8 +786,8 @@ public class SkillService {
                 affterUseSkill(player, player.playerSkill.skillSelect.template.id);
                 if (plTarget != null &&
                         plTarget.isBoss &&
-                        MapService.gI().isMapHuyDiet(player.zone.map.mapId) &&
-                        Util.isTrue(40, 100)) {
+                        ((MapService.gI().isMapHuyDiet(player.zone.map.mapId) && Util.isTrue(40, 100)) || plTarget instanceof KhiXayda)
+                        ) {
                     EffectSkillService.gI().removeUseTroi(player);
                     EffectSkillService.gI().removeAnTroi(plTarget);
                     Service.getInstance().chat(plTarget, "Chiêu đó không có tác dụng đâu haha");
@@ -793,7 +813,7 @@ public class SkillService {
                 if (!MapService.gI().isMapOffline(player.zone.map.mapId)) {
                     List<Player> playersMap = player.zone.getHumanoids();
                     for (Player pl : playersMap) {
-                        if(pl instanceof ThoDaiCa){
+                        if(pl instanceof ThoDaiCa || pl instanceof KhiXayda){
                             pl.chat("Vô ích thôi! Hà hà!");
                             continue;
                         }

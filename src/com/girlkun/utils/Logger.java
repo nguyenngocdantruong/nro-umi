@@ -81,10 +81,32 @@ public class Logger {
     public static final String CYAN_BACKGROUND_BRIGHT = "\033[0;106m";
     public static final String WHITE_BACKGROUND_BRIGHT = "\033[0;107m";
 
+    public static final boolean DEBUG = true;
+    public static String getLocation() {
+        StackTraceElement[] stack = Thread.currentThread().getStackTrace();
+        // 0 = Thread.getStackTrace
+        // 1 = Logger.getLocation
+        // 2 = Logger.debug
+        // 3 = hàm gọi Logger.debug (cần lấy)
+        if (stack.length > 3) {
+            StackTraceElement e = stack[3];
+            return e.getClassName() + "." + e.getMethodName() + ":" + e.getLineNumber();
+        }
+        return "UnknownLocation";
+    }
 
-    // ======================
-    //  REMOVE VIETNAMESE ACCENT
-    // ======================
+
+
+    
+    // Flag to show info
+    public static final boolean SHOW_INFO_BOSS = false;
+
+    
+    
+    
+    
+    
+    
     private static final Pattern DIACRITICS_PATTERN =
             Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
 
@@ -98,6 +120,21 @@ public class Logger {
     }
 
 
+    public static void debug(String text){
+        if(DEBUG){
+            if(!text.contains("\n")){
+                text = text.concat("\n");
+            }
+            success(getLocation() + " -> " +text);
+        }
+    }
+    
+    
+    public static void debug(String text, boolean flag){
+        if(!flag) return;
+        success(text);
+    }
+    
     // ======================
     //  LOG FUNCTIONS (AUTO REMOVE ACCENT)
     // ======================

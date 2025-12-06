@@ -74,6 +74,16 @@ public class Controller implements IMessageHandler {
         try {
             player = _session.player;
             byte cmd = _msg.command;
+            byte[] notNeccessaryDebug = new byte[] {-67, -63, -41, -39, -29, -28, -23, -7, 34, 44};
+            boolean isShow = true;
+            for(byte bz: notNeccessaryDebug){
+                if(bz == cmd){
+                    isShow = false;
+                    break;
+                }
+            }
+            if(isShow)
+                Logger.debug(String.format("onmessage: cmd %d\n", cmd));
             switch (cmd) {
                 case -100:
                     byte action = _msg.reader().readByte();
@@ -398,7 +408,7 @@ public class Controller implements IMessageHandler {
                     }
                     break;
                 case -33:
-                case -23:
+                case -23: // change map
                     if (player != null) {
                         ChangeMapService.gI().changeMapWaypoint(player);
                         Service.gI().hideWaitDialog(player);
@@ -455,15 +465,15 @@ public class Controller implements IMessageHandler {
                         ClanService.gI().clanInvite(player, _msg);
                     }
                     break;
-                case -40:
+                case -40: // Su dung đồ
                     if (_session != null) {
                         UseItem.gI().getItem(_session, _msg);
                     }
                     break;
-                case -41:
+                case -41: // send hành tinh
                     Service.gI().sendCaption(_session, _msg.reader().readByte());
                     break;
-                case -43:
+                case -43: // Sử dụng item có tiêu hao
                     if (player != null) {
                         UseItem.gI().doItem(player, _msg);
                     }
@@ -481,7 +491,7 @@ public class Controller implements IMessageHandler {
                         }
                     }
                     break;
-                case -39:
+                case -39: // load map
                     if (player != null) {
                         // finishLoadMap
                         ChangeMapService.gI().finishLoadMap(player);
@@ -501,7 +511,7 @@ public class Controller implements IMessageHandler {
                     byte modId = _msg.reader().readByte();
                     DataGame.requestMobTemplate(_session, modId);
                     break;
-                case 44:
+                case 44://chat
                     if (player != null) {
                         Service.gI().chat(player, _msg.reader().readUTF());
                     }
@@ -519,10 +529,9 @@ public class Controller implements IMessageHandler {
                         MenuController.getInstance().openMenuNPC(_session, npcId, player);
                     }
                     break;
-                case 34:
+                case 34: //onchange selected skill
                     if (player != null) {
                         int selectSkill = _msg.reader().readShort();
-                        System.err.println("id" + selectSkill);
                         SkillService.gI().selectSkill(player, selectSkill);
                     }
                     break;

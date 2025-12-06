@@ -1,5 +1,8 @@
 package com.girlkun.models.event;
 
+import com.girlkun.models.item.Item;
+import java.util.List;
+
 /**
  * Interface định nghĩa các phương thức cơ bản cho Event System
  *
@@ -24,8 +27,9 @@ public interface IEvent {
 
     /**
      * Cấu hình item spawn trên map
+     * @return Return ra list item rơi ra từ quái trong event
      */
-    void itemMap();
+    List<Item> itemMap();
 
     /**
      * Cấu hình item drop từ boss

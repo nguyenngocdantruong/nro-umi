@@ -56,7 +56,7 @@ public class ItemTime {
     public long lastTimeCuongNo2;
     public long lastTimeAnDanh2;
     
-           public long lastTimeBoHuyetSC;
+    public long lastTimeBoHuyetSC;
     public long lastTimeBoKhiSC;
     public long lastTimeGiapXenSC;
     public long lastTimeCuongNoSC;
@@ -97,11 +97,20 @@ public class ItemTime {
     public long lastTimetrbhp;
     public long lastTimetrbki;
 
+    
+    public ItemTimeEvent itemTimeEvent;
+    
     public ItemTime(Player player) {
         this.player = player;
+        this.itemTimeEvent = new ItemTimeEvent(player);
     }
 
     public void update() {
+        
+        // ================================= Item event =================================
+        this.itemTimeEvent.update();
+        // =================================
+        
         if (isEatMeal) {
             if (Util.canDoWithTime(lastTimeEatMeal, TIME_EAT_MEAL)) {
                 isEatMeal = false;

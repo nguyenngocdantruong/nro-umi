@@ -818,6 +818,10 @@ public class Service {
         if (player.getSession() != null && player.isAdmin()) {
             // Chuyển đổi event
             switch(text){
+                case "debugevent":{
+                    EventManager.gI().changeEvent(player, ConstEvent.DEBUG);
+                    return;
+                }
                 case "trungthu":{
                     EventManager.gI().changeEvent(player, ConstEvent.TRUNG_THU);
                     return;

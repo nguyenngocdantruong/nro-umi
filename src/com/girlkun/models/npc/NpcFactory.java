@@ -2101,7 +2101,8 @@ public class NpcFactory {
                             "Trick or treat!\n" +
                                     "Ta có thể giúp gì cho ngươi?",
                             "Shop Halloween",
-                            "Đổi quà",
+                            "Đổi kẹo",
+                            "Đổi bí ngô",
                             "Hướng dẫn");
                 }
             }
@@ -2117,17 +2118,20 @@ public class NpcFactory {
                                 case 0: // Shop Halloween
                                     ShopServiceNew.gI().opendShop(player, "BILL_HALLOWEEN", false);
                                     break;
-                                case 1: // Đổi quà
+                                case 1: // Đổi kẹo
                                     createOtherMenu(player, ConstNpc.MENU_EVENT,
-                                            "Sử dụng Bí Ngô để đổi cải trang\n" +
-                                                    "1 Cải trang = 99 Bí Ngô\n"
+                                            "Sử dụng Kẹo bàn tay để đổi cải trang\n" +
+                                                    "1 Cải trang = 99 Kẹo bàn tay\n"
                                                     + "Cải trang Dơi nhí (40%)\n"
                                                     + "Cải trang Ma trơi (40%)\n"
                                                     + "Cải trang Bộ xương (15%)\n"
                                                     + "Cải trang Bill Bí ngô VIP (5%)",
                                             "Đổi ngay", "Đóng");
                                     break;
-                                case 2: // Hướng dẫn
+                                case 2: // Đổi bí ngô 585 drop từ quái
+                                    ShopServiceNew.gI().opendShop(player, "BILL_HALLOWEEN_BINGO", false);
+                                    break;
+                                case 3: // Hướng dẫn
                                     createOtherMenu(player, ConstNpc.IGNORE_MENU,
                                             "Event Halloween:\n" +
                                                     "- Săn boss Dơi, Ma trơi, Bí ma và Dracula\n" +
@@ -2217,7 +2221,7 @@ public class NpcFactory {
 
                                         Service.gI().sendThongBao(player, "Đổi thành công!");
                                     } else {
-                                        Service.gI().sendThongBao(player, "Bạn cần 99 Bí Ngô trong hành trang!");
+                                        Service.gI().sendThongBao(player, "Bạn cần 99 Kẹo bàn tay trong hành trang!");
                                     }
                                     break;
                             }

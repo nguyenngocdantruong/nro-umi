@@ -23,17 +23,11 @@ public class BossHalloween extends Boss {
             // bí từ 1s - 7s
             int[] listNgocRongXuong = new int[] {702, 703, 704, 705, 706, 707, 708};
             int itemIdBiDrop = listNgocRongXuong[Util.nextInt(0, listNgocRongXuong.length - 1)];
-            Service.getInstance().dropItemMap(this.zone, new ItemMap(zone, itemIdBiDrop, 1, this.location.x, this.location.y, plKill.id));
+            int x = this.location.x + Util.nextInt(-30, 30);
+            Service.getInstance().dropItemMap(this.zone, new ItemMap(zone, itemIdBiDrop, 1, x, this.location.y, plKill.id));
         }
-        if(Util.isTrue(20, 100)){
-            int idNgocXanh = 77; //Ngọc xanh 77
-            int quantity = Util.nextInt(1, 6);
-            ItemMap itemNgoc = new ItemMap(this.zone, idNgocXanh, 
-                    quantity, 
-                    this.location.x + Util.nextInt(-50, 50),
-                    this.zone.map.yPhysicInTop(this.location.x, this.location.y - 24)
-                    , -1);
-            Service.gI().dropItemMap(this.zone, itemNgoc);
+        if(Util.isTrue(60, 100)){
+            super.reward(plKill);
         }
         // Bí ngô nhí nhảnh
         if(Util.isTrue(80, 100)){

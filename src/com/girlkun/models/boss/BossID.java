@@ -5,6 +5,7 @@ public class BossID {
     private BossID() {
 
     }
+
     public static final byte TRUNG_UY_TRANG = -3;
     public static final byte TRUNG_UY_XANH_LO = -4;
     public static final byte TRUNG_UD_THEP = -5;
@@ -36,7 +37,7 @@ public class BossID {
     public static final int RAMBO = -22;
     public static final int SUPER_ANDROID_17 = 99;
     public static final int zeno = -200457;
-//   
+    //
     public static final int HOT = -2300;
     public static final int HOV = -24001;
     public static final int HO = -25002;
@@ -124,7 +125,7 @@ public class BossID {
     public static final int Rong_6Sao = -229;
     public static final int Rong_7Sao = -230;
 
-    //mabu 12h
+    // mabu 12h
     public static final int DRABURA = -233;
     public static final int BUI_BUI = -234;
     public static final int YA_CON = -235;
@@ -159,9 +160,11 @@ public class BossID {
     public static final byte THIEN_XIN_HANG_CLONE2 = -90;
     public static final byte THIEN_XIN_HANG_CLONE3 = -91;
 
+    // ========================Trung thu EVENT========================
     public static final byte THO_DAI_CA = 127;
+    public static final int KHI_XAYDA = -353;
 
-    //========================HALLOWEEN EVENT========================
+    // ========================HALLOWEEN EVENT========================
     public static final int BI_MA = -351;
     public static final int MA_TROI = -349;
     public static final int DOI = -350;

@@ -877,6 +877,10 @@ public class NPoint {
         if (this.player.itemTime != null && this.player.itemTime.istrbhp) {
             this.hpMax += (this.mpMax * 30 / 100);
         }
+        // Súp bí hắc ám
+        if(this.player.itemTime.itemTimeEvent.isUseSupBiHacAm){
+            this.hpMax += (this.hpMax / 10);
+        }
     }
 
     // (hp sư phụ + hp đệ tử ) + 15%
@@ -1218,6 +1222,12 @@ public class NPoint {
         if (this.player.itemTime != null && this.player.itemTime.isUseCuongNoSC) {
             this.dame += this.dame * 2.2;
         }
+        
+        // Hambuger sâu
+        if (this.player.itemTime != null && this.player.itemTime.itemTimeEvent.isUseHambugerSau) {
+            this.dame += this.dame / 10;
+        }
+        
         //giảm dame
         this.dame -= ((long) this.dame * tlSubSD / 100);
         //map cold
@@ -1264,6 +1274,10 @@ public class NPoint {
         if (this.player.rewardBlackBall.timeOutOfDateReward[1] > System.currentTimeMillis()) {
             this.def += ((long) this.def * RewardBlackBall.R2S_2 / 100);
         }
+        // Bánh gato nhện
+        if(this.player.itemTime.itemTimeEvent.isUseBanhGatoNhen){
+            this.def = this.def * 11 / 10;
+        }
     }
 
     private void setCrit() {
@@ -1276,6 +1290,10 @@ public class NPoint {
         //biến khỉ
         if (this.player.effectSkill.isMonkey) {
             this.crit = 110;
+        }
+        // Kẹo 1 mắt
+        if(this.player.itemTime.itemTimeEvent.isUseKeo1Mat){
+            this.crit += 5;
         }
     }
 
@@ -1574,6 +1592,12 @@ public class NPoint {
                 }
             }
             tiemNang *= Manager.RATE_EXP_SERVER;
+            
+            // Đuôi khỉ trung thu
+            if(this.player.itemTime != null && this.player.itemTime.itemTimeEvent.isUseDuoiKhi){
+                tiemNang *= 2;
+            }
+            
             tiemNang = calSubTNSM(tiemNang);
             if (tiemNang <= 0) {
                 tiemNang = 1;

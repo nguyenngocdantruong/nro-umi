@@ -9,6 +9,7 @@ package com.girlkun.models.event;
  * @author nguyenngocdantruong
  */
 public enum ConstEvent {
+    DEBUG(-2),
     MAC_DINH(-1),
     TRUNG_THU (0),
     GIANG_SINH(1),

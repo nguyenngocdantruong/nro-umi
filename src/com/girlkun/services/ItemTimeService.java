@@ -36,6 +36,63 @@ public class ItemTimeService {
             sendItemTime(player, player.gender == ConstPlayer.NAMEC ? 3901 : 3790,
                     (int) ((Fusion.TIME_FUSION - (System.currentTimeMillis() - player.fusion.lastTimeFusion)) / 1000));
         }
+        
+        // ===================================== Item event =====================================
+        // Kẹo 1 mắt
+        if (player.itemTime.itemTimeEvent.isUseKeo1Mat) {
+            sendItemTime(
+                player,
+                8243,
+                (int) ((TIME_BANH
+                        - (System.currentTimeMillis() - player.itemTime.itemTimeEvent.lastTimeUseKeo1Mat))
+                        / 1000)
+            );
+        }
+
+        // Súp bí hắc ám
+        if (player.itemTime.itemTimeEvent.isUseSupBiHacAm) {
+            sendItemTime(
+                player,
+                8244,
+                (int) ((TIME_BANH
+                        - (System.currentTimeMillis() - player.itemTime.itemTimeEvent.lastTimeUseSupBiHacAm))
+                        / 1000)
+            );
+        }
+
+        // Bánh gato nhện
+        if (player.itemTime.itemTimeEvent.isUseBanhGatoNhen) {
+            sendItemTime(
+                player,
+                8246,
+                (int) ((TIME_BANH
+                        - (System.currentTimeMillis() - player.itemTime.itemTimeEvent.lastTimeUseBanhGatoNhen))
+                        / 1000)
+            );
+        }
+
+        // Hamburger nhện
+        if (player.itemTime.itemTimeEvent.isUseHambugerSau) {
+            sendItemTime(
+                player,
+                8247,
+                (int) ((TIME_BANH - (System.currentTimeMillis() - player.itemTime.itemTimeEvent.lastTimeUseHambugerSau))
+                        / 1000)
+            );
+        }
+        
+        // Đuôi khỉ
+        if (player.itemTime.itemTimeEvent.isUseDuoiKhi) {
+            sendItemTime(
+                player,
+                5072,
+                (int) ((TIME_BANH - (System.currentTimeMillis() - player.itemTime.itemTimeEvent.lastTimeUseDuoiKhi))
+                        / 1000)
+            );
+        }
+
+        // =====================================
+        
         if (player.itemTime.isUseBoHuyet) {
             sendItemTime(player, 2755, (int) ((TIME_ITEM - (System.currentTimeMillis() - player.itemTime.lastTimeBoHuyet)) / 1000));
         }

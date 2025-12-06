@@ -53,6 +53,7 @@ import com.girlkun.models.boss.list_boss.New.*;
 import com.girlkun.models.boss.list_boss.Broly.SuperBroly;
 import com.girlkun.models.map.Zone;
 import com.girlkun.consts.ConstPlayer;
+import com.girlkun.models.boss.event.trung_thu.KhiXayda;
 import com.girlkun.models.boss.event.trung_thu.ThoDaiCa;
 import com.girlkun.models.boss.list_boss.halloween.*;
 import com.girlkun.models.player.Player;
@@ -116,7 +117,6 @@ public class BossManager {
                 return;
             }
             int[] bossTypes = {
-//                    BossType.THO_DAI_CA,
                     BossType.KUKU,
                     BossType.MAP_DAU_DINH,
                     BossType.RAMBO,
@@ -175,6 +175,9 @@ public class BossManager {
                     BossType.zeno,
                     BossType.vt6,
                     BossType.bergamo, };
+            if(Logger.DEBUG){
+                bossTypes = new int[] { } ;
+            }
             for (int i = 0; i < bossTypes.length; i++) {
                 switch (bossTypes[i]) {
                     case BossType.KUKU:
@@ -212,6 +215,8 @@ public class BossManager {
     public Boss createBoss(int bossID) {
         try {
             switch (bossID) {
+                case BossType.KHI_XAYDA:
+                    return new KhiXayda();
                 case BossType.THO_DAI_CA:
                     return new ThoDaiCa();
                 case BossType.DRACULA_HALLOWEEN:

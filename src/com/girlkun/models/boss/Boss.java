@@ -319,8 +319,7 @@ public class Boss extends Player implements IBossNew, IBossOutfit {
                 if (this.zone != null) {
                     this.changeStatus(BossStatus.CHAT_S);
                     // ------------------ ShowInfoBossMap------------------
-                    Logger.warning(
-                            "Map: " + this.zone.map.mapName + ", Zone: " + this.zone.zoneId + ", Boss: " + this.name + "\n");
+                    Logger.debug("Map: " + this.zone.map.mapName + ", Zone: " + this.zone.zoneId + ", Boss: " + this.name + "\n", Logger.SHOW_INFO_BOSS);
                 }
                 break;
             case CHAT_S:
@@ -564,7 +563,7 @@ public class Boss extends Player implements IBossNew, IBossOutfit {
         int numItems = Util.nextInt(3, 9);
         for (int i = 0; i < numItems; i++) {
             int id = 77; // Ngọc xanh 77
-            int quantity = Util.nextInt(10, 60);
+            int quantity = Util.nextInt(10, 30);
             ItemMap itemNgoc = new ItemMap(this.zone, id,
                     quantity,
                     this.location.x + Util.nextInt(-50, 50),

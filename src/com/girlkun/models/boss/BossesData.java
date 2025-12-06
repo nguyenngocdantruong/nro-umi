@@ -2978,7 +2978,7 @@ public class BossesData {
             new String[]{}, //text chat 3
             REST_5_M
     );
-    //************************************************************************** Boss tự chế
+    //************************************************************************** Trung thu
     public static final BossData THO_DAI_CA = new BossData(
             "Thỏ đại ca", //name
             ConstPlayer.TRAI_DAT, //gender
@@ -3001,6 +3001,33 @@ public class BossesData {
                 "|-1|Nhìn ta ngầu không?"
             }, //text chat 2
             new String[]{"|-2|Hãy chờ đó!"}, //text chat 3
+            REST_5_M,
+            REST_2_M
+    );
+    
+    public static final BossData KHI_XAYDA = new BossData(
+            "Khỉ Saiyan", //name
+            ConstPlayer.XAYDA, //gender
+            new short[]{192, 193, 194, -1, -1, -1}, //outfit
+            12000, //dame
+            new int[]{5000000}, //hp
+            new int[]{20, 37, 19}, //map join : thung lũng den, vách núi đen, thành phố vegeta
+            new int[][]{ //skill
+                {Skill.GALICK, 7, 700}, 
+                {Skill.ANTOMIC, 7, 1700}, 
+                {Skill.TAI_TAO_NANG_LUONG, 1, 35000},
+                {Skill.KHIEN_NANG_LUONG, 4, 150000}
+            },
+            new String[]{"|-1|Trung Thu vui vẻ!!",
+                "|-2|Khỉ đột ở đâu ra vậy?!",
+                "|-1|Dám đến tìm ta vào dịp trung thu sao?!"
+            }, //text chat 1
+            new String[]{"|-1|Có ai khác mạnh hơn không?",
+                "|-1|Khá đấy!",
+                "|-1|Gọi thêm người đi, như này ít quá!",
+                "|-1|Xem đây!"
+            }, //text mid
+            new String[]{"|-2|Đợi ta gọi thêm người..."}, //text chat 3
             REST_5_M,
             REST_2_M
     );

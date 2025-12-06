@@ -156,7 +156,9 @@ public class BossType {
     public static final byte THIEN_XIN_HANG_CLONE2 = -90;
     public static final byte THIEN_XIN_HANG_CLONE3 = -91;
 
+    // ========================Trung thu EVENT========================
     public static final byte THO_DAI_CA = 127;
+    public static final int KHI_XAYDA = -353;
 
     //========================HALLOWEEN EVENT========================
     public static final int BI_MA = -351;

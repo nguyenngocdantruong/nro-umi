@@ -38,6 +38,7 @@ public class EventManager {
     }
 
     // Event flags kiểm tra các npc đã init chưa
+    public boolean DEBUG = false;
     public boolean HALLOWEEN = false;
     public boolean CHRISTMAS = false;
     public boolean TRUNG_THU = false;
@@ -49,6 +50,10 @@ public class EventManager {
 
     public void setEventFlag(ConstEvent ev) {
         switch (ev) {
+            case DEBUG:{
+                DEBUG = true;
+                break;
+            }
             case GIANG_SINH: {
                 CHRISTMAS = true;
                 break;
@@ -66,6 +71,9 @@ public class EventManager {
 
     public boolean getEventFlag(ConstEvent ev) {
         switch (ev) {
+            case DEBUG : {
+                return DEBUG;
+            }
             case GIANG_SINH: {
                 return CHRISTMAS;
             }
@@ -117,9 +125,15 @@ public class EventManager {
         }
 
         // Không có event nào active
-        currentEvent = new Default();
+        if(Logger.DEBUG && false){
+            Logger.debug("Chế độ Debug event. Nếu bạn thấy cái này vui lòng liên hệ Admin fix lại.");
+            currentEvent = new Debug();
+        }
+        else{
+            Logger.debug("Chế độ bình thường (không có sự kiện đặc biệt)");
+            currentEvent = new Default();
+        }
         currentEvent.init();
-        Logger.success("Chế độ bình thường (không có sự kiện đặc biệt)\n");
     }
 
     /**
@@ -134,6 +148,9 @@ public class EventManager {
 
     public boolean isCurrentEvent(ConstEvent typeEvent) {
         switch (typeEvent) {
+            case DEBUG:{
+                return getCurrentEvent() instanceof Debug;
+            }
             case GIANG_SINH: {
                 return getCurrentEvent() instanceof Christmas;
             }
@@ -172,6 +189,7 @@ public class EventManager {
      */
     public void changeEvent(Player pl, ConstEvent typeEvent) {
         int s = (int)(System.currentTimeMillis() - lastTimeChangeEvent)/1000;
+        s = 301;
         if(s < 300){ // 5 phút
             String tb = String.format("Bạn thay đổi event quá nhanh, vui lòng đợi %d giây nữa!", 300 - s);
             Service.gI().sendThongBao(pl, tb);
@@ -185,6 +203,10 @@ public class EventManager {
         Service.gI().sendThongBao(pl, "Bắt đầu khởi động event mới!");
         // Tạo event mới
         switch (typeEvent) {
+            case DEBUG : {
+                currentEvent = new Debug();
+                break;
+            }
             case GIANG_SINH: {
                 currentEvent = new Christmas();
                 break;

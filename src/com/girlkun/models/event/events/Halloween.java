@@ -15,8 +15,6 @@ import com.girlkun.server.Manager;
  */
 public class Halloween extends Event {
 
-    private Shop billBiNgoShop;
-
     @Override
     public int getHeSoTnSm() {
         return 3;
