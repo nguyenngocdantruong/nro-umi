@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 public class EffectSkillService {
 
     public static final byte TURN_ON_EFFECT = 1;
@@ -39,7 +38,7 @@ public class EffectSkillService {
         return i;
     }
 
-    //hiệu ứng player dùng skill
+    // hiệu ứng player dùng skill
     public void sendEffectUseSkill(Player player, byte skillId) {
         Skill skill = SkillUtil.getSkillbyId(player, skillId);
         Message msg;
@@ -59,14 +58,14 @@ public class EffectSkillService {
         Message msg;
         try {
             msg = new Message(-124);
-            msg.writer().writeByte(toggle); //0: hủy hiệu ứng, 1: bắt đầu hiệu ứng
-            msg.writer().writeByte(0); //0: vào phần phayer, 1: vào phần mob
+            msg.writer().writeByte(toggle); // 0: hủy hiệu ứng, 1: bắt đầu hiệu ứng
+            msg.writer().writeByte(0); // 0: vào phần phayer, 1: vào phần mob
             if (toggle == TURN_OFF_ALL_EFFECT) {
                 msg.writer().writeInt((int) plTarget.id);
             } else {
-                msg.writer().writeByte(effect); //loại hiệu ứng
-                msg.writer().writeInt((int) plTarget.id); //id player dính effect
-                msg.writer().writeInt((int) plUseSkill.id); //id player dùng skill
+                msg.writer().writeByte(effect); // loại hiệu ứng
+                msg.writer().writeInt((int) plTarget.id); // id player dính effect
+                msg.writer().writeInt((int) plUseSkill.id); // id player dùng skill
             }
             Service.gI().sendMessAllPlayerInMap(plUseSkill, msg);
             msg.cleanup();
@@ -79,21 +78,20 @@ public class EffectSkillService {
         Message msg;
         try {
             msg = new Message(-124);
-            msg.writer().writeByte(toggle); //0: hủy hiệu ứng, 1: bắt đầu hiệu ứng
-            msg.writer().writeByte(1); //0: vào phần phayer, 1: vào phần mob
-            msg.writer().writeByte(effect); //loại hiệu ứng
-            msg.writer().writeByte(mobTarget.id); //id mob dính effect
-            msg.writer().writeInt((int) plUseSkill.id); //id player dùng skill
+            msg.writer().writeByte(toggle); // 0: hủy hiệu ứng, 1: bắt đầu hiệu ứng
+            msg.writer().writeByte(1); // 0: vào phần phayer, 1: vào phần mob
+            msg.writer().writeByte(effect); // loại hiệu ứng
+            msg.writer().writeByte(mobTarget.id); // id mob dính effect
+            msg.writer().writeInt((int) plUseSkill.id); // id player dùng skill
             Service.gI().sendMessAllPlayerInMap(mobTarget.zone, msg);
             msg.cleanup();
         } catch (Exception e) {
             com.girlkun.utils.Logger.logException(EffectSkillService.class, e);
         }
     }
-    
-    
-    //Trói *********************************************************************
-    //dừng sử dụng trói
+
+    // Trói *********************************************************************
+    // dừng sử dụng trói
     public void removeUseTroi(Player player) {
         if (player.effectSkill.mobAnTroi != null) {
             player.effectSkill.mobAnTroi.effectSkill.removeAnTroi();
@@ -107,7 +105,7 @@ public class EffectSkillService {
         sendEffectPlayer(player, player, TURN_OFF_EFFECT, HOLD_EFFECT);
     }
 
-    //hết thời gian bị trói
+    // hết thời gian bị trói
     public void removeAnTroi(Player player) {
         if (player != null && player.effectSkill != null) {
             player.effectSkill.anTroi = false;
@@ -118,8 +116,8 @@ public class EffectSkillService {
 
     public void setAnTroi(Player player, Player plTroi, long lastTimeAnTroi, int timeAnTroi) {
         player.effectSkill.anTroi = true;
-//        player.effectSkill.lastTimeAnTroi = lastTimeAnTroi;
-//        player.effectSkill.timeAnTroi = timeAnTroi;
+        // player.effectSkill.lastTimeAnTroi = lastTimeAnTroi;
+        // player.effectSkill.timeAnTroi = timeAnTroi;
         player.effectSkill.plTroi = plTroi;
     }
 
@@ -128,25 +126,25 @@ public class EffectSkillService {
         player.effectSkill.lastTimeTroi = lastTimeTroi;
         player.effectSkill.timeTroi = timeTroi;
     }
-    //**************************************************************************
+    // **************************************************************************
 
-    //Thôi miên ****************************************************************
-    //thiết lập thời gian bắt đầu bị thôi miên
+    // Thôi miên ****************************************************************
+    // thiết lập thời gian bắt đầu bị thôi miên
     public void setThoiMien(Player player, long lastTimeThoiMien, int timeThoiMien) {
         player.effectSkill.isThoiMien = true;
         player.effectSkill.lastTimeThoiMien = lastTimeThoiMien;
         player.effectSkill.timeThoiMien = timeThoiMien;
     }
 
-    //hết hiệu ứng thôi miên
+    // hết hiệu ứng thôi miên
     public void removeThoiMien(Player player) {
         player.effectSkill.isThoiMien = false;
         sendEffectPlayer(player, player, TURN_OFF_EFFECT, SLEEP_EFFECT);
     }
 
-    //**************************************************************************
-    //Thái dương hạ san &&&&****************************************************
-    //player ăn choáng thái dương hạ san
+    // **************************************************************************
+    // Thái dương hạ san &&&&****************************************************
+    // player ăn choáng thái dương hạ san
     public void startStun(Player player, long lastTimeStartBlind, int timeBlind) {
         player.effectSkill.lastTimeStartStun = lastTimeStartBlind;
         player.effectSkill.timeStun = timeBlind;
@@ -154,16 +152,14 @@ public class EffectSkillService {
         sendEffectPlayer(player, player, TURN_ON_EFFECT, BLIND_EFFECT);
     }
 
-    //kết thúc choáng thái dương hạ san
+    // kết thúc choáng thái dương hạ san
     public void removeStun(Player player) {
         player.effectSkill.isStun = false;
         sendEffectPlayer(player, player, TURN_OFF_EFFECT, BLIND_EFFECT);
     }
-  
-   
-   
-    //Socola *******************************************************************
-    //player biến thành socola
+
+    // Socola *******************************************************************
+    // player biến thành socola
     public void setSocola(Player player, long lastTimeSocola, int timeSocola) {
         player.effectSkill.lastTimeSocola = lastTimeSocola;
         player.effectSkill.timeSocola = timeSocola;
@@ -171,20 +167,20 @@ public class EffectSkillService {
         player.effectSkill.countPem1hp = 0;
     }
 
-    //player trở lại thành người
+    // player trở lại thành người
     public void removeSocola(Player player) {
         player.effectSkill.isSocola = false;
         Service.gI().Send_Caitrang(player);
     }
 
-    //quái biến thành socola
+    // quái biến thành socola
     public void sendMobToSocola(Player player, Mob mob, int timeSocola) {
         Message msg;
         try {
             msg = new Message(-112);
             msg.writer().writeByte(1);
-            msg.writer().writeByte(mob.id); //mob id
-            msg.writer().writeShort(4133); //icon socola
+            msg.writer().writeByte(mob.id); // mob id
+            msg.writer().writeShort(4133); // icon socola
             Service.gI().sendMessAllPlayerInMap(player, msg);
             msg.cleanup();
             mob.effectSkill.setSocola(System.currentTimeMillis(), timeSocola);
@@ -192,9 +188,9 @@ public class EffectSkillService {
             com.girlkun.utils.Logger.logException(EffectSkillService.class, e);
         }
     }
-    //**************************************************************************
+    // **************************************************************************
 
-    //Dịch chuyển tức thời *****************************************************
+    // Dịch chuyển tức thời *****************************************************
     public void setBlindDCTT(Player player, long lastTimeDCTT, int timeBlindDCTT) {
         player.effectSkill.isBlindDCTT = true;
         player.effectSkill.lastTimeBlindDCTT = lastTimeDCTT;
@@ -205,16 +201,16 @@ public class EffectSkillService {
         player.effectSkill.isBlindDCTT = false;
         sendEffectPlayer(player, player, TURN_OFF_EFFECT, BLIND_EFFECT);
     }
-    //**************************************************************************
+    // **************************************************************************
 
-    //Huýt sáo *****************************************************************
-    //Hưởng huýt sáo
+    // Huýt sáo *****************************************************************
+    // Hưởng huýt sáo
     public void setStartHuytSao(Player player, int tiLeHP) {
         player.effectSkill.tiLeHPHuytSao = tiLeHP;
         player.effectSkill.lastTimeHuytSao = System.currentTimeMillis();
     }
 
-    //Hết hiệu ứng huýt sáo
+    // Hết hiệu ứng huýt sáo
     public void removeHuytSao(Player player) {
         player.effectSkill.tiLeHPHuytSao = 0;
         sendEffectPlayer(player, player, TURN_OFF_EFFECT, HUYT_SAO_EFFECT);
@@ -222,9 +218,9 @@ public class EffectSkillService {
         Service.gI().Send_Info_NV(player);
     }
 
-    //**************************************************************************
-    //Biến khỉ *****************************************************************
-    //Bắt đầu biến khỉ
+    // **************************************************************************
+    // Biến khỉ *****************************************************************
+    // Bắt đầu biến khỉ
     public void setIsMonkey(Player player) {
         try {
             Thread.sleep(2000);
@@ -232,7 +228,7 @@ public class EffectSkillService {
             Logger.getLogger(EffectSkillService.class.getName()).log(Level.SEVERE, null, ex);
         }
         int timeMonkey = SkillUtil.getTimeMonkey(player.playerSkill.skillSelect.point);
-        if(player.setClothes.cadic == 5){
+        if (player.setClothes.cadic == 5) {
             timeMonkey *= 5;
         }
         player.effectSkill.isMonkey = true;
@@ -258,8 +254,8 @@ public class EffectSkillService {
         Service.gI().Send_Info_NV(player);
         Service.gI().sendInfoPlayerEatPea(player);
     }
-    //**************************************************************************
-    //Tái tạo năng lượng *******************************************************
+    // **************************************************************************
+    // Tái tạo năng lượng *******************************************************
 
     public void startCharge(Player player) {
         if (!player.effectSkill.isCharging) {
@@ -270,13 +266,14 @@ public class EffectSkillService {
 
     public void stopCharge(Player player) {
         player.effectSkill.countCharging = 0;
-        player.effectSkill.isCharging = false;;
+        player.effectSkill.isCharging = false;
+        ;
         sendEffectStopCharge(player);
 
     }
 
-    //**************************************************************************
-    //Khiên năng lượng *********************************************************
+    // **************************************************************************
+    // Khiên năng lượng *********************************************************
     public void setStartShield(Player player) {
         player.effectSkill.isShielding = true;
         player.effectSkill.lastTimeShieldUp = System.currentTimeMillis();
@@ -294,7 +291,7 @@ public class EffectSkillService {
         ItemTimeService.gI().removeItemTime(player, 3784);
     }
 
-    //**************************************************************************
+    // **************************************************************************
     public void sendEffectBlindThaiDuongHaSan(Player plUseSkill, List<Player> players, List<Mob> mobs, int timeStun) {
         Message msg;
         try {
@@ -319,7 +316,7 @@ public class EffectSkillService {
         }
     }
 
-    //hiệu ứng bắt đầu gồng
+    // hiệu ứng bắt đầu gồng
     public void sendEffectStartCharge(Player player) {
         Skill skill = SkillUtil.getSkillbyId(player, Skill.TAI_TAO_NANG_LUONG);
         Message msg;
@@ -335,7 +332,7 @@ public class EffectSkillService {
         }
     }
 
-    //hiệu ứng đang gồng
+    // hiệu ứng đang gồng
     public void sendEffectCharge(Player player) {
         Skill skill = SkillUtil.getSkillbyId(player, Skill.TAI_TAO_NANG_LUONG);
         Message msg;
@@ -351,7 +348,7 @@ public class EffectSkillService {
         }
     }
 
-    //dừng gồng
+    // dừng gồng
     public void sendEffectStopCharge(Player player) {
         try {
             Message msg = new Message(-45);
@@ -365,7 +362,7 @@ public class EffectSkillService {
         }
     }
 
-    //hiệu ứng nổ kết thúc gồng
+    // hiệu ứng nổ kết thúc gồng
     public void sendEffectEndCharge(Player player) {
         Message msg;
         try {
@@ -385,7 +382,7 @@ public class EffectSkillService {
         }
     }
 
-    //hiệu ứng biến khỉ
+    // hiệu ứng biến khỉ
     public void sendEffectMonkey(Player player) {
         Skill skill = SkillUtil.getSkillbyId(player, Skill.BIEN_KHI);
         Message msg;
@@ -405,17 +402,18 @@ public class EffectSkillService {
             com.girlkun.utils.Logger.logException(EffectSkillService.class, e);
         }
     }
-     public void sendMobToCaiBinh(Player player, Mob mob, int timeSocola) {
+
+    public void sendMobToCaiBinh(Player player, Mob mob, int timeSocola) {
         Message message = null;
         try {
             message = new Message(-112);
             message.writer().writeByte(1);
-            message.writer().writeByte(mob.id); //mob id
-            message.writer().writeShort(11175); //icon socola
+            message.writer().writeByte(mob.id); // mob id
+            message.writer().writeShort(11175); // icon socola
             Service.getInstance().sendMessAllPlayerInMap(player, message);
             message.cleanup();
             mob.effectSkill.setCaiBinhChua(System.currentTimeMillis(), timeSocola);
-        } catch (Exception e) {           
+        } catch (Exception e) {
         } finally {
             if (message != null) {
                 message.cleanup();
@@ -433,11 +431,12 @@ public class EffectSkillService {
         }
     }
 
-    //Halloween Effect *********************************************************
+    // Halloween Effect *********************************************************
     /**
      * Áp dụng hiệu ứng Halloween lên player
-     * @param player Player nhận hiệu ứng
-     * @param level Cấp độ hiệu ứng (1-5), càng cao càng mạnh
+     * 
+     * @param player        Player nhận hiệu ứng
+     * @param level         Cấp độ hiệu ứng (1-5), càng cao càng mạnh
      * @param timeHalloween Thời gian hiệu ứng (ms)
      */
     public void setIsHalloween(Player player, int level, int timeHalloween) {
@@ -457,6 +456,7 @@ public class EffectSkillService {
 
     /**
      * Loại bỏ hiệu ứng Halloween khỏi player
+     * 
      * @param player Player cần xóa hiệu ứng
      */
     public void removeHalloween(Player player) {
@@ -471,5 +471,49 @@ public class EffectSkillService {
         // Nếu sau này thêm visual effect, uncomment dòng dưới:
         // sendEffectPlayer(player, player, TURN_OFF_EFFECT, HALLOWEEN_EFFECT);
     }
-    //**************************************************************************
+    // **************************************************************************
+
+    // Trung Thu Effect (Bánh Trung Thu) ****************************************
+    /**
+     * Áp dụng hiệu ứng Trung Thu lên player (ăn bánh trung thu)
+     * 
+     * @param player       Player nhận hiệu ứng
+     * @param type         Loại bánh: 1=1trứng, 2=2trứng, 3=gà quay, 4=thập cẩm,
+     *                     5=đặc biệt
+     * @param timeTrungThu Thời gian hiệu ứng (ms)
+     */
+    public void setIsTrungThu(Player player, int type, int timeTrungThu) {
+        if (player == null || player.effectSkill == null) {
+            return;
+        }
+
+        player.effectSkill.isTrungThu = true;
+        player.effectSkill.trungThuType = type;
+        player.effectSkill.lastTimeTrungThu = System.currentTimeMillis();
+        player.effectSkill.timeTrungThu = timeTrungThu;
+
+        // Cập nhật stat cho player
+        Service.gI().point(player);
+        Service.gI().Send_Info_NV(player);
+    }
+
+    /**
+     * Loại bỏ hiệu ứng Trung Thu khỏi player
+     * 
+     * @param player Player cần xóa hiệu ứng
+     */
+    public void removeTrungThu(Player player) {
+        if (player == null || player.effectSkill == null) {
+            return;
+        }
+
+        player.effectSkill.isTrungThu = false;
+        player.effectSkill.trungThuType = 0;
+
+        // Cập nhật lại stat
+        Service.gI().point(player);
+        Service.gI().Send_Info_NV(player);
+        Service.gI().sendThongBao(player, "Hiệu ứng bánh Trung Thu đã hết!");
+    }
+    // **************************************************************************
 }

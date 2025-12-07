@@ -9,6 +9,9 @@ import com.girlkun.models.map.ItemMap;
 
 import java.util.List;
 import com.girlkun.consts.ConstPlayer;
+import com.girlkun.models.Template;
+import com.girlkun.models.event.EventManager;
+import com.girlkun.models.item.ConstItem;
 import com.girlkun.models.map.Zone;
 import com.girlkun.models.player.Location;
 import com.girlkun.models.player.Pet;
@@ -21,6 +24,7 @@ import com.girlkun.server.Maintenance;
 import com.girlkun.server.Manager;
 import com.girlkun.server.ServerManager;
 import com.girlkun.services.*;
+import com.girlkun.utils.Logger;
 import com.girlkun.utils.Util;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -129,7 +133,7 @@ public static void initMopbKhiGas(Mob mob, int level) {
     public boolean isDie() {
         return this.point.gethp() <= 0;
     }
-public boolean isSieuQuai() {
+    public boolean isSieuQuai() {
         return this.lvMob > 0;
     }
     public synchronized void injured(Player plAtt, int damage, boolean dieWhenHpFull) {
@@ -362,43 +366,71 @@ public boolean isSieuQuai() {
         }
     }
 
-       private List<ItemMap> mobReward(Player player, ItemMap itemTask, Message msg) {
-//        nplayer
+    private List<ItemMap> mobReward(Player player, ItemMap itemTask, Message msg) {
         List<ItemMap> itemReward = new ArrayList<>();
-        try { if ((!player.isPet && player.getSession().actived && player.setClothes.setGod()== true && (this.zone.map.mapId > 104 && this.zone.map.mapId < 111 || this.zone.map.mapId == 159))) {
+
+        try {
+            // ========================== GOD SET 1 ==========================
+            if (!player.isPet 
+                    && player.getSession().actived 
+                    && player.setClothes.setGod() 
+                    && ((this.zone.map.mapId > 104 && this.zone.map.mapId < 111) 
+                        || this.zone.map.mapId == 159)) {
+
                 if (Util.isTrue(100, 100)) {
-                  //  Item linhThu = ItemService.gI().createNewItem(Manager.thucan[(Util.nextInt(0,4))]);
-                  //   Service.getInstance().sendThongBao(player, "You received item " + linhThu.template.name);
-                //                        InventoryServiceNew.gI().addItemBag(player, linhThu);
-                InventoryServiceNew.gI().sendItemBags(player);
-              }
-                 }   if ((!player.isPet && player.getSession().actived && player.setClothes.setGod14()== true && (this.zone.map.mapId > 159 && this.zone.map.mapId < 164 || this.zone.map.mapId == 155))) {
+                    // Item linhThu = ItemService.gI().createNewItem(Manager.thucan[(Util.nextInt(0,4))]);
+                    // Service.getInstance().sendThongBao(player, "You received item " + linhThu.template.name);
+                    // InventoryServiceNew.gI().addItemBag(player, linhThu);
+
+                    InventoryServiceNew.gI().sendItemBags(player);
+                }
+            }
+
+            // ========================== GOD SET 2 ==========================
+            if (!player.isPet 
+                    && player.getSession().actived 
+                    && player.setClothes.setGod14() 
+                    && ((this.zone.map.mapId > 159 && this.zone.map.mapId < 164) 
+                        || this.zone.map.mapId == 155)) {
+
                 if (Util.isTrue(1, 100)) {
-                   // Item linhThu = ItemService.gI().createNewItem(Manager.manhts[(Util.nextInt(0,4))]);
-                //     Service.getInstance().sendThongBao(player, "You received item " + linhThu.template.name);
-                       //                 InventoryServiceNew.gI().addItemBag(player, linhThu);
-                InventoryServiceNew.gI().sendItemBags(player);
-              }
-                 }
-            
-            itemReward = this.getItemMobReward(player, this.location.x + Util.nextInt(-10, 10),
-                    this.zone.map.yPhysicInTop(this.location.x, this.location.y));
+                    // Item linhThu = ItemService.gI().createNewItem(Manager.manhts[(Util.nextInt(0,4))]);
+                    // Service.getInstance().sendThongBao(player, "You received item " + linhThu.template.name);
+                    // InventoryServiceNew.gI().addItemBag(player, linhThu);
+
+                    InventoryServiceNew.gI().sendItemBags(player);
+                }
+            }
+
+            // ========================== MOB DROP REWARD ==========================
+            itemReward = this.getItemMobReward(
+                    player,
+                    this.location.x + Util.nextInt(-10, 10),
+                    this.zone.map.yPhysicInTop(this.location.x, this.location.y)
+            );
+
             if (itemTask != null) {
                 itemReward.add(itemTask);
             }
-            msg.writer().writeByte(itemReward.size()); //sl item roi
+
+            // ========================== WRITE MESSAGE ==========================
+            msg.writer().writeByte(itemReward.size()); // số lượng item rơi
+
             for (ItemMap itemMap : itemReward) {
-                msg.writer().writeShort(itemMap.itemMapId);// itemmapid
-                msg.writer().writeShort(itemMap.itemTemplate.id); // id item
-                msg.writer().writeShort(itemMap.x); // xend item
-                msg.writer().writeShort(itemMap.y); // yend item
-                msg.writer().writeInt((int) itemMap.playerId); // id nhan nat
+                msg.writer().writeShort(itemMap.itemMapId);       // item map id
+                msg.writer().writeShort(itemMap.itemTemplate.id); // item template id
+                msg.writer().writeShort(itemMap.x);               // vị trí X
+                msg.writer().writeShort(itemMap.y);               // vị trí Y
+                msg.writer().writeInt((int) itemMap.playerId);    // id người nhận
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         return itemReward;
     }
+
 
     public List<ItemMap> getItemMobReward(Player player, int x, int yEnd) {
         List<ItemMap> list = new ArrayList<>();
@@ -413,17 +445,49 @@ public boolean isSieuQuai() {
             ItemMobReward item = items.get(Util.nextInt(0, items.size() - 1));
             ItemMap itemMap = item.getItemMap(zone, player, x, yEnd);
             if (itemMap != null) {
-                list.add(itemMap);
+                // Bỏ không lấy spl
+                boolean isSPL = false;
+                for(short it: ConstItem.listSPL){
+                    if(item.getTemp().id == it){
+                        isSPL = true;
+                        break;
+                    }
+                }
+                if(!isSPL){
+                    list.add(itemMap);
+                }
             }
         }
         
-        if (!golds.isEmpty()) {
-            ItemMobReward gold = golds.get(Util.nextInt(0, golds.size() - 1));
-            ItemMap itemMap = gold.getItemMap(zone, player, x, yEnd);
-            if (itemMap != null) {
-                list.add(itemMap);
+//        // Vàng theo config
+//        if (!golds.isEmpty()) {
+//            ItemMobReward gold = golds.get(Util.nextInt(0, golds.size() - 1));
+//            ItemMap itemMap = gold.getItemMap(zone, player, x, yEnd);
+//            if (itemMap != null) {
+//                list.add(itemMap);
+//            }
+//        }
+
+        // Quái nào cũng drop trừ mộc nhân
+        if (this.tempId != ConstMob.MOC_NHAN) {
+            // Drop vàng
+            Template.MobTemplate mobTemp = Manager.MOB_TEMPLATES.get(this.tempId);
+            if(mobTemp != null){
+                int chenhLechLv = Service.gI().getCurrLevel(player) - this.level;
+                int maxVangCoBan = Math.min(20000, mobTemp.hp / 2);
+                int vangNhanDuoc = Math.min(32000, Math.max(maxVangCoBan + Util.nextInt(-30, 30) * maxVangCoBan / 100 - chenhLechLv * 1000, 1));
+                ItemMap goldItem = new ItemMap(zone, 76, vangNhanDuoc, x, yEnd, player.id);
+                list.add(goldItem);
+            }
+            
+            // Drop item theo sự kiện
+            List<ItemMap> itemMapEvents = EventManager.gI().getCurrentEvent().itemMap(this.zone.map, this.tempId, zone, x, yEnd + Util.nextInt(-15, 15), player.id);
+            if(!itemMapEvents.isEmpty()){
+                ItemMap random = itemMapEvents.get(Util.nextInt(itemMapEvents.size()));
+                list.add(random);
             }
         }
+        
         if (player.itemTime.isUseMayDo && Util.isTrue(10, 100) && this.tempId > 57 && this.tempId < 66) {
             list.add(new ItemMap(zone, 380, 1, x, player.location.y, player.id));
         }

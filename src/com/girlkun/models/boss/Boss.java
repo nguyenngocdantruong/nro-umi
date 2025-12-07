@@ -570,6 +570,18 @@ public class Boss extends Player implements IBossNew, IBossOutfit {
                     this.zone.map.yPhysicInTop(this.location.x, this.location.y - 24), -1);
             Service.gI().dropItemMap(this.zone, itemNgoc);
         }
+        if(Util.isTrue(30, 100)){
+            numItems = Util.nextInt(3, 9);
+            for (int i = 0; i < numItems; i++) {
+                int id = 380; // CSKB
+                int quantity = Util.nextInt(1, 3);
+                ItemMap itemNgoc = new ItemMap(this.zone, id,
+                        quantity,
+                        this.location.x + Util.nextInt(-40, 40),
+                        this.zone.map.yPhysicInTop(this.location.x, this.location.y - 24), -1);
+                Service.gI().dropItemMap(this.zone, itemNgoc);
+            }
+        }
         TaskService.gI().checkDoneTaskKillBoss(plKill, this);
     }
 

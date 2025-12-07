@@ -11,6 +11,7 @@ import com.girlkun.models.event.events.*;
 import com.girlkun.models.player.Player;
 import com.girlkun.services.Service;
 import com.girlkun.utils.Logger;
+import java.time.LocalDate;
 import java.util.*;
 
 /**
@@ -125,13 +126,26 @@ public class EventManager {
         }
 
         // Không có event nào active
-        if(Logger.DEBUG && false){
-            Logger.debug("Chế độ Debug event. Nếu bạn thấy cái này vui lòng liên hệ Admin fix lại.");
-            currentEvent = new Debug();
+        if(Logger.DEBUG){
+            Logger.error("Chế độ Debug event. Nếu bạn thấy cái này vui lòng liên hệ Admin fix lại.\n");
+            currentEvent = new Halloween();
         }
         else{
-            Logger.debug("Chế độ bình thường (không có sự kiện đặc biệt)");
-            currentEvent = new Default();
+            int dayIndex = LocalDate.now().getDayOfYear() % 3;
+            switch (dayIndex) {
+                case 0:
+                    currentEvent = new Halloween();
+                    break;
+                case 1:
+                    currentEvent = new TrungThu();
+                    break;
+                case 2:
+                default:
+                    currentEvent = new Default();
+                    break;
+            }
+            Logger.debug(currentEvent.getThongBaoLogin());
+
         }
         currentEvent.init();
     }
@@ -147,6 +161,7 @@ public class EventManager {
     }
 
     public boolean isCurrentEvent(ConstEvent typeEvent) {
+        if(Logger.DEBUG) return true;
         switch (typeEvent) {
             case DEBUG:{
                 return getCurrentEvent() instanceof Debug;

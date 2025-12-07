@@ -1,4 +1,4 @@
-package com.girlkun.models.boss.list_boss.halloween;
+package com.girlkun.models.event.list_boss.halloween;
 
 import com.girlkun.consts.ConstPlayer;
 import com.girlkun.models.boss.Boss;

@@ -19,24 +19,23 @@ public class pan extends Boss {
     }
    @Override
     public void reward(Player plKill) {
-        
         ItemMap itemMap;
         if (Util.isTrue(50, 100)) {
-        itemMap = Util.ratiItem(zone,1953, 1, this.location.x, this.location.y, plKill.id);
-        itemMap.options.add(new Item.ItemOption(50,Util.nextInt(20,22)));
-        itemMap.options.add(new Item.ItemOption(77,Util.nextInt(20,22)));
-        itemMap.options.add(new Item.ItemOption(103,Util.nextInt(20,22)));
-        itemMap.options.add(new Item.ItemOption(93,Util.nextInt(1,7)));
-        itemMap.options.add(new Item.ItemOption(30,0));
-        int[] HoaBiNgan = new int[]{457};
-        int randomNR = new Random().nextInt(HoaBiNgan.length);
-        if (Util.isTrue(1, 55)) {
-        Service.getInstance().dropItemMap(this.zone, new ItemMap(zone, HoaBiNgan[randomNR], 1, this.location.x, this.location.y, plKill.id));
-        } else {    
-        
-        Service.gI().dropItemMap(this.zone, itemMap);
-    }
-    } 
+            itemMap = Util.ratiItem(zone,1953, 1, this.location.x, this.location.y, plKill.id);
+            itemMap.options.add(new Item.ItemOption(50,Util.nextInt(20,22)));
+            itemMap.options.add(new Item.ItemOption(77,Util.nextInt(20,22)));
+            itemMap.options.add(new Item.ItemOption(103,Util.nextInt(20,22)));
+            itemMap.options.add(new Item.ItemOption(93,Util.nextInt(1,7)));
+            itemMap.options.add(new Item.ItemOption(30,0));
+            int[] HoaBiNgan = new int[]{457};
+            int randomNR = new Random().nextInt(HoaBiNgan.length);
+            if (Util.isTrue(1, 55)) {
+                Service.getInstance().dropItemMap(this.zone, new ItemMap(zone, HoaBiNgan[randomNR], 1, this.location.x, this.location.y, plKill.id));
+            } 
+            else {    
+                Service.gI().dropItemMap(this.zone, itemMap);
+            }
+        } 
     }
 
     @Override

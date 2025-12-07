@@ -1,70 +1,47 @@
 package com.girlkun.server;
 
 import com.girlkun.utils.Logger;
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-/*
-*
-* Author girlkun siêu cấp zíp pro
-*
- */
-import javax.swing.*;
 
 public class Panel extends JPanel implements ActionListener {
 
-    private JButton baotri, thaydoiexp ,thaydoisk;
-    private JPanel addPanel;
+    private JButton btnBaoTri;
 
     public Panel() {
-        JPanel btri = new JPanel();
-        add(btri);
-        baotri = new JButton("Bảo trì");
-        baotri.addActionListener(this);
-        addPanel = new JPanel();
-        addPanel.add(baotri);
-        btri.add(addPanel);
 
-        JPanel exp = new JPanel();
-        add(exp);
-        thaydoiexp = new JButton("Thay đổi exp");
-        thaydoiexp.addActionListener(this);
-        addPanel = new JPanel();
-        addPanel.add(thaydoiexp);
-        exp.add(addPanel);
+        // PANEL này phải dùng GridBagLayout để căn giữa
+        setLayout(new GridBagLayout());
+        setBackground(new Color(35, 35, 35));
 
-        JPanel sk = new JPanel();
-        add(sk);
-        thaydoisk = new JButton("Thay đổi sự kiện");
-        thaydoisk.addActionListener(this);
-        addPanel = new JPanel();
-        addPanel.add(thaydoisk);
-        sk.add(addPanel);
+        // panel chứa nút (để nút to đẹp hơn)
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new GridLayout(1, 1));
+        buttonPanel.setOpaque(false);
+        buttonPanel.setBorder(new EmptyBorder(10, 20, 10, 20));
+
+        btnBaoTri = new JButton("Bảo trì");
+        btnBaoTri.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        btnBaoTri.setBackground(new Color(65, 65, 65));
+        btnBaoTri.setForeground(Color.WHITE);
+        btnBaoTri.setFocusPainted(false);
+        btnBaoTri.setPreferredSize(new Dimension(180, 40));
+        btnBaoTri.addActionListener(this);
+
+        buttonPanel.add(btnBaoTri);
+
+        // Add panel nút vào giữa
+        add(buttonPanel, new GridBagConstraints());
     }
 
+    @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == baotri) {
+        if (e.getSource() == btnBaoTri) {
             Maintenance.gI().start(15);
-            Logger.error("Tiến Hành Bảo Trì \n");
-        } else if (e.getSource() == thaydoiexp) {
-            String exp = JOptionPane.showInputDialog(this, "Nhập Exp muốn thay đổi\n" +
-                    "EXP hiện tại là :" +Manager.RATE_EXP_SERVER );
-            if (exp != null) {
-                Manager.RATE_EXP_SERVER = Byte.parseByte(exp);
-                Logger.error("EXP hiện tại là :" + exp);
-            }
-        } else if (e.getSource() == thaydoisk) {
-            String sk = JOptionPane.showInputDialog(this, "Nhập sự kiện muốn thay đổi\n" +
-                    "ID sự kiện hiện tại là :" +Manager.SUKIEN );
-            if (sk != null) {
-                Manager.SUKIEN = Byte.parseByte(sk);
-                Logger.error("Sự kiện hiện tại là :" + sk);
-            }
+            Logger.error("Tiến hành bảo trì\n");
         }
     }
 }
-
-
-
-/**
- * Copyright belongs to BTH, please do not copy the source code, thanks - BTH
- */

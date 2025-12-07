@@ -9,6 +9,7 @@ import com.girlkun.models.boss.Boss;
 import com.girlkun.models.boss.BossID;
 import com.girlkun.models.boss.BossStatus;
 import com.girlkun.models.boss.BossesData;
+import com.girlkun.models.item.ConstItem;
 import com.girlkun.models.map.ItemMap;
 import com.girlkun.models.player.Player;
 import com.girlkun.services.EffectSkillService;
@@ -27,7 +28,7 @@ public class Mabu extends Boss {
 
     @Override
     public void reward(Player plKill) {
-        int[] item = new int[]{568};
+        int[] item = new int[]{ ConstItem.QUA_TRUNG_UUB };
         int randomDo = new Random().nextInt(item.length);
         if (Util.isTrue(100, 100)) {
             if (Util.isTrue(1, 100)) {
@@ -36,7 +37,13 @@ public class Mabu extends Boss {
                 return;
             }
             Service.gI().dropItemMap(this.zone, Util.useItem2(zone, item[randomDo], 1, this.location.x, this.location.y, plKill.id));
-        } 
+        }
+        // Rơi đồ thêm
+        ItemMap doRoiTuBoss = Util.GetRandomItemRoiTuBoss(20, ConstItem.LoaiDoRoiTuBoss.DoThanLinh,
+                ConstItem.CoSaoPhaLe.Co, this.zone, this.location.x + Util.nextInt(-15, 15), this.location.y, plKill.id);
+        if(doRoiTuBoss != null){
+            Service.gI().dropItemMap(this.zone, doRoiTuBoss);
+        }
     }
     @Override
     public void active() {

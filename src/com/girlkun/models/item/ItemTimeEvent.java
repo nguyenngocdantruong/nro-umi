@@ -1,6 +1,6 @@
 package com.girlkun.models.item;
 
-import static com.girlkun.models.item.ItemTime.TIME_BANH;
+import static com.girlkun.models.item.ItemTime.*;
 import com.girlkun.models.player.Player;
 import com.girlkun.services.Service;
 import com.girlkun.utils.Util;
@@ -12,6 +12,7 @@ import com.girlkun.utils.Util;
 public class ItemTimeEvent {
 
     public Player player;
+    
 
     public ItemTimeEvent(Player player) {
         this.player = player;
@@ -33,6 +34,11 @@ public class ItemTimeEvent {
     // Item event Trung thu
     public boolean isUseDuoiKhi;
     public long lastTimeUseDuoiKhi;
+    
+    public long lastTimeUseBanhTrungThuGaQuay;
+    public boolean isUseBanhTrungThuGaQuay;
+    public long lastTimeUseBanhTrungThuThapCam;
+    public boolean isUseBanhTrungThuThapCam;
 
     void update() {
         // Kẹo 1 mắt
@@ -62,6 +68,18 @@ public class ItemTimeEvent {
         // Đuôi khỉ
         if (isUseDuoiKhi && Util.canDoWithTime(lastTimeUseDuoiKhi, TIME_BANH)) {
             isUseDuoiKhi = false;
+            Service.gI().point(player);
+        }
+        
+        // Gà quay
+        if (isUseBanhTrungThuGaQuay && Util.canDoWithTime(lastTimeUseBanhTrungThuGaQuay, TIME_60P)) {
+            isUseBanhTrungThuGaQuay = false;
+            Service.gI().point(player);
+        }
+        
+        // Thập cẩm
+        if (isUseBanhTrungThuThapCam && Util.canDoWithTime(lastTimeUseBanhTrungThuThapCam, TIME_60P)) {
+            isUseBanhTrungThuThapCam = false;
             Service.gI().point(player);
         }
     }

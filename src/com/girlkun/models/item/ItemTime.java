@@ -22,7 +22,11 @@ public class ItemTime {
     public static final int TIME_MAY_DO2 = 1800000;
     public static final int TIME_MAY_DO3 = 1800000;
     public static final int TIME_EAT_MEAL = 600000;
-    public static final int TIME_BANH = 1800000;
+    public static final int TIME_BANH   = 1800000;
+    
+    public static final int TIME_60P    = 3600000;
+    public static final int TIME_90P    = 5400000;
+    public static final int TIME_120P   = 7200000;
 
     private Player player;
 
@@ -229,19 +233,19 @@ public class ItemTime {
             }
         }
         if (isUse1trung) {
-            if (Util.canDoWithTime(lastTime1trung, TIME_BANH)) {
+            if (Util.canDoWithTime(lastTime1trung, TIME_60P)) {
                 isUse1trung = false;
                 Service.gI().point(player);
             }
         }
         if (isUse2trung) {
-            if (Util.canDoWithTime(lastTime2trung, TIME_BANH)) {
+            if (Util.canDoWithTime(lastTime2trung, TIME_90P)) {
                 isUse2trung = false;
                 Service.gI().point(player);
             }
         }
         if (isUseDacbiet) {
-            if (Util.canDoWithTime(lastTimeDacbiet, TIME_BANH)) {
+            if (Util.canDoWithTime(lastTimeDacbiet, TIME_120P)) {
                 isUseDacbiet = false;
                 Service.gI().point(player);
             }

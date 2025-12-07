@@ -75,6 +75,12 @@ public class EffectSkill {
     public long lastTimeHalloween;
     public int timeHalloween;
 
+    // Trung Thu effect (Bánh Trung Thu)
+    public boolean isTrungThu;
+    public int trungThuType; // Loại bánh: 1=1trứng, 2=2trứng, 3=gà quay, 4=thập cẩm, 5=đặc biệt
+    public long lastTimeTrungThu;
+    public int timeTrungThu;
+
     public EffectSkill(Player player) {
         this.player = player;
     }
@@ -139,6 +145,9 @@ public class EffectSkill {
         }
         if (isHalloween && (Util.canDoWithTime(lastTimeHalloween, timeHalloween))) {
             EffectSkillService.gI().removeHalloween(this.player);
+        }
+        if (isTrungThu && (Util.canDoWithTime(lastTimeTrungThu, timeTrungThu))) {
+            EffectSkillService.gI().removeTrungThu(this.player);
         }
     }
 

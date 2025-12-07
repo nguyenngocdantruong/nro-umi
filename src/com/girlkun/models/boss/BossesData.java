@@ -2697,7 +2697,7 @@ public class BossesData {
             ConstPlayer.TRAI_DAT, // gender
             new short[]{394, 395, 396, -1, -1, -1}, // outfit
             4000, // dame
-            new int[]{5000000}, // hp
+            new int[]{10000}, // hp
             new int[]{129}, // map join
             new int[][]{
                 {Skill.DRAGON, 1, 100}, {Skill.DRAGON, 2, 200}, {Skill.DRAGON, 3, 300}, {Skill.DRAGON, 7, 700},
@@ -2715,7 +2715,7 @@ public class BossesData {
             ConstPlayer.TRAI_DAT, // gender
             new short[]{400, 401, 402, -1, -1, -1}, // outfit
             5000, // dame
-            new int[]{7000000}, // hp
+            new int[]{25000}, // hp
             new int[]{129}, // map join
             new int[][]{
                 {Skill.DRAGON, 1, 100}, {Skill.DRAGON, 2, 200}, {Skill.DRAGON, 3, 300}, {Skill.DRAGON, 7, 700},
@@ -2733,7 +2733,7 @@ public class BossesData {
             ConstPlayer.TRAI_DAT, // gender
             new short[]{359, 360, 361, -1, -1, -1}, // outfit
             6000, // dame
-            new int[]{15000000}, // hp
+            new int[]{50000}, // hp
             new int[]{129}, // map join
             new int[][]{
                 {Skill.DRAGON, 1, 100}, {Skill.DRAGON, 2, 200}, {Skill.DRAGON, 3, 300}, {Skill.DRAGON, 7, 700},
@@ -2751,7 +2751,7 @@ public class BossesData {
             ConstPlayer.TRAI_DAT, // gender
             new short[]{362, 363, 364, -1, -1, -1}, // outfit
             6500, // dame
-            new int[]{25000000}, // hp
+            new int[]{100000}, // hp
             new int[]{129}, // map join
             new int[][]{
                 {Skill.DRAGON, 1, 100}, {Skill.DRAGON, 2, 200}, {Skill.DRAGON, 3, 300}, {Skill.DRAGON, 7, 700},
@@ -2767,7 +2767,7 @@ public class BossesData {
             ConstPlayer.TRAI_DAT, // gender
             new short[]{365, 366, 367, -1, -1, -1}, // outfit
             7000, // dame
-            new int[]{50000000}, // hp
+            new int[]{250000}, // hp
             new int[]{129}, // map join
             new int[][]{
                 {Skill.DRAGON, 1, 100}, {Skill.DRAGON, 2, 200}, {Skill.DRAGON, 3, 300}, {Skill.DRAGON, 7, 700},
@@ -2783,7 +2783,7 @@ public class BossesData {
             ConstPlayer.TRAI_DAT, // gender
             new short[]{371, 372, 373, -1, -1, -1}, // outfit
             7500, // dame
-            new int[]{75000000}, // hp
+            new int[]{500000}, // hp
             new int[]{129}, // map join
             new int[][]{
                 {Skill.DRAGON, 1, 100}, {Skill.DRAGON, 2, 200}, {Skill.DRAGON, 3, 300}, {Skill.DRAGON, 7, 700},
@@ -2799,7 +2799,7 @@ public class BossesData {
             ConstPlayer.TRAI_DAT, // gender
             new short[]{92, 93, 94, -1, -1, -1}, // outfit
             8000, // dame
-            new int[]{10000000}, // hp
+            new int[]{2000000}, // hp
             new int[]{129}, // map join
             new int[][]{
                 {Skill.DRAGON, 1, 100}, {Skill.DRAGON, 2, 200}, {Skill.DRAGON, 3, 300}, {Skill.DRAGON, 7, 700},
@@ -2815,7 +2815,7 @@ public class BossesData {
             ConstPlayer.TRAI_DAT,
             new short[]{374, 375, 376, -1, -1, -1},
             9000,
-            new int[]{125000000},
+            new int[]{5000000},
             new int[]{129},
             new int[][]{
                 {Skill.DRAGON, 1, 100}, {Skill.DRAGON, 2, 200}, {Skill.DRAGON, 3, 300}, {Skill.DRAGON, 7, 700},
@@ -2831,7 +2831,7 @@ public class BossesData {
             ConstPlayer.TRAI_DAT,
             new short[]{356, 357, 358, -1, -1, -1},
             10000,
-            new int[]{150000000},
+            new int[]{25000000},
             new int[]{129},
             new int[][]{
                 {Skill.DRAGON, 1, 100}, {Skill.DRAGON, 2, 200}, {Skill.DRAGON, 3, 300}, {Skill.DRAGON, 7, 700},
@@ -2847,7 +2847,7 @@ public class BossesData {
             ConstPlayer.TRAI_DAT,
             new short[]{368, 369, 370, -1, -1, -1},
             15000,
-            new int[]{175000000},
+            new int[]{75000000},
             new int[]{129},
             new int[][]{
                 {Skill.DRAGON, 1, 100}, {Skill.DRAGON, 2, 200}, {Skill.DRAGON, 3, 300}, {Skill.DRAGON, 7, 700},
@@ -2863,7 +2863,7 @@ public class BossesData {
             ConstPlayer.TRAI_DAT, // gender
             new short[]{368, 369, 370, -1, -1, -1}, // outfit
             25000, // dame
-            new int[]{20000000}, // hp
+            new int[]{2000000}, // hp
             new int[]{129}, // map join
             new int[][]{
                 {Skill.DRAGON, 1, 100}, {Skill.DRAGON, 2, 200}, {Skill.DRAGON, 3, 300}, {Skill.DRAGON, 7, 700},
@@ -2879,7 +2879,7 @@ public class BossesData {
             ConstPlayer.TRAI_DAT, // gender
             new short[]{397, 398, 399, -1, -1, -1}, // outfit
             35000, // dame
-            new int[]{250000000}, // hp
+            new int[]{150000000}, // hp
             new int[]{129}, // map join
             new int[][]{
                 {Skill.DRAGON, 1, 100}, {Skill.DRAGON, 2, 200}, {Skill.DRAGON, 3, 300}, {Skill.DRAGON, 7, 700},
@@ -2982,10 +2982,10 @@ public class BossesData {
     public static final BossData THO_DAI_CA = new BossData(
             "Thỏ đại ca", //name
             ConstPlayer.TRAI_DAT, //gender
-            new short[]{403, 404, 405, -1, -1, -1}, //outfit
+            new short[]{403, 404, 405, 87, -1, -1}, //outfit: head, body, leg, bag (xem id ở bảng flag_bag), aura, eff
             2500, //dame
             new int[]{250}, //hp
-            new int[]{0, 7, 14}, //map join : Làng Aru, Làng Mori, Làng kkr
+            new int[]{0, 7, 14, 84, 5}, //map join : Làng Aru, Làng Mori, Làng kkr, siêu thị, đảo kame
             new int[][]{ //skill
                 {Skill.DRAGON, 1, 100}, {Skill.DRAGON, 2, 200}, {Skill.DRAGON, 3, 300}, {Skill.DRAGON, 7, 700},
                 {Skill.KAMEJOKO, 1, 1000}, {Skill.KAMEJOKO, 2, 1200}, {Skill.KAMEJOKO, 5, 1500}, {Skill.KAMEJOKO, 7, 1700},

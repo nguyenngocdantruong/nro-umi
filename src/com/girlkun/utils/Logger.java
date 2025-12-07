@@ -81,7 +81,7 @@ public class Logger {
     public static final String CYAN_BACKGROUND_BRIGHT = "\033[0;106m";
     public static final String WHITE_BACKGROUND_BRIGHT = "\033[0;107m";
 
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = false;
     public static String getLocation() {
         StackTraceElement[] stack = Thread.currentThread().getStackTrace();
         // 0 = Thread.getStackTrace

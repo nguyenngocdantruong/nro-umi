@@ -3,6 +3,7 @@ package com.girlkun.models.boss.list_boss.android;
 import com.girlkun.models.boss.Boss;
 import com.girlkun.models.boss.BossID;
 import com.girlkun.models.boss.BossesData;
+import com.girlkun.models.item.ConstItem;
 import com.girlkun.models.item.Item;
 import com.girlkun.models.map.ItemMap;
 import com.girlkun.models.player.Player;
@@ -35,6 +36,12 @@ public class DrKore extends Boss {
             item.options.add(new Item.ItemOption(4, 2)); // Hồi phục 2% KI khi bị đánh
             item.options.add(new Item.ItemOption(5, 15)); // +15% sức đánh chí mạng
             Service.gI().dropItemMap(this.zone, item);
+        }
+        // Rơi đồ thêm
+        ItemMap doRoiTuBoss = Util.GetRandomItemRoiTuBoss(30, ConstItem.LoaiDoRoiTuBoss.DoTamTrung,
+                ConstItem.CoSaoPhaLe.Co, this.zone, this.location.x + Util.nextInt(-15, 15), this.location.y, plKill.id);
+        if(doRoiTuBoss != null){
+            Service.gI().dropItemMap(this.zone, doRoiTuBoss);
         }
         super.reward(plKill);
     }

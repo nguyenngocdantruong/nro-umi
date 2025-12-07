@@ -193,7 +193,7 @@ public class ShopServiceNew {
     private void openShopType3(Player player, Shop shop) {
         player.iDMark.setShopOpen(shop);
         player.iDMark.setTagNameShop(shop.tagName);
-        Logger.log("Shop type 3: " + shop.tagName + ", Tabs: " + shop.tabShops.size());
+        Logger.debug("Shop type 3: " + shop.tagName + ", Tabs: " + shop.tabShops.size());
         if (shop != null) {
             Message msg;
             try {
@@ -201,9 +201,11 @@ public class ShopServiceNew {
                 msg.writer().writeByte(SPEC_SHOP);
                 msg.writer().writeByte(shop.tabShops.size());
                 for (TabShop tab : shop.tabShops) {
+                    Logger.debug("Tab items Count: " + tab.itemShops.size());
                     msg.writer().writeUTF(tab.name);
                     msg.writer().writeByte(tab.itemShops.size());
                     for (ItemShop itemShop : tab.itemShops) {
+                        Logger.debug("Items: " + itemShop.temp.name);
                         msg.writer().writeShort(itemShop.temp.id);
                         msg.writer().writeShort(itemShop.iconSpec);
                         msg.writer().writeInt(itemShop.cost);

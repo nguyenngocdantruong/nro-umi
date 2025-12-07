@@ -68,11 +68,8 @@ public class Manager {
     public static byte SECOND_WAIT_LOGIN = 5;
     public static int MAX_PER_IP = 5;
     public static int MAX_PLAYER = 1000;
-    public static byte RATE_EXP_SERVER = 20;
-//    public static byte RATE_EXP_SERVER = 2;
     public static boolean LOCAL = false;
     public static byte SUKIEN;
-//    public static byte RATE_EXP_SERVER = 1;// sau khi chinh
 
     public static MapTemplate[] MAP_TEMPLATES;
     public static final List<com.girlkun.models.map.Map> MAPS = new ArrayList<>();
@@ -1009,9 +1006,6 @@ public class Manager {
         }
         if ((value = properties.get("server.girlkun.maxplayer")) != null) {
             MAX_PLAYER = Integer.parseInt(String.valueOf(value));
-        }
-        if ((value = properties.get("server.girlkun.expserver")) != null) {
-            RATE_EXP_SERVER = Byte.parseByte(String.valueOf(value));
         }
         if ((value = properties.get("server.girlkun.local")) != null) {
             LOCAL = String.valueOf(value).toLowerCase().equals("true");

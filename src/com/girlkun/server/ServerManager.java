@@ -84,6 +84,7 @@ public class ServerManager {
         JPanel panel = new Panel();
         frame.add(panel);
         frame.pack();
+        frame.setLocationRelativeTo(null); // căn giữa màn hình
         frame.setVisible(true);
 
         long delay = 500;

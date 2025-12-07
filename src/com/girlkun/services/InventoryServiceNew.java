@@ -723,7 +723,7 @@ public class InventoryServiceNew {
 
         //gold, gem, ruby
         switch (item.template.type) {
-            case 9:
+            case 9: 
                 if (player.inventory.gold + item.quantity <= Inventory.LIMIT_GOLD) {
                     player.inventory.gold += item.quantity;
                     Service.gI().sendMoney(player);

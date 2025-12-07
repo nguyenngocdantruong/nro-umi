@@ -4,6 +4,7 @@ import com.girlkun.models.boss.Boss;
 import com.girlkun.models.boss.BossManager;
 import com.girlkun.models.boss.BossData;
 import com.girlkun.consts.ConstPlayer;
+import com.girlkun.models.item.ConstItem;
 import com.girlkun.models.map.ItemMap;
 import com.girlkun.models.map.Zone;
 import com.girlkun.models.player.Player;
@@ -36,9 +37,15 @@ public class TrungUyXanhLo extends Boss {
     @Override
     public void reward(Player plKill) {
         if (Util.isTrue(100, 100)) {
-            ItemMap it = new ItemMap(this.zone, 1375, 1, this.location.x, this.zone.map.yPhysicInTop(this.location.x,
+            ItemMap it = new ItemMap(this.zone, ConstItem.BAN_DO_KHI_GAS, 1, this.location.x, this.zone.map.yPhysicInTop(this.location.x,
                     this.location.y - 24), plKill.id);
             Service.getInstance().dropItemMap(this.zone, it);
+        }
+        // Rơi đồ thêm
+        ItemMap doRoiTuBoss = Util.GetRandomItemRoiTuBoss(15, ConstItem.LoaiDoRoiTuBoss.DoThanLinh,
+                ConstItem.CoSaoPhaLe.Co, this.zone, this.location.x + Util.nextInt(-15, 15), this.location.y, plKill.id);
+        if(doRoiTuBoss != null){
+            Service.gI().dropItemMap(this.zone, doRoiTuBoss);
         }
     }
     @Override

@@ -1,8 +1,9 @@
-package com.girlkun.models.boss.list_boss.halloween;
+package com.girlkun.models.event.list_boss.halloween;
 
 import com.girlkun.models.boss.Boss;
 import com.girlkun.models.boss.BossData;
 import com.girlkun.models.boss.BossStatus;
+import com.girlkun.models.item.ConstItem;
 import com.girlkun.models.map.ItemMap;
 import com.girlkun.models.player.Player;
 import com.girlkun.services.ItemTimeService;
@@ -26,9 +27,7 @@ public class BossHalloween extends Boss {
             int x = this.location.x + Util.nextInt(-30, 30);
             Service.getInstance().dropItemMap(this.zone, new ItemMap(zone, itemIdBiDrop, 1, x, this.location.y, plKill.id));
         }
-        if(Util.isTrue(60, 100)){
-            super.reward(plKill);
-        }
+        
         // Bí ngô nhí nhảnh
         if(Util.isTrue(80, 100)){
             int idBiNgoNhiNhanh = 910; //Ngọc xanh 77
@@ -39,6 +38,16 @@ public class BossHalloween extends Boss {
                     this.zone.map.yPhysicInTop(this.location.x, this.location.y - 24)
                     , -1);
             Service.gI().dropItemMap(this.zone, itemBiNgo);
+        }
+        // Rơi đồ thêm
+        ItemMap doRoiTuBoss = Util.GetRandomItemRoiTuBoss(10, ConstItem.LoaiDoRoiTuBoss.DoVip,
+                ConstItem.CoSaoPhaLe.Co, this.zone, this.location.x + Util.nextInt(-15, 15), this.location.y, plKill.id);
+        if(doRoiTuBoss != null){
+            Service.gI().dropItemMap(this.zone, doRoiTuBoss);
+        }
+        
+        if(Util.isTrue(40, 100)){
+            super.reward(plKill);
         }
     }
 
@@ -57,7 +66,7 @@ public class BossHalloween extends Boss {
                 this.chat("Xí hụt");
                 return 0;
             }
-            damage = 1000;
+            damage = 1;
             this.nPoint.subHP(damage);
             if (isDie()) {
                 this.setDie(plAtt);

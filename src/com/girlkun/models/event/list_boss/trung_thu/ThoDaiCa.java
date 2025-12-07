@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.girlkun.models.boss.event.trung_thu;
+package com.girlkun.models.event.list_boss.trung_thu;
 
 import com.girlkun.models.boss.Boss;
 import com.girlkun.models.boss.BossData;
@@ -21,8 +21,13 @@ import com.girlkun.utils.Util;
  */
 public class ThoDaiCa extends Boss {
     
+    short randomFlagBag; // Cho random ra 1 cái lồng đèn
+    
+    short[] flagBags = new short[] {42, 43, 44, 87}; // Con gà, Con bướm, Doremon, Bóng gà
+    
     public ThoDaiCa() throws Exception {
         super(BossID.THO_DAI_CA, BossesData.THO_DAI_CA);
+        randomFlagBag = flagBags[Util.nextInt(flagBags.length)];
     }
 
     @Override
@@ -35,7 +40,9 @@ public class ThoDaiCa extends Boss {
                     this.location.y - 24), -1);
             Service.gI().dropItemMap(this.zone, it);
         }
-        super.reward(plKill);
+        if(Util.isTrue(40, 100)){
+            super.reward(plKill);
+        }
     }
 
     @Override
@@ -60,6 +67,11 @@ public class ThoDaiCa extends Boss {
     @Override
     public void active() {
         super.active(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+    }
+
+    @Override
+    public short getFlagBag() {
+        return randomFlagBag;
     }
     
 }

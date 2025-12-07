@@ -1,8 +1,9 @@
-package com.girlkun.models.boss.list_boss.halloween;
+package com.girlkun.models.event.list_boss.halloween;
 
 import com.girlkun.models.boss.BossID;
 import com.girlkun.models.boss.BossesData;
 import com.girlkun.models.boss.BossStatus;
+import com.girlkun.models.item.Item;
 import com.girlkun.models.map.ItemMap;
 import com.girlkun.models.player.Player;
 import com.girlkun.services.EffectSkillService;
@@ -12,9 +13,9 @@ import com.girlkun.utils.Util;
 
 
 
-public class BiMa extends BossHalloween {
-    public BiMa() throws Exception {
-        super(BossID.BI_MA, BossesData.BI_MA);
+public class Dracula extends BossHalloween {
+    public Dracula() throws Exception {
+        super(BossID.DRACULA_HALLOWEEN, BossesData.DRACULA_HALLOWEEN);
     }
     
      @Override
@@ -24,6 +25,15 @@ public class BiMa extends BossHalloween {
         int soluong = Util.nextInt(1, 5);
         for(int i = 0; i < soluong ; i++){
             Service.getInstance().dropItemMap(this.zone, new ItemMap(zone, itemIdBiDrop, 1, this.location.x, this.location.y, -1));
+        }
+        // 10% rơi ra cải trang Dracula vĩnh viễn
+        if(Util.isTrue(10, 100)){
+            int ctDracula = 448;
+            ItemMap item = new ItemMap(zone, ctDracula, 1, this.location.x, this.location.y, plKill.id);
+            item.options.add(new Item.ItemOption(104, 50));
+            item.options.add(new Item.ItemOption(154, 0));
+            item.options.add(new Item.ItemOption(209, 0));
+            Service.getInstance().dropItemMap(this.zone, item);
         }
         super.reward(plKill);
     }

@@ -5,6 +5,7 @@ import com.girlkun.models.boss.Boss;
 import com.girlkun.models.boss.BossManager;
 import com.girlkun.models.boss.BossesData;
 import com.girlkun.models.boss.BossStatus;
+import com.girlkun.models.item.ConstItem;
 import com.girlkun.models.map.ItemMap;
 import com.girlkun.models.player.Player;
 import com.girlkun.server.Manager;
@@ -25,6 +26,12 @@ public class Black extends Boss {
     public void reward(Player plKill) {
         if (Util.isTrue(BossManager.ratioReward, 100)) {
             Service.gI().dropItemMap(this.zone, Util.khongthegiaodich(zone, 992, 1, this.location.x, this.location.y, plKill.id));
+        }
+        // Rơi đồ thêm
+        ItemMap doRoiTuBoss = Util.GetRandomItemRoiTuBoss(25, ConstItem.LoaiDoRoiTuBoss.DoVip,
+                ConstItem.CoSaoPhaLe.Co, this.zone, this.location.x + Util.nextInt(-15, 15), this.location.y, plKill.id);
+        if(doRoiTuBoss != null){
+            Service.gI().dropItemMap(this.zone, doRoiTuBoss);
         }
     }
 

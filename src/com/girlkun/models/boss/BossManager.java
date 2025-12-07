@@ -1,5 +1,9 @@
 package com.girlkun.models.boss;
 
+import com.girlkun.models.event.list_boss.halloween.BiMa;
+import com.girlkun.models.event.list_boss.halloween.MaTroi;
+import com.girlkun.models.event.list_boss.halloween.Dracula;
+import com.girlkun.models.event.list_boss.halloween.Doi;
 import com.girlkun.models.boss.list_boss.TBR.*;
 import com.girlkun.models.boss.list_boss.nappa.MapDauDinh;
 import com.girlkun.models.boss.list_boss.nappa.Rambo;
@@ -53,9 +57,8 @@ import com.girlkun.models.boss.list_boss.New.*;
 import com.girlkun.models.boss.list_boss.Broly.SuperBroly;
 import com.girlkun.models.map.Zone;
 import com.girlkun.consts.ConstPlayer;
-import com.girlkun.models.boss.event.trung_thu.KhiXayda;
-import com.girlkun.models.boss.event.trung_thu.ThoDaiCa;
-import com.girlkun.models.boss.list_boss.halloween.*;
+import com.girlkun.models.event.list_boss.trung_thu.KhiXayda;
+import com.girlkun.models.event.list_boss.trung_thu.ThoDaiCa;
 import com.girlkun.models.player.Player;
 import com.girlkun.models.skill.Skill;
 import com.girlkun.network.io.Message;
@@ -79,7 +82,7 @@ import java.util.concurrent.TimeUnit;
 public class BossManager {
 
     private static BossManager I;
-    public static final byte ratioReward = 30;
+    public static final byte ratioReward = 20;
 
     public static BossManager gI() {
         if (BossManager.I == null) {

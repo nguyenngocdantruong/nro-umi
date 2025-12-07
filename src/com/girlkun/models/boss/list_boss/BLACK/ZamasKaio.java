@@ -5,6 +5,7 @@ import com.girlkun.models.boss.Boss;
 import com.girlkun.models.boss.BossManager;
 import com.girlkun.models.boss.BossesData;
 import com.girlkun.models.boss.BossStatus;
+import com.girlkun.models.item.ConstItem;
 import com.girlkun.models.map.ItemMap;
 import com.girlkun.models.player.Player;
 import com.girlkun.server.Manager;
@@ -27,7 +28,7 @@ public class ZamasKaio extends Boss {
         byte randomNR = (byte) new Random().nextInt(Manager.itemIds_NR_SB.length);
         if (Util.isTrue(BossManager.ratioReward, 100)) {
             if (Util.isTrue(10, 100)) {
-             Service.gI().dropItemMap(this.zone,new ItemMap(zone, 987, 1, this.location.x, this.location.y, plKill.id));
+             Service.gI().dropItemMap(this.zone,new ItemMap(zone, ConstItem.DA_BAO_VE, 1, this.location.x, this.location.y, plKill.id));
                 return;
             }
             Service.gI().dropItemMap(this.zone, Util.ratiItem(zone, Manager.itemIds_TL[randomDo], 1, this.location.x, this.location.y, plKill.id));

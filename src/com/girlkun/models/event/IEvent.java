@@ -1,6 +1,9 @@
 package com.girlkun.models.event;
 
 import com.girlkun.models.item.Item;
+import com.girlkun.models.map.ItemMap;
+import com.girlkun.models.map.Map;
+import com.girlkun.models.map.Zone;
 import java.util.List;
 
 /**
@@ -27,9 +30,15 @@ public interface IEvent {
 
     /**
      * Cấu hình item spawn trên map
+     * @param map Map hiện tại để kiểm tra xem có hợp lệ không
+     * @param MobId Quái hiện tại xem có drop k
+     * @param zone Khu để drop nếu hợp lệ
+     * @param x Toạ độ
+     * @param y Toạ độ
+     * @param playerId Người nhặt được nó (-1 nếu ai cũng nhặt được)
      * @return Return ra list item rơi ra từ quái trong event
      */
-    List<Item> itemMap();
+    List<ItemMap> itemMap(Map map, int MobId, Zone zone, int x, int y, long playerId);
 
     /**
      * Cấu hình item drop từ boss

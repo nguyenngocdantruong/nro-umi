@@ -11,6 +11,7 @@ import static com.girlkun.models.boss.BossStatus.JOIN_MAP;
 import static com.girlkun.models.boss.BossStatus.RESPAWN;
 import com.girlkun.models.boss.BossesData;
 import com.girlkun.models.boss.list_boss.cell.SieuBoHung;
+import com.girlkun.models.item.ConstItem;
 import com.girlkun.models.map.ItemMap;
 import com.girlkun.models.map.Zone;
 import com.girlkun.models.map.challenge.MartialCongressService;
@@ -43,6 +44,13 @@ public class SuperBroly extends Boss {
             Service.getInstance().sendThongBao(plKill, "Bạn vừa nhận được đệ tử");
         } else {
             //    Service.gI().dropItemMap(this.zone, Util.ratiItem(zone, Manager.itemIds_TL[randomDo], 1, this.location.x, this.location.y, plKill.id));
+        }
+        
+        // Rơi đồ thêm
+        ItemMap doRoiTuBoss = Util.GetRandomItemRoiTuBoss(35, ConstItem.LoaiDoRoiTuBoss.DoVip,
+                ConstItem.CoSaoPhaLe.Co, this.zone, this.location.x + Util.nextInt(-15, 15), this.location.y, plKill.id);
+        if(doRoiTuBoss != null){
+            Service.gI().dropItemMap(this.zone, doRoiTuBoss);
         }
     }
 

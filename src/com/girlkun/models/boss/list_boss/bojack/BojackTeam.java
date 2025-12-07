@@ -5,6 +5,7 @@ import com.girlkun.models.boss.Boss;
 import com.girlkun.models.boss.BossID;
 import com.girlkun.models.boss.BossStatus;
 import com.girlkun.models.boss.BossesData;
+import com.girlkun.models.item.ConstItem;
 import com.girlkun.models.map.ItemMap;
 import com.girlkun.models.player.Player;
 import com.girlkun.models.skill.Skill;
@@ -77,6 +78,12 @@ public class BojackTeam extends Boss {
             }
             caitrang.options.addAll(list_io);
             Service.gI().dropItemMap(this.zone, caitrang);
+        }
+        // Rơi đồ thêm
+        ItemMap doRoiTuBoss = Util.GetRandomItemRoiTuBoss(30, ConstItem.LoaiDoRoiTuBoss.DoTamTrung,
+                ConstItem.CoSaoPhaLe.Khong, this.zone, this.location.x + Util.nextInt(-15, 15), this.location.y, plKill.id);
+        if(doRoiTuBoss != null){
+            Service.gI().dropItemMap(this.zone, doRoiTuBoss);
         }
         super.reward(plKill);
     }

@@ -130,15 +130,27 @@ public class ItemTimeService {
         if (player.itemTime.isUseMayDo) {
             sendItemTime(player, 2758, (int) ((TIME_MAY_DO - (System.currentTimeMillis() - player.itemTime.lastTimeUseMayDo)) / 1000));
         }
+        
+        // =========================== Event Trung thu ===========================
+        
         if (player.itemTime.isUse1trung) {
-            sendItemTime(player, 4042, (int) ((TIME_BANH - (System.currentTimeMillis() - player.itemTime.lastTime1trung)) / 1000));
+            sendItemTime(player, 4042, (int) ((TIME_60P - (System.currentTimeMillis() - player.itemTime.lastTime1trung)) / 1000));
         }
         if (player.itemTime.isUse2trung) {
-            sendItemTime(player, 4043, (int) ((TIME_BANH - (System.currentTimeMillis() - player.itemTime.lastTime2trung)) / 1000));
+            sendItemTime(player, 4043, (int) ((TIME_90P - (System.currentTimeMillis() - player.itemTime.lastTime2trung)) / 1000));
         }
         if (player.itemTime.isUseDacbiet) {
-            sendItemTime(player, 4125, (int) ((TIME_BANH - (System.currentTimeMillis() - player.itemTime.lastTimeDacbiet)) / 1000));
+            sendItemTime(player, 4125, (int) ((TIME_120P - (System.currentTimeMillis() - player.itemTime.lastTimeDacbiet)) / 1000));
         }
+        if(player.itemTime.itemTimeEvent.isUseBanhTrungThuGaQuay){
+            sendItemTime(player, 8132, (int) ((TIME_60P - (System.currentTimeMillis() - player.itemTime.itemTimeEvent.lastTimeUseBanhTrungThuGaQuay)) / 1000));
+        }
+        if(player.itemTime.itemTimeEvent.isUseBanhTrungThuThapCam){
+            sendItemTime(player, 8131, (int) ((TIME_60P - (System.currentTimeMillis() - player.itemTime.itemTimeEvent.lastTimeUseBanhTrungThuThapCam)) / 1000));
+        }
+        
+        // =========================== Event Trung thu ===========================
+        
         if (player.itemTime.isUseMayDo2) {//2758 icon// cai nay time co cho bằng cái máy dò kia ko
             sendItemTime(player, 16004, (int) ((TIME_MAY_DO2 - (System.currentTimeMillis() - player.itemTime.lastTimeUseMayDo2)) / 1000));
         }

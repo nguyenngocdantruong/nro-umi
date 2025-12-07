@@ -1,5 +1,7 @@
 package com.girlkun.models.npc;
 
+import com.girlkun.models.event.events.*;
+
 import com.girlkun.services.NpcService;
 import com.girlkun.services.Service;
 import com.girlkun.services.ClanService;
@@ -57,6 +59,9 @@ import com.girlkun.models.player.NPoint;
 import com.girlkun.models.matches.PVPService;
 import com.girlkun.models.shop.ShopServiceNew;
 import com.girlkun.models.skill.Skill;
+import com.girlkun.models.skill.NClass;
+import com.girlkun.models.Template.SkillTemplate;
+import com.girlkun.utils.SkillUtil;
 import com.girlkun.server.Client;
 import com.girlkun.server.Maintenance;
 import com.girlkun.server.Manager;
@@ -78,6 +83,7 @@ import com.girlkun.models.event.ConstEvent;
 import com.girlkun.models.Template.NpcTemplate;
 import com.girlkun.models.event.EventManager;
 import com.girlkun.models.event.events.Halloween;
+import com.girlkun.models.event.events.TrungThu;
 import static com.girlkun.services.func.CombineServiceNew.DAP_SET_KICH_HOAT;
 import static com.girlkun.services.func.CombineServiceNew.NANG_CAP_SKH_VIP;
 import com.girlkun.models.pariry.PariryServices;
@@ -1407,13 +1413,18 @@ public class NpcFactory {
         };
     }
 
+    // Lưu trữ skill được chọn cho mỗi player (dùng cho truongLaoGuru)
+    private static final java.util.Map<Long, Integer> PLAYER_SKILL_SELECT_GURU = new HashMap<>();
+
     public static Npc truongLaoGuru(int mapId, int status, int cx, int cy, int tempId, int avartar) {
         return new Npc(mapId, status, cx, cy, tempId, avartar) {
             @Override
             public void openBaseMenu(Player player) {
                 if (canOpenNpc(player)) {
                     if (!TaskService.gI().checkDoneTaskTalkNpc(player, this)) {
-                        super.openBaseMenu(player);
+                        this.createOtherMenu(player, ConstNpc.BASE_MENU,
+                                "Chào con, ta là Trưởng Lão Guru. Ta có thể dạy con các kỹ năng nếu con có đủ tiềm năng.",
+                                "Học kĩ năng", "Từ chối");
                     }
                 }
             }
@@ -1421,8 +1432,278 @@ public class NpcFactory {
             @Override
             public void confirmMenu(Player player, int select) {
                 if (canOpenNpc(player)) {
-
+                    if (player.iDMark.isBaseMenu()) {
+                        if (select == 0) { // Học kĩ năng
+                            showSkillListMenu(player);
+                        }
+                    } else if (player.iDMark.getIndexMenu() == ConstNpc.MENU_SKILL_LIST) {
+                        // Player chọn skill từ danh sách
+                        handleSkillSelection(player, select);
+                    } else if (player.iDMark.getIndexMenu() == ConstNpc.MENU_CONFIRM_LEARN_SKILL) {
+                        if (select == 0) { // Đồng ý học
+                            doLearnSkill(player);
+                        }
+                    }
                 }
+            }
+
+            // Hiển thị danh sách skill có thể học
+            private void showSkillListMenu(Player player) {
+                NClass nClass = Manager.NCLASS.get(player.gender);
+                java.util.List<String> menuOptions = new ArrayList<>();
+
+                for (SkillTemplate skillTemp : nClass.skillTemplatess) {
+                    Skill playerSkill = player.playerSkill.getSkillbyId(skillTemp.id);
+                    String name = skillTemp.name;
+                    switch (playerSkill.template.id) {
+                        case Skill.SUPER_KAME:
+                        case Skill.MA_PHONG_BA:
+                        case Skill.LIEN_HOAN_CHUONG: // xd
+                            continue;
+                        case Skill.MAKANKOSAPPO:
+                            name = "Laze";
+                            break;
+                    }
+                    int currentLevel = (playerSkill != null) ? playerSkill.point : 0;
+                    int maxLevel = skillTemp.maxPoint;
+
+                    if (currentLevel < maxLevel) {
+                        int nextLevel = currentLevel + 1;
+                        long cost = calculateSkillCost(skillTemp.id, nextLevel);
+                        menuOptions
+                                .add(name + "\ncấp " + nextLevel + "\n(" + Util.numberToMoney(cost) + " TN)");
+                    }
+                }
+
+                if (menuOptions.isEmpty()) {
+                    this.npcChat(player, "Con đã học hết tất cả kỹ năng rồi!");
+                    return;
+                }
+
+                String[] options = menuOptions.toArray(new String[0]);
+                this.createOtherMenu(player, ConstNpc.MENU_SKILL_LIST,
+                        "Chọn kỹ năng muốn học (TN = tiềm năng):", options);
+            }
+
+            // Xử lý khi player chọn skill
+            private void handleSkillSelection(Player player, int selectIndex) {
+                NClass nClass = Manager.NCLASS.get(player.gender);
+                int foundIndex = 0;
+
+                for (SkillTemplate skillTemp : nClass.skillTemplatess) {
+                    Skill playerSkill = player.playerSkill.getSkillbyId(skillTemp.id);
+                    int currentLevel = (playerSkill != null) ? playerSkill.point : 0;
+
+                    if (currentLevel < skillTemp.maxPoint) {
+                        if (foundIndex == selectIndex) {
+                            int nextLevel = currentLevel + 1;
+                            long cost = calculateSkillCost(skillTemp.id, nextLevel);
+
+                            PLAYER_SKILL_SELECT_GURU.put(player.id, (int) skillTemp.id);
+
+                            this.createOtherMenu(player, ConstNpc.MENU_CONFIRM_LEARN_SKILL,
+                                    "Bạn có muốn học " + skillTemp.name + " cấp " + nextLevel +
+                                            "?\nChi phí: " + Util.numberToMoney(cost) + " tiềm năng" +
+                                            "\nTiềm năng hiện có: " + Util.numberToMoney(player.nPoint.tiemNang),
+                                    "Đồng ý", "Từ chối");
+                            return;
+                        }
+                        foundIndex++;
+                    }
+                }
+            }
+
+            // Thực hiện học skill
+            private void doLearnSkill(Player player) {
+                Integer skillId = PLAYER_SKILL_SELECT_GURU.get(player.id);
+                if (skillId == null)
+                    return;
+
+                NClass nClass = Manager.NCLASS.get(player.gender);
+                SkillTemplate skillTemp = nClass.getSkillTemplate(skillId);
+                if (skillTemp == null)
+                    return;
+
+                Skill playerSkill = player.playerSkill.getSkillbyId(skillId);
+                int currentLevel = (playerSkill != null) ? playerSkill.point : 0;
+                int nextLevel = currentLevel + 1;
+                long cost = calculateSkillCost(skillId, nextLevel);
+
+                if (player.nPoint.tiemNang < cost) {
+                    this.npcChat(player, "Con không đủ tiềm năng! Cần " + Util.numberToMoney(cost) + " tiềm năng.");
+                    return;
+                }
+
+                // Trừ tiềm năng
+                player.nPoint.tiemNang -= cost;
+
+                // Nâng cấp skill (giống UseItem.learnSkill)
+                try {
+                    Message msg;
+                    Skill newSkill = SkillUtil.createSkill(skillId, nextLevel);
+
+                    if (currentLevel == 0) {
+                        // Học skill mới - subCommand 23
+                        SkillUtil.setSkill(player, newSkill);
+                        msg = Service.gI().messageSubCommand((byte) 23);
+                        msg.writer().writeShort(newSkill.skillId);
+                        player.sendMessage(msg);
+                        msg.cleanup();
+                    } else {
+                        // Nâng cấp skill đã có - subCommand 62
+                        SkillUtil.setSkill(player, newSkill);
+                        msg = Service.gI().messageSubCommand((byte) 62);
+                        msg.writer().writeShort(newSkill.skillId);
+                        player.sendMessage(msg);
+                        msg.cleanup();
+                    }
+
+                    // Gửi thông báo và cập nhật
+                    Service.gI().sendThongBao(player, "Học " + skillTemp.name + " cấp " + nextLevel + " thành công!");
+                    Service.gI().point(player);
+
+                } catch (Exception e) {
+                    com.girlkun.utils.Logger.logException(NpcFactory.class, e);
+                }
+
+                PLAYER_SKILL_SELECT_GURU.remove(player.id);
+            }
+
+            private long OneK(int count) {
+                return (long) (count * 1000);
+            }
+
+            private long OneM(float count) {
+                return (long) (count * 1000000);
+            }
+
+            // Tính tiềm năng cần thiết theo loại skill
+            private long calculateSkillCost(int skillId, int level) {
+                switch (skillId) {
+                    case Skill.DRAGON:
+                    case Skill.DEMON:
+                    case Skill.GALICK:
+                        switch (level) {
+                            case 1: {
+                                return OneK(1);
+                            }
+                            case 2: {
+                                return OneK(10);
+                            }
+                            case 3: {
+                                return OneK(22);
+                            }
+                            case 4: {
+                                return OneK(66);
+                            }
+                            case 5: {
+                                return OneK(200);
+                            }
+                            case 6: {
+                                return OneK(600);
+                            }
+                            case 7: {
+                                return OneM(1.8f);
+                            }
+                        }
+                        break;
+                    case Skill.KAMEJOKO:
+                    case Skill.MASENKO:
+                    case Skill.ANTOMIC:
+                        switch (level) {
+                            case 1: {
+                                return OneK(10);
+                            }
+                            case 2: {
+                                return OneK(20);
+                            }
+                            case 3: {
+                                return OneK(60);
+                            }
+                            case 4: {
+                                return OneK(180);
+                            }
+                            case 5: {
+                                return OneK(540);
+                            }
+                            case 6: {
+                                return OneM(1.6f);
+                            }
+                            case 7: {
+                                return OneM(4.8f);
+                            }
+                        }
+                        break;
+                    case Skill.THAI_DUONG_HA_SAN:
+                    case Skill.TRI_THUONG:
+                    case Skill.TAI_TAO_NANG_LUONG:
+                        switch (level) {
+                            case 1: {
+                                return OneK(60);
+                            }
+                            case 2: {
+                                return OneK(120);
+                            }
+                            case 3: {
+                                return OneK(360);
+                            }
+                            case 4: {
+                                return OneM(1);
+                            }
+                            case 5: {
+                                return OneM(3.2f);
+                            }
+                            case 6: {
+                                return OneM(10);
+                            }
+                            case 7: {
+                                return OneM(30f);
+                            }
+                        }
+                        break;
+                    case Skill.KAIOKEN:
+                    case Skill.MAKANKOSAPPO:
+                        return OneM(100 + 50 * level);
+                    case Skill.QUA_CAU_KENH_KHI:
+                    case Skill.DE_TRUNG:
+                        return OneM(400 + level * 100);
+                    case Skill.BIEN_KHI:
+                        return OneM(150 + level * 100);
+                    case Skill.TU_SAT:
+                        return OneM(200 + level * 50);
+                    case Skill.DICH_CHUYEN_TUC_THOI:
+                    case Skill.THOI_MIEN:
+                    case Skill.LIEN_HOAN:
+                    case Skill.SOCOLA:
+                    case Skill.HUYT_SAO:
+                    case Skill.TROI:
+                    case Skill.KHIEN_NANG_LUONG:
+                        switch (level) {
+                            case 1: {
+                                return OneM(10);
+                            }
+                            case 2: {
+                                return OneM(25);
+                            }
+                            case 3: {
+                                return OneM(50);
+                            }
+                            case 4: {
+                                return OneM(125);
+                            }
+                            case 5: {
+                                return OneM(625);
+                            }
+                            case 6: {
+                                return OneM(3125);
+                            }
+                            case 7: {
+                                return OneM(15625);
+                            }
+                        }
+                        break;
+                }
+                return OneM(1000);
             }
         };
     }
@@ -2004,7 +2285,7 @@ public class NpcFactory {
             public void openBaseMenu(Player player) {
                 if (canOpenNpc(player)) {
                     createOtherMenu(player, ConstNpc.BASE_MENU,
-                            "Xin chào, CHỖ TAO CHỈ BÁN MA TÚY ĐÁ CHO DÂN CHƠI?",
+                            "Xin chào, ta có bán những vật phẩm độc lạ mà Trái đất mình ta có!",
                             "Cửa Hàng", "Hỗ Trợ");
                 }
             }
@@ -2085,153 +2366,6 @@ public class NpcFactory {
         };
     }
 
-    public static Npc billBiNgo(int mapId, int status, int cx, int cy, int tempId, int avartar) {
-        return new Npc(mapId, status, cx, cy, tempId, avartar) {
-            @Override
-            public void openBaseMenu(Player player) {
-                if (!(EventManager.gI().getCurrentEvent() instanceof Halloween)) {
-                    createOtherMenu(player, ConstNpc.BASE_MENU,
-                            "Ta đang chuẩn bị bí ngô và hoá trang.\n" +
-                                    "Ngươi biết ở đâu bán bí ngô không?",
-                            "Từ chối");
-                    return;
-                }
-                if (canOpenNpc(player)) {
-                    createOtherMenu(player, ConstNpc.BASE_MENU,
-                            "Trick or treat!\n" +
-                                    "Ta có thể giúp gì cho ngươi?",
-                            "Shop Halloween",
-                            "Đổi kẹo",
-                            "Đổi bí ngô",
-                            "Hướng dẫn");
-                }
-            }
-
-            @Override
-            public void confirmMenu(Player player, int select) {
-                if (!(EventManager.gI().getCurrentEvent() instanceof Halloween))
-                    return;
-                if (canOpenNpc(player)) {
-                    if (this.mapId == 5) { // Đảo kame
-                        if (player.iDMark.isBaseMenu()) {
-                            switch (select) {
-                                case 0: // Shop Halloween
-                                    ShopServiceNew.gI().opendShop(player, "BILL_HALLOWEEN", false);
-                                    break;
-                                case 1: // Đổi kẹo
-                                    createOtherMenu(player, ConstNpc.MENU_EVENT,
-                                            "Sử dụng Kẹo bàn tay để đổi cải trang\n" +
-                                                    "1 Cải trang = 99 Kẹo bàn tay\n"
-                                                    + "Cải trang Dơi nhí (40%)\n"
-                                                    + "Cải trang Ma trơi (40%)\n"
-                                                    + "Cải trang Bộ xương (15%)\n"
-                                                    + "Cải trang Bill Bí ngô VIP (5%)",
-                                            "Đổi ngay", "Đóng");
-                                    break;
-                                case 2: // Đổi bí ngô 585 drop từ quái
-                                    ShopServiceNew.gI().opendShop(player, "BILL_HALLOWEEN_BINGO", false);
-                                    break;
-                                case 3: // Hướng dẫn
-                                    createOtherMenu(player, ConstNpc.IGNORE_MENU,
-                                            "Event Halloween:\n" +
-                                                    "- Săn boss Dơi, Ma trơi, Bí ma và Dracula\n" +
-                                                    "- Nhặt Bí Ngô từ boss\n" +
-                                                    "- Đổi Kẹo bàn tay, Bí ngô = quà hấp dẫn\n"
-                                                    + "- Kẹo bàn tay chỉ xuất hiện ở boss Bí ma và Dracula",
-                                            "Đóng");
-                                    break;
-                            }
-                        } else if (player.iDMark.getIndexMenu() == ConstNpc.MENU_EVENT) {
-                            switch (select) {
-                                case 0: // Đổi quà
-                                    // Logic đổi quà ở đây
-                                    Item biNgo = InventoryServiceNew.gI().findItemBag(player, 901); // ID bí ngô
-                                    if (biNgo != null && biNgo.quantity >= 99) {
-                                        if (InventoryServiceNew.gI().getCountEmptyBag(player) == 0) {
-                                            this.npcChat(player, "Hành trang đã đầy");
-                                            break;
-                                        }
-
-                                        // Trừ bí ngô
-                                        InventoryServiceNew.gI().subQuantityItemsBag(player, biNgo, 99);
-
-                                        // Tặng cải trang
-                                        Item caiTrang;
-                                        // 40% là ma trơi
-                                        if (Util.isTrue(40, 100)) {
-                                            caiTrang = ItemService.gI().createNewItem((short) 642); // Ma trơi
-
-                                            caiTrang.itemOptions.add(new Item.ItemOption(8, 3)); // Hút 3% hp ki
-                                            caiTrang.itemOptions.add(new Item.ItemOption(50, 20)); // 20% sd
-                                            caiTrang.itemOptions.add(new Item.ItemOption(77, 17)); // 17% sd
-                                            caiTrang.itemOptions.add(new Item.ItemOption(103, 17)); // 17% sd
-                                            caiTrang.itemOptions.add(new Item.ItemOption(213, 0)); // 0 bị biến bí ngô
-                                            caiTrang.itemOptions.add(new Item.ItemOption(154, 0)); // 0 thể bán lại
-                                        }
-                                        // 15% là bộ xương
-                                        else if (Util.isTrue(15, 100)) {
-                                            short caiTrangXuongId = (short) 644; // td
-                                            switch (player.gender) {
-                                                case 1: { // nm
-                                                    caiTrangXuongId = (short) 645;
-                                                    break;
-                                                }
-                                                case 2: { // xd
-                                                    caiTrangXuongId = (short) 646;
-                                                    break;
-                                                }
-                                            }
-                                            caiTrang = ItemService.gI().createNewItem(caiTrangXuongId);
-                                            caiTrang.itemOptions.add(new Item.ItemOption(8, 4)); // Hút 4% hp ki
-                                            caiTrang.itemOptions.add(new Item.ItemOption(50, 22)); // 22% sd
-                                            caiTrang.itemOptions.add(new Item.ItemOption(77, 20)); // 20% sd
-                                            caiTrang.itemOptions.add(new Item.ItemOption(103, 20)); // 20% sd
-                                            caiTrang.itemOptions.add(new Item.ItemOption(213, 0)); // 0 bị biến bí ngô
-                                            caiTrang.itemOptions.add(new Item.ItemOption(154, 0)); // 0 thể bán lại
-
-                                        }
-                                        // 5% là bill bí ngô vip
-                                        else if (Util.isTrue(5, 100)) {
-                                            short caiTrangXuongId = (short) 739;
-                                            caiTrang = ItemService.gI().createNewItem(caiTrangXuongId);
-
-                                            caiTrang.itemOptions.add(new Item.ItemOption(76, 0)); // VIP
-                                            caiTrang.itemOptions.add(new Item.ItemOption(50, 30)); // 30% sd
-                                            caiTrang.itemOptions.add(new Item.ItemOption(77, 24)); // 24% hp
-                                            caiTrang.itemOptions.add(new Item.ItemOption(103, 24)); // 24% sd
-                                            caiTrang.itemOptions.add(new Item.ItemOption(163, 0)); // Biến bí ngô
-                                            caiTrang.itemOptions.add(new Item.ItemOption(213, 0)); // 0 bị biến bí ngô
-                                            caiTrang.itemOptions.add(new Item.ItemOption(154, 0)); // 0 thể bán lại
-
-                                        }
-                                        // Còn lại là dơi nhí
-                                        else {
-                                            caiTrang = ItemService.gI().createNewItem((short) 643); // Dơi nhí
-
-                                            caiTrang.itemOptions.add(new Item.ItemOption(8, 3)); // Hút 3% hp ki
-                                            caiTrang.itemOptions.add(new Item.ItemOption(50, 20)); // 20% sd
-                                            caiTrang.itemOptions.add(new Item.ItemOption(77, 17)); // 20% sd
-                                            caiTrang.itemOptions.add(new Item.ItemOption(103, 17)); // 20% sd
-                                            caiTrang.itemOptions.add(new Item.ItemOption(213, 0)); // 0 bị biến bí ngô
-                                            caiTrang.itemOptions.add(new Item.ItemOption(154, 0)); // 0 thể bán lại
-                                        }
-
-                                        InventoryServiceNew.gI().addItemBag(player, caiTrang);
-                                        InventoryServiceNew.gI().sendItemBags(player);
-
-                                        Service.gI().sendThongBao(player, "Đổi thành công!");
-                                    } else {
-                                        Service.gI().sendThongBao(player, "Bạn cần 99 Kẹo bàn tay trong hành trang!");
-                                    }
-                                    break;
-                            }
-                        }
-                    }
-                }
-            }
-        };
-    }
-
     public static Npc ngokhong(int mapId, int status, int cx, int cy, int tempId, int avartar) {
         return new Npc(mapId, status, cx, cy, tempId, avartar) {
             @Override
@@ -2266,9 +2400,14 @@ public class NpcFactory {
             public void openBaseMenu(Player player) {
                 if (canOpenNpc(player)) {
                     createOtherMenu(player, ConstNpc.BASE_MENU,
-                            "Xin chào, shop bán toàn đồ vip",
-                            "Cửa Hàng");
+                            "Xin lỗi cửa hàng đã đóng cửa. Chúng tôi đã bị buộc đóng cửa do cư dân biểu tình vì đây là server cày chay.",
+                            "Từ chối");
                 }
+                // if (canOpenNpc(player)) {
+                // createOtherMenu(player, ConstNpc.BASE_MENU,
+                // "Xin chào, shop bán toàn đồ vip",
+                // "Cửa Hàng");
+                // }
             }
 
             @Override
@@ -2277,12 +2416,12 @@ public class NpcFactory {
                     if (this.mapId == 5 || this.mapId == 13 || this.mapId == 20) {
                         if (player.iDMark.isBaseMenu()) {
                             switch (select) {
-                                case 0: // shop
-                                    ShopServiceNew.gI().opendShop(player, "VIP", false);
-                                    break;
-                                case 1:
-                                    ShopServiceNew.gI().opendShop(player, "SANTA_RUBY", false);
-                                    break;
+                                // case 0: // shop
+                                // ShopServiceNew.gI().opendShop(player, "VIP", false);
+                                // break;
+                                // case 1:
+                                // ShopServiceNew.gI().opendShop(player, "SANTA_RUBY", false);
+                                // break;
                             }
                         }
                     }
@@ -4280,47 +4419,6 @@ public class NpcFactory {
         };
     }
 
-    private static Npc thoDaiCa(int mapId, int status, int cx, int cy, int tempId, int avartar) {
-        return new Npc(mapId, status, cx, cy, tempId, avartar) {
-            @Override
-            public void openBaseMenu(Player player) {
-                if (!EventManager.gI().isCurrentEvent(ConstEvent.TRUNG_THU)) {
-                    createOtherMenu(player, 0,
-                            "Đã làm bánh trung thu chưa?\nTrăng sắp tròn rồi!",
-                            "Từ chối");
-                    return;
-                }
-                if (canOpenNpc(player)) {
-                    createOtherMenu(player, 0,
-                            "Có cà rốt không dùng thì mang cho ta đổi.\nỞ đây chỉ có hàng hiệu!",
-                            "Hướng\ndẫn\nthêm",
-                            "Đổi cà\nrốt",
-                            "Từ chối");
-                }
-            }
-
-            @Override
-            public void confirmMenu(Player pl, int select) {
-                if (!EventManager.gI().isCurrentEvent(ConstEvent.TRUNG_THU))
-                    return;
-                if (canOpenNpc(pl)) {
-                    switch (select) {
-                        case 0:
-                            Service.gI().sendPopUpMultiLine(pl, tempId, avartar,
-                                    "Chào mừng đến sự kiện trung thu\b"
-                                            + "Bạn có thể tìm và tấn công boss Thỏ đại ca tại làng các hành tinh\b"
-                                            + "Mỗi boss sẽ có ngẫu nhiên số lượng cà rốt rơi ra\b"
-                                            + "Hãy tìm và đến đây đổi cải trang ngầu nhất !!");
-                            break;
-                        case 1:
-                            ShopServiceNew.gI().opendShop(pl, "THO_DAI_CA", false);
-                            break;
-                    }
-                }
-            }
-        };
-    }
-
     public static Npc createNPC(int mapId, int status, int cx, int cy, int tempId) {
         NpcTemplate npcTemplate = Manager.NPC_TEMPLATES.get(tempId);
         if (npcTemplate == null) {
@@ -4331,7 +4429,9 @@ public class NpcFactory {
         try {
             switch (tempId) {
                 case ConstNpc.THO_DAI_CA:
-                    return thoDaiCa(mapId, status, cx, cy, tempId, avatar);
+                    return TrungThu.ThoDaiCa(mapId, status, cx, cy, tempId, avatar);
+                case ConstNpc.TRUNG_THU:
+                    return TrungThu.NpcTrungThu(mapId, status, cx, cy, tempId, avatar);
                 case ConstNpc.GHI_DANH:
                     return GhiDanh(mapId, status, cx, cy, tempId, avatar);
                 case ConstNpc.CUA_HANG_KY_GUI:
@@ -4375,7 +4475,7 @@ public class NpcFactory {
                 case ConstNpc.FA:
                     return fa(mapId, status, cx, cy, tempId, avatar);
                 case ConstNpc.BILL_BI_NGO:
-                    return billBiNgo(mapId, status, cx, cy, tempId, avatar);
+                    return Halloween.BillBiNgo(mapId, status, cx, cy, tempId, avatar);
                 case ConstNpc.VIP:
                     return vip(mapId, status, cx, cy, tempId, avatar);
                 case ConstNpc.GENSHIN:
@@ -4585,6 +4685,22 @@ public class NpcFactory {
                         } else if (select == 1) {
                             SummonDragon.gI().summonShenronTRB(player);
                         }
+                        break;
+                    // ==================== RỒNG XƯƠNG HALLOWEEN ====================
+                    case ConstNpc.TUTORIAL_RONG_XUONG:
+                        if (select == 0) {
+                            NpcService.gI().createTutorial(player, -1, SummonDragon.SUMMON_RONG_XUONG_TUTORIAL);
+                        }
+                        break;
+                    case ConstNpc.SUMMON_RONG_XUONG:
+                        if (select == 0) {
+                            NpcService.gI().createTutorial(player, -1, SummonDragon.SUMMON_RONG_XUONG_TUTORIAL);
+                        } else if (select == 1) {
+                            SummonDragon.gI().summonRongXuong(player);
+                        }
+                        break;
+                    case ConstNpc.RONG_XUONG:
+                        SummonDragon.gI().showConfirmShenron(player, ConstNpc.RONG_XUONG, (byte) select);
                         break;
                     case ConstNpc.MENU_OPTION_USE_ITEM1105:
                         if (select == 0) {

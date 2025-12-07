@@ -20,5 +20,9 @@ public class ConstMap {
     public static final int CHANGE_CAPSULE = 500;
     public static final int CHANGE_BLACK_BALL = 501;
     public static final int CHANGE_MAP_MA_BU = 502;
-
+    
+    // Map Id
+    public static final int DAO_KAME = 5;
+    public static final int VACH_NUI_ARU = 42;
+    public static final int VACH_NUI_DEN = 20;
 }

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourcePerFileMappings">
+    <file url="file://$PROJECT_DIR$/queries/Query.sql" value="767a3ec1-39f7-4d2b-b74d-a2a284ef4683" />
+    <file url="file://$PROJECT_DIR$/queries/halloween.sql" value="767a3ec1-39f7-4d2b-b74d-a2a284ef4683" />
+    <file url="file://$PROJECT_DIR$/queries/trungthu.sql" value="767a3ec1-39f7-4d2b-b74d-a2a284ef4683" />
+  </component>
+</project>

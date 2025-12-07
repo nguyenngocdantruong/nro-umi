@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.girlkun.models.boss.event.trung_thu;
+package com.girlkun.models.event.list_boss.trung_thu;
 
 import com.girlkun.models.boss.Boss;
 import com.girlkun.models.boss.BossData;
@@ -59,7 +59,9 @@ public class KhiXayda extends Boss {
                     this.location.y - 24), -1);
             Service.gI().dropItemMap(this.zone, it);
         }
-        super.reward(plKill);
+        if(Util.isTrue(40, 100)){
+            super.reward(plKill);
+        }
     }
 
     @Override

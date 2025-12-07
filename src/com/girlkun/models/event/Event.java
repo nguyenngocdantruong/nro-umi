@@ -4,6 +4,9 @@ import com.girlkun.models.boss.Boss;
 import com.girlkun.models.boss.BossManager;
 import com.girlkun.models.event.events.Default;
 import com.girlkun.models.item.Item;
+import com.girlkun.models.map.ItemMap;
+import com.girlkun.models.map.Map;
+import com.girlkun.models.map.Zone;
 import com.girlkun.models.npc.NpcFactory;
 import com.girlkun.services.MapService;
 import com.girlkun.services.Service;
@@ -38,7 +41,6 @@ public abstract class Event implements IEvent {
                 getNameEvent(), getHeSoTnSm()));
         }
         boss();
-        itemMap();
         itemBoss();
         EventManager.gI().lastTimeChangeEvent = System.currentTimeMillis();
         
@@ -99,7 +101,7 @@ public abstract class Event implements IEvent {
     }
 
     @Override
-    public List<Item> itemMap() {
+    public List<ItemMap> itemMap(Map map, int MobId, Zone zone, int x, int y, long playerId) {
         return new ArrayList<>();
     }
 

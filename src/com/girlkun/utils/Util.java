@@ -1,7 +1,8 @@
 package com.girlkun.utils;
 
-import com.girlkun.jdbc.daos.GodGK;
 import com.girlkun.models.boss.BossManager;
+import com.girlkun.models.item.ConstItem;
+import static com.girlkun.models.item.ConstItem.doRoiTuBoss;
 import com.girlkun.models.item.Item;
 import com.girlkun.models.map.ItemMap;
 import com.girlkun.models.map.Zone;
@@ -12,7 +13,6 @@ import com.girlkun.models.matches.TOP;
 import com.girlkun.models.mob.Mob;
 import com.girlkun.models.npc.Npc;
 import com.girlkun.models.player.Player;
-import com.girlkun.network.io.Message;
 import com.girlkun.server.Client;
 import com.girlkun.server.Manager;
 import com.girlkun.services.ItemService;
@@ -20,10 +20,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import org.apache.commons.lang.ArrayUtils;
-import java.security.MessageDigest;
-import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
-import java.security.NoSuchAlgorithmException;
 
 public class Util {
 
@@ -33,6 +29,22 @@ public class Util {
     static {
         rand = new Random();
         
+    }
+    
+    public static ItemMap GetRandomItemRoiTuBoss(int percentDrop, ConstItem.LoaiDoRoiTuBoss type, ConstItem.CoSaoPhaLe hasSpl, Zone zone, int x, int y, long playerId){
+        if(!Util.isTrue(percentDrop, 100)){
+            return null;
+        }
+        short idItem;
+        int index = type.value;
+        idItem = doRoiTuBoss[index][Util.nextInt(0, doRoiTuBoss[index].length - 1)];
+        ItemMap item = new ItemMap(zone, idItem, 1, x, y, playerId);
+        if(hasSpl == ConstItem.CoSaoPhaLe.Co){
+            int randomSao = Util.nextInt(1, 3);
+            item.options.add(new Item.ItemOption(107, randomSao)); // SPL chưa ép
+        }
+        item.options.add(new Item.ItemOption(209, 0)); // Đồ rơi từ boss
+        return item;
     }
 
 

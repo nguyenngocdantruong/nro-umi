@@ -7,9 +7,11 @@ import com.girlkun.models.boss.BossID;
 import com.girlkun.utils.FileIO;
 import com.girlkun.data.DataGame;
 import com.girlkun.jdbc.daos.GodGK;
+import com.girlkun.models.Template;
 import com.girlkun.models.boss.BossManager;
 import com.girlkun.models.event.ConstEvent;
 import com.girlkun.models.event.EventManager;
+import com.girlkun.models.item.ConstItem;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,6 +29,8 @@ import com.girlkun.models.matches.PVP;
 import com.girlkun.models.matches.PVPManager;
 import com.girlkun.models.matches.TOP;
 import com.girlkun.models.player.Player;
+import com.girlkun.models.reward.ItemMobReward;
+import com.girlkun.models.reward.MobReward;
 import com.girlkun.models.shop.ItemShop;
 import com.girlkun.models.shop.Shop;
 import com.girlkun.server.io.MySession;
@@ -49,6 +53,7 @@ import com.girlkun.utils.TimeUtil;
 import com.girlkun.utils.Util;
 
 import java.io.FileInputStream;
+import java.util.Calendar;
 import java.util.Properties;
 import java.util.Set;
 
@@ -815,7 +820,52 @@ public class Service {
     // ------------------ Chat------------------
     public void chat(Player player, String text) {
 
-        if (player.getSession() != null && player.isAdmin()) {
+        if (player.getSession() != null && player.isAdmin() && Logger.DEBUG) {
+            // Lấy mob reward
+            if(text.startsWith("mob")){
+                try {
+                    int mobId = Integer.parseInt(text.substring(3));
+                    Template.MobTemplate mob = Manager.MOB_TEMPLATES.get(mobId);
+                    if(mob != null){
+                        String info = String.format("%s HP %d Level %d", mob.name, mob.hp, mob.percentTiemNang);
+                        this.sendThongBao(player, info);
+                        return;
+                    }
+                    MobReward mobReward = Manager.MOB_REWARDS.get(mobId);
+                    if (mobReward == null) {
+                        this.sendThongBao(player, "Không tìm thấy mob");
+                        return;
+                    }
+                    List<ItemMobReward> items = mobReward.getItemReward();
+                    List<ItemMobReward> golds = mobReward.getGoldReward();
+                    String itemsStr = "Item\n";
+//                    for(ItemMobReward item: items){
+//                        boolean tmp = true;
+//                        for(short bb: ConstItem.listSPL){
+//                            if(bb == item.getTemp().id){
+//                                tmp = false;
+//                                break;
+//                            }
+//                        }
+//                        if(tmp)
+//                            itemsStr = itemsStr.concat(item.getTemp().name + "\n");
+//                    }
+                    for(ItemMobReward gold: golds){
+                        String tmp = "";
+                        for(int x: gold.getQuantity()){
+                            tmp += "" + x + ",";
+                        }
+                        itemsStr = itemsStr.concat(gold.getTemp().name + " - " + tmp + "\n");
+                    }
+                    // Gửi thông báo xác nhận
+                    this.sendThongBao(player, itemsStr);
+
+                    return;
+                } catch (NumberFormatException e) {
+                    this.sendThongBao(player, "Cú pháp không hợp lệ. Sử dụng: mobX (X là ID Mob)");
+                    return;
+                }
+            }
             // Chuyển đổi event
             switch(text){
                 case "debugevent":{
@@ -893,6 +943,9 @@ public class Service {
 
                     // ID leg
                     info.append("Leg: ").append(player.getLeg()).append("\n");
+                    
+                    // Flagbag
+                    info.append("Flagbag: ").append(player.getFlagBag()).append("\n");
 
                     Service.gI().sendThongBao(player, info.toString());
                 } catch (Exception e) {
@@ -980,7 +1033,15 @@ public class Service {
             if (text.startsWith("i")) {
                 int itemId = Integer.parseInt(text.replace("i", ""));
                 Item item = ItemService.gI().createNewItem(((short) itemId));
-                ItemShop it = new Shop().getItemShop(itemId);
+                item.quantity = 99;
+                ItemShop it = null;
+                for(Shop s: Manager.SHOPS){
+                    ItemShop its = s.getItemShop(itemId);
+                    if(its != null){
+                        it = its;
+                        break;
+                    }
+                }
                 if (it != null && !it.options.isEmpty()) {
                     item.itemOptions.addAll(it.options);
                 }

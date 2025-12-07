@@ -5,7 +5,14 @@ import com.girlkun.models.boss.BossType;
 import com.girlkun.models.event.Event;
 import com.girlkun.models.shop.Shop;
 import com.girlkun.models.event.ConstEvent;
+import com.girlkun.models.item.ConstItem;
+import com.girlkun.models.map.ItemMap;
+import com.girlkun.models.map.Map;
+import com.girlkun.models.map.Zone;
 import com.girlkun.server.Manager;
+import com.girlkun.utils.Util;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Halloween Event
@@ -31,6 +38,15 @@ public class Debug extends Event {
         createNpc(5, ConstNpc.BILL_BI_NGO, 232, 288);
         createNpc(42, ConstNpc.THO_DAI_CA, 111, 288);
         super.npc();
+    }
+    
+    @Override
+    public List<ItemMap> itemMap(Map map, int MobId, Zone zone, int x, int y, long playerId) {
+        List<ItemMap> items = new ArrayList<>();
+        if(Util.isTrue(100, 100)){
+            items.add(new ItemMap(zone, ConstItem.HALLOWEEN_BI_NGO_DROP_TU_QUAI, 1, x, y, playerId));
+        }
+        return items;
     }
 
     @Override

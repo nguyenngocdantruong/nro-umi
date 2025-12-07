@@ -4,6 +4,7 @@ import com.girlkun.models.boss.Boss;
 import com.girlkun.models.boss.BossManager;
 import com.girlkun.models.boss.BossesData;
 import com.girlkun.models.boss.BossStatus;
+import com.girlkun.models.item.ConstItem;
 import com.girlkun.models.map.ItemMap;
 import com.girlkun.models.player.Player;
 import com.girlkun.server.Manager;
@@ -23,7 +24,7 @@ public class SuperBlack2 extends Boss {
     @Override
     public void reward(Player plKill) {
         if (Util.isTrue(BossManager.ratioReward, 100)) {
-            Service.gI().dropItemMap(this.zone, Util.khongthegiaodich(zone, 992, 1, this.location.x, this.location.y, plKill.id));
+            Service.gI().dropItemMap(this.zone, Util.khongthegiaodich(zone, ConstItem.NHAN_THOI_KHONG_SAI_LECH, 1, this.location.x, this.location.y, plKill.id));
         }
     }
 

@@ -50,7 +50,7 @@ public class Broly extends Boss {
                 this.nPoint.dameg += this.nPoint.hpMax / 200;
 
                 if (this.nPoint.hpMax > 500000 && initS == 0) {
-                    this.chat("Grrr Grr Grrr .... Giết được ta sẽ biến thành Super Broly");
+                    this.chat("Grrr Grr Grrr .... Ta đã đủ sức mạnh biến Super Broly ....");
                     initS = 1;
                 }
             }
