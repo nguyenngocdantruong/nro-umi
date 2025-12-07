@@ -141,7 +141,7 @@ public class EventManager {
                     break;
                 case 2:
                 default:
-                    currentEvent = new Default();
+                    currentEvent = new Halloween();
                     break;
             }
             Logger.debug(currentEvent.getThongBaoLogin());

@@ -26,7 +26,7 @@ public class Default extends Event {
     
     @Override
     public String getThongBaoLogin() {
-        return "Chào ae tới server NroSkibidi. Nạp X2 liên hệ admin.";
+        return "Chào ae tới server NroSkibidi. Hiện tại đang không diễn ra event gì. Nạp X2 liên hệ admin.";
     }
 
     @Override
