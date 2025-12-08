@@ -397,6 +397,12 @@ public class UseItem {
                         case 736:
                             ItemService.gI().OpenItem736(pl, item);
                             break;
+                        case 737: // Capsule Trung Thu
+                            ItemService.gI().OpenTrungThu(pl, item);
+                            break;
+                        case 818: // Capsule Trung Thu
+                            openCapsuleHalloween(pl, item);
+                            break;
                         case 987:
                             Service.gI().sendThongBao(pl, "Bảo vệ trang bị không bị rớt cấp"); // đá bảo vệ
                             break;
@@ -816,6 +822,7 @@ public class UseItem {
                     } else {
                         caiTrang.itemOptions.add(new Item.ItemOption(154, 0)); // 0 thể bán lại
                     }
+                    itemReward = caiTrang;
                 }
                 // 20% là vàng / ngọc
                 else if (Util.isTrue(20, 100)) {
@@ -826,7 +833,7 @@ public class UseItem {
                 }
                 // 20% là ngọc rồng thường
                 else if (Util.isTrue(20, 100)) {
-                    short[] nr = new short[] { 14, 15, 16, 17, 18, 19, 20 };
+                    short[] nr = new short[] { 16, 17, 18, 19, 20 };
                     short itemId = nr[Util.nextInt(0, nr.length - 1)];
                     itemReward = ItemService.gI().createNewItem(itemId);
                     int randomQuantity = Util.nextInt(1, 4);

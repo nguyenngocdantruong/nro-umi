@@ -84,6 +84,13 @@ public class BossHalloween extends Boss {
     }
 
     @Override
+    public void attack() {
+        super.attack(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+    }
+
+    
+    
+    @Override
     public void affectPlayer(Player player) {
         if(!player.effectSkin.isBiHoaXuong && !player.nPoint.hasHalloweenCt){
             player.effectSkin.isBiHoaXuong = true;
