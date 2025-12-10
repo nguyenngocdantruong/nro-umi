@@ -814,11 +814,11 @@ public class SkillService {
                     List<Player> playersMap = player.zone.getHumanoids();
                     for (Player pl : playersMap) {
                         if(pl == null) continue;
-                        if(!player.equals(pl) && (pl instanceof ThoDaiCa || (pl.nPoint.khangTDHS && canAttackPlayer(player, pl)) || pl instanceof KhiXayda)){
+                        if(!player.equals(pl) && (pl instanceof ThoDaiCa || (pl.nPoint != null && pl.nPoint.khangTDHS && canAttackPlayer(player, pl)) || pl instanceof KhiXayda)){
                             pl.chat("Vô ích thôi! Hà hà!");
                             continue;
                         }
-                        if (!player.equals(pl) && !pl.nPoint.khangTDHS) {
+                        if (!player.equals(pl) && pl.nPoint != null && !pl.nPoint.khangTDHS) {
                             if (Util.getDistance(player, pl) <= SkillUtil.getRangeStun(player.playerSkill.skillSelect.point)
                                     && canAttackPlayer(player, pl) //                                        && (!pl.playerSkill.prepareQCKK && !pl.playerSkill.prepareLaze && !pl.playerSkill.prepareTuSat)
                             ) {

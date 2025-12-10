@@ -47,12 +47,17 @@ public class Broly extends Boss {
             if (this.nPoint.hpMax < 16099999) {
                 this.nPoint.hpMax += this.nPoint.hpMax / 100;
                 this.nPoint.hpg += this.nPoint.hpg / 100;
-                this.nPoint.dameg += this.nPoint.hpMax / 200;
+                this.nPoint.dameg = this.nPoint.hpMax / 200;
 
                 if (this.nPoint.hpMax > 500000 && initS == 0) {
                     this.chat("Grrr Grr Grrr .... Ta đã đủ sức mạnh biến Super Broly ....");
                     initS = 1;
                 }
+            }
+            else{
+                initS = 1;
+                this.chat("Hãy xem sức mạnh SuperBroly của ta đây!");
+                this.leaveMap();
             }
 
             return damage;

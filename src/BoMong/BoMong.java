@@ -51,18 +51,18 @@ public class BoMong {
         try {
             msg = new Message(-76);
             msg.writer().writeByte(0); // action
-            msg.writer().writeByte(listReceiveGem.size()); //numArrchivement
+            msg.writer().writeByte(listReceiveGem.size()); // numArrchivement
             for (Template.AchievementTemplate temp : Manager.ACHIEVEMENTS) {
-               
-                msg.writer().writeUTF(temp.getInfo1()); //info1
-                msg.writer().writeUTF( //info2
+
+                msg.writer().writeUTF(temp.getInfo1()); // info1
+                msg.writer().writeUTF( // info2
                         this.SwitchName(player, temp.getInfo2())
-                        + " (" + Util.numberToMoney(getCount(temp.getIndex()))
-                        + "/"
-                        + Util.numberToMoney(temp.getCount_Purpose() +1) + ")");
-                msg.writer().writeShort(temp.getGem()); //money
-                msg.writer().writeBoolean(getCount(temp.getIndex()) > temp.getCount_Purpose()); //isfinish
-                msg.writer().writeBoolean(this.listReceiveGem.get(temp.getIndex())); //isreceiv
+                                + " (" + Util.numberToMoney(getCount(temp.getIndex()))
+                                + "/"
+                                + Util.numberToMoney(temp.getCount_Purpose() + 1) + ")");
+                msg.writer().writeShort(temp.getGem()); // money
+                msg.writer().writeBoolean(getCount(temp.getIndex()) > temp.getCount_Purpose()); // isfinish
+                msg.writer().writeBoolean(this.listReceiveGem.get(temp.getIndex())); // isreceiv
             }
             this.player.sendMessage(msg);
             msg.cleanup();
@@ -78,7 +78,8 @@ public class BoMong {
     }
 
     public void receiveGem(int index) {
-        Template.AchievementTemplate temp = Manager.ACHIEVEMENTS.stream().filter(ac -> ac.getIndex() == index).findFirst().orElse(null);
+        Template.AchievementTemplate temp = Manager.ACHIEVEMENTS.stream().filter(ac -> ac.getIndex() == index)
+                .findFirst().orElse(null);
 
         if (temp != null) {
             Message msg = null;
@@ -97,10 +98,10 @@ public class BoMong {
                 }
             }
             this.listReceiveGem.set(index, Boolean.TRUE);
-            this.player.inventory.ruby += temp.getGem();
+            this.player.inventory.gem += temp.getGem();
             Service.getInstance().sendMoney(this.player);
-            Service.getInstance().sendThongBao(this.player, "Nhận thành công " + temp.getGem() + " hồng ngọc");
-//            System.out.println("nhan dc" + temp.getGem());
+            Service.getInstance().sendThongBao(this.player, "Nhận thành công " + temp.getGem() + " ngọc xanh");
+            // System.out.println("nhan dc" + temp.getGem());
         } else {
             Service.getInstance().sendThongBao(this.player, "Không có phần thưởng");
         }
@@ -109,11 +110,15 @@ public class BoMong {
     private String SwitchName(Player player, String text) {
         byte gender = player.gender;
         text = text.replaceAll(TEN_SIEU_CAP, gender == ConstPlayer.TRAI_DAT
-                ? "Siêu Trái Đất" : (gender == ConstPlayer.NAMEC
-                        ? "Siêu Namếc" : "Siêu Xayda"));
+                ? "Siêu Trái Đất"
+                : (gender == ConstPlayer.NAMEC
+                        ? "Siêu Namếc"
+                        : "Siêu Xayda"));
         text = text.replaceAll(TEN_NGUOI_BAN_HANG, gender == ConstPlayer.TRAI_DAT
-                ? "Bunma" : (gender == ConstPlayer.NAMEC
-                        ? "Dende" : "Appule"));
+                ? "Bunma"
+                : (gender == ConstPlayer.NAMEC
+                        ? "Dende"
+                        : "Appule"));
         return text;
     }
 

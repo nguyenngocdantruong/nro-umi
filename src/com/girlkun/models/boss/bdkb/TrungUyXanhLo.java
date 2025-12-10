@@ -42,7 +42,7 @@ public class TrungUyXanhLo extends Boss {
             Service.getInstance().dropItemMap(this.zone, it);
         }
         // Rơi đồ thêm
-        ItemMap doRoiTuBoss = Util.GetRandomItemRoiTuBoss(15, ConstItem.LoaiDoRoiTuBoss.DoThanLinh,
+        ItemMap doRoiTuBoss = Util.GetRandomItemRoiTuBoss(15, ConstItem.LoaiDoRoiTuBoss.DoTamTrung,
                 ConstItem.CoSaoPhaLe.Co, this.zone, this.location.x + Util.nextInt(-15, 15), this.location.y, plKill.id);
         if(doRoiTuBoss != null){
             Service.gI().dropItemMap(this.zone, doRoiTuBoss);

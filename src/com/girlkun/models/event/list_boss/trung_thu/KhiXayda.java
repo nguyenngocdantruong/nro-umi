@@ -8,6 +8,7 @@ import com.girlkun.models.boss.Boss;
 import com.girlkun.models.boss.BossData;
 import com.girlkun.models.boss.BossID;
 import com.girlkun.models.boss.BossesData;
+import com.girlkun.models.item.ConstItem;
 import com.girlkun.models.map.ItemMap;
 import com.girlkun.models.player.Player;
 import com.girlkun.models.skill.Skill;
@@ -59,6 +60,15 @@ public class KhiXayda extends Boss {
                     this.location.y - 24), -1);
             Service.gI().dropItemMap(this.zone, it);
         }
+        
+        // Rơi đồ thêm
+        ItemMap doRoiTuBoss = Util.GetRandomItemRoiTuBoss(10, ConstItem.LoaiDoRoiTuBoss.DoThanLinh,
+                ConstItem.CoSaoPhaLe.Co, this.zone, this.location.x + Util.nextInt(-15, 15), this.location.y, plKill.id);
+        if(doRoiTuBoss != null){
+            Service.gI().dropItemMap(this.zone, doRoiTuBoss);
+        }
+        
+        
         if(Util.isTrue(40, 100)){
             super.reward(plKill);
         }

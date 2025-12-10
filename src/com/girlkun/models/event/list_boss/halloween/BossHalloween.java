@@ -40,7 +40,7 @@ public class BossHalloween extends Boss {
             Service.gI().dropItemMap(this.zone, itemBiNgo);
         }
         // Rơi đồ thêm
-        ItemMap doRoiTuBoss = Util.GetRandomItemRoiTuBoss(10, ConstItem.LoaiDoRoiTuBoss.DoVip,
+        ItemMap doRoiTuBoss = Util.GetRandomItemRoiTuBoss(10, ConstItem.LoaiDoRoiTuBoss.DoThanLinh,
                 ConstItem.CoSaoPhaLe.Co, this.zone, this.location.x + Util.nextInt(-15, 15), this.location.y, plKill.id);
         if(doRoiTuBoss != null){
             Service.gI().dropItemMap(this.zone, doRoiTuBoss);

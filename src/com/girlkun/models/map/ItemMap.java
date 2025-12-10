@@ -80,7 +80,7 @@ public class ItemMap {
         this.lastTimeMoveToPlayer = itemMap.lastTimeMoveToPlayer;
         this.createTime = System.currentTimeMillis();
         this.zone.addItem(this);
-        
+
     }
 
     public void update() {
@@ -113,16 +113,15 @@ public class ItemMap {
             return;
         }
 
-        if (Util.canDoWithTime(createTime, 20000) && !this.isNamecBall) {
-            if(this.isDoanhTraiBall){
+        if (Util.canDoWithTime(createTime, 300000) && !this.isNamecBall) {
+            if (this.isDoanhTraiBall) {
                 System.out.println(itemTemplate.name);
             }
-            if(this.isDoanhTraiBall){
-                if(Util.canDoWithTime(createTime, 300000)){
+            if (this.isDoanhTraiBall) {
+                if (Util.canDoWithTime(createTime, 300000)) {
                     ItemMapService.gI().removeItemMapAndSendClient(this);
                 }
-            }
-            else {
+            } else {
                 if (this.zone.map.mapId != 21 && this.zone.map.mapId != 22
                         && this.zone.map.mapId != 23 && this.itemTemplate.id != 78) {
                     ItemMapService.gI().removeItemMapAndSendClient(this);

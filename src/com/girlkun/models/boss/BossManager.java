@@ -178,9 +178,9 @@ public class BossManager {
                     BossType.zeno,
                     BossType.vt6,
                     BossType.bergamo, };
-            if(Logger.DEBUG){
-                bossTypes = new int[] { } ;
-            }
+//            if(Logger.DEBUG){
+//                bossTypes = new int[] { } ;
+//            }
             for (int i = 0; i < bossTypes.length; i++) {
                 switch (bossTypes[i]) {
                     case BossType.KUKU:

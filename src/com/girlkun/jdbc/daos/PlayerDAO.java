@@ -38,7 +38,7 @@ public class PlayerDAO {
 
             dataArray.add(200000); // vàng
             dataArray.add(2000); // ngọc xanh
-            dataArray.add(2000); // hồng ngọc
+            dataArray.add(0); // hồng ngọc
             dataArray.add(0); // point
             dataArray.add(0); // event
 
@@ -123,7 +123,7 @@ public class PlayerDAO {
                     opt.add(30); // id option cấm giao dịch
                     opt.add(1); // param option
                     item.add(457); // id item
-                    item.add(50); // số lượng
+                    item.add(2); // số lượng
                     options.add(opt.toJSONString());
                     opt.clear();
                 } else {

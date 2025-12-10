@@ -1,4 +1,5 @@
 package com.girlkun.models.boss.list_boss.doanh_trai;;
+
 import com.girlkun.models.boss.BossID;
 import com.girlkun.models.boss.Boss;
 import com.girlkun.models.boss.BossManager;
@@ -39,40 +40,45 @@ import com.girlkun.utils.Util;
  * @author BTH sieu cap vippr0
  */
 public class NinjaAoTim extends Boss {
-    private static final int[][] FULL_DEMON = new int[][]{{Skill.DEMON, 1}, {Skill.DEMON, 2}, {Skill.DEMON, 3}, {Skill.DEMON, 4}, {Skill.DEMON, 5}, {Skill.DEMON, 6}, {Skill.DEMON, 7}};
+    private static final int[][] FULL_DEMON = new int[][] { { Skill.DEMON, 1 }, { Skill.DEMON, 2 }, { Skill.DEMON, 3 },
+            { Skill.DEMON, 4 }, { Skill.DEMON, 5 }, { Skill.DEMON, 6 }, { Skill.DEMON, 7 } };
 
-    public NinjaAoTim(Zone zone , int dame, int hp) throws Exception {
+    public NinjaAoTim(Zone zone, int dame, int hp) throws Exception {
         super(BossID.NINJA_AO_TIM, new BossData(
-                "Ninja Áo Tím", //name
-            ConstPlayer.TRAI_DAT, //gender
-            new short[]{123, 124, 125, -1, -1, -1}, //outfit {head, body, leg, bag, aura, eff}
-                ((hp/100 * 4)), //dame
-                new int[]{((dame * 83))}, //hp
-                new int[]{54}, //map join
-                (int[][]) Util.addArray(FULL_DEMON), //skill
-                new String[]{}, //text chat 1
-                new String[]{"|-1|Nhóc con"}, //text chat 2
-                new String[]{}, //text chat 3
-                60
-        ));
+                "Ninja Áo Tím", // name
+                ConstPlayer.TRAI_DAT, // gender
+                new short[] { 123, 124, 125, -1, -1, -1 }, // outfit {head, body, leg, bag, aura, eff}
+                ((hp / 100 * 4)), // dame
+                new int[] { ((dame * 83)) }, // hp
+                new int[] { 54 }, // map join
+                (int[][]) Util.addArray(FULL_DEMON), // skill
+                new String[] {}, // text chat 1
+                new String[] { "|-1|Nhóc con" }, // text chat 2
+                new String[] {}, // text chat 3
+                60));
         this.zone = zone;
     }
+
     @Override
     public void reward(Player plKill) {
         byte randomDo = (byte) new Random().nextInt(Manager.itemIds_TL.length - 1);
         byte randomNR = (byte) new Random().nextInt(Manager.itemIds_NR_SB.length);
         if (Util.isTrue(BossManager.ratioReward, 100)) {
             if (Util.isTrue(10, 100)) {
-             Service.gI().dropItemMap(this.zone,new ItemMap(zone, 861, 1, this.location.x, this.location.y, plKill.id));
+                Service.gI().dropItemMap(this.zone,
+                        new ItemMap(zone, 77, 1, this.location.x, this.location.y, plKill.id));
                 return;
             }
-            Service.gI().dropItemMap(this.zone, Util.ratiItem(zone, Manager.itemIds_TL[randomDo], 1, this.location.x, this.location.y, plKill.id));
+            Service.gI().dropItemMap(this.zone,
+                    Util.ratiItem(zone, Manager.itemIds_TL[randomDo], 1, this.location.x, this.location.y, plKill.id));
         } else {
-            ItemMap item = new ItemMap(zone, Manager.itemIds_NR_SB[randomNR], 1, this.location.x, this.location.y, plKill.id);
+            ItemMap item = new ItemMap(zone, Manager.itemIds_NR_SB[randomNR], 1, this.location.x, this.location.y,
+                    plKill.id);
             item.isDoanhTraiBall = true;
             Service.gI().dropItemMap(this.zone, item);
         }
     }
+
     @Override
     public void active() {
         super.active();
@@ -90,8 +96,3 @@ public class NinjaAoTim extends Boss {
         this.dispose();
     }
 }
-
-
-
-
-

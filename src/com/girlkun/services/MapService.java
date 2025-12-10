@@ -35,7 +35,8 @@ public class MapService {
 
     public WayPoint getWaypointPlayerIn(Player player) {
         for (WayPoint wp : player.zone.map.wayPoints) {
-            if (player.location.x >= wp.minX && player.location.x <= wp.maxX && player.location.y >= wp.minY && player.location.y <= wp.maxY) {
+            if (player.location.x >= wp.minX && player.location.x <= wp.maxX && player.location.y >= wp.minY
+                    && player.location.y <= wp.maxY) {
                 return wp;
             }
         }
@@ -73,7 +74,7 @@ public class MapService {
         }
         return tileIndexTileType;
     }
-    
+
     public List<Player> getAllPlayerInMap(int mapId) {
         Map map = getMapById(mapId);
         if (map == null) {
@@ -85,7 +86,8 @@ public class MapService {
         }
         return players;
     }
-    //tilemap for paint
+
+    // tilemap for paint
     public int[][] readTileMap(int mapId) {
         int[][] tileMap = null;
         try {
@@ -106,13 +108,13 @@ public class MapService {
     }
 
     public Zone getMapCanJoin(Player player, int mapId, int zoneId) {
-//        if (player.getSession() != null && player.isAdmin()) {
-//            if (zoneId == -1) {
-//                return getRandomZoneByMapID(mapId);
-//            } else {
-//                return getZoneByMapIDAndZoneID(mapId, zoneId);
-//            }
-//        }
+        // if (player.getSession() != null && player.isAdmin()) {
+        // if (zoneId == -1) {
+        // return getRandomZoneByMapID(mapId);
+        // } else {
+        // return getZoneByMapIDAndZoneID(mapId, zoneId);
+        // }
+        // }
         if (isMapOffline(mapId)) {
             return getMapById(mapId).zones.get(0);
         }
@@ -158,16 +160,16 @@ public class MapService {
                         return null;
                     }
                 }
-//                for (Player boss : player.zone.getBosses()) {
-//                    if (!boss.isDie()) {
-//                        return null;
-//                    }
-//                }
+                // for (Player boss : player.zone.getBosses()) {
+                // if (!boss.isDie()) {
+                // return null;
+                // }
+                // }
             }
             return player.clan.banDoKhoBau.getMapById(mapId);
         }
-        //**********************************************************************
-        if (zoneId == -1) { //vào khu bất kỳ
+        // **********************************************************************
+        if (zoneId == -1) { // vào khu bất kỳ
             return getZone(mapId);
         } else {
             return getZoneByMapIDAndZoneID(mapId, zoneId);
@@ -180,10 +182,10 @@ public class MapService {
             return null;
         }
 
-        //int z = Util.nextInt(0, map.zones.size() - 1);
+        // int z = Util.nextInt(0, map.zones.size() - 1);
         int z = 0;
         while (map.zones.get(z).getNumOfPlayers() >= map.zones.get(z).maxPlayer) {
-            //   z = Util.nextInt(0, map.zones.size() - 1);
+            // z = Util.nextInt(0, map.zones.size() - 1);
             z++;
         }
         return map.zones.get(z);
@@ -252,8 +254,7 @@ public class MapService {
         if (pl.mapBeforeCapsule != null
                 && pl.mapBeforeCapsule.map.mapId != 21
                 && pl.mapBeforeCapsule.map.mapId != 22
-                && pl.mapBeforeCapsule.map.mapId != 23
-                && !isMapTuongLai(pl.mapBeforeCapsule.map.mapId)) {
+                && pl.mapBeforeCapsule.map.mapId != 23) {
             addListMapCapsule(pl, list, pl.mapBeforeCapsule);
         }
         addListMapCapsule(pl, list, getMapCanJoin(pl, 21 + pl.gender, 0));

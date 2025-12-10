@@ -9,14 +9,18 @@ import com.girlkun.jdbc.daos.GodGK;
 import com.girlkun.jdbc.daos.PlayerDAO;
 import com.girlkun.models.item.ConstItem;
 import com.girlkun.models.item.Item.ItemOption;
+import com.girlkun.models.map.ItemMap;
 import com.girlkun.models.map.Zone;
 import com.girlkun.services.NpcService;
 import com.girlkun.models.player.Inventory;
 import com.girlkun.models.player.Player;
+import com.girlkun.models.shop.ItemShop;
+import com.girlkun.models.shop.Shop;
 import com.girlkun.services.Service;
 import com.girlkun.utils.Util;
 import com.girlkun.network.io.Message;
 import com.girlkun.server.Client;
+import com.girlkun.server.Manager;
 import com.girlkun.services.ItemService;
 import com.girlkun.services.PlayerService;
 import com.girlkun.services.InventoryServiceNew;
@@ -883,35 +887,28 @@ public class SummonDragon {
     private Item getRandomItemForRongXuong(Player pl) {
         int random = Util.nextInt(1, 100);
         boolean isHasSPL = Util.nextInt(10) % 2 == 0;
-        com.girlkun.models.item.ConstItem.LoaiDoRoiTuBoss type;
-
+        ItemMap itemMap;
         if (random <= 5) {
-            type = com.girlkun.models.item.ConstItem.LoaiDoRoiTuBoss.DoThanLinh;
+            itemMap = Util.GetRandomItemRoiTuBoss(100, ConstItem.LoaiDoRoiTuBoss.DoThanLinh
+                    , ConstItem.CoSaoPhaLe.Co, mapShenronAppear, -1, -1, pl.id);
         } else if (random <= 25) { // 5 + 20 = 25
-            type = com.girlkun.models.item.ConstItem.LoaiDoRoiTuBoss.DoVip;
+            itemMap = Util.GetRandomItemRoiTuBoss(100, ConstItem.LoaiDoRoiTuBoss.DoVip
+                    , ConstItem.CoSaoPhaLe.Co, mapShenronAppear, -1, -1, pl.id);
         } else {
-            type = com.girlkun.models.item.ConstItem.LoaiDoRoiTuBoss.DoTamTrung;
+            itemMap = Util.GetRandomItemRoiTuBoss(100, ConstItem.LoaiDoRoiTuBoss.DoTamTrung
+                    , ConstItem.CoSaoPhaLe.Co, mapShenronAppear, -1, -1, pl.id);
         }
-
-        // Get random item from the type
-        short idItem;
-        try {
-            int index = type.value;
-            idItem = com.girlkun.models.item.ConstItem.doRoiTuBoss[index][Util.nextInt(0,
-                    com.girlkun.models.item.ConstItem.doRoiTuBoss[index].length - 1)];
-        } catch (Exception e) {
-            // Fallback to tầm trung
-            int index = com.girlkun.models.item.ConstItem.LoaiDoRoiTuBoss.DoTamTrung.value;
-            idItem = com.girlkun.models.item.ConstItem.doRoiTuBoss[index][Util.nextInt(0,
-                    com.girlkun.models.item.ConstItem.doRoiTuBoss[index].length - 1)];
+        Item item = ItemService.gI().createNewItem(itemMap.itemTemplate.id);
+        for(ItemOption io: itemMap.options){
+            if(io.optionTemplate.id != 209){
+                item.itemOptions.add(io);
+            }
         }
-
-        Item item = ItemService.gI().createNewItem(idItem);
         if(isHasSPL){
             int randomSao = Util.nextInt(1, 3);
             item.itemOptions.add(new Item.ItemOption(107, randomSao)); // SPL chưa ép
         }
-        item.itemOptions.add(new Item.ItemOption(209, 0)); // Đồ từ Rồng Xương
+        item.itemOptions.add(new Item.ItemOption(214, 0)); // Đồ từ Rồng Xương
         return item;
     }
 }
